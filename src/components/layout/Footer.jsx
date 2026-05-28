@@ -70,12 +70,12 @@ export default function Footer() {
             <div style={{ fontSize: 'var(--text-sm)', color: 'var(--color-gray-400)', lineHeight: 2 }}>
               <p>📍 123 Jewellers Lane, Zaveri Bazaar</p>
               <p style={{ paddingLeft: '24px' }}>Mumbai, Maharashtra 400002</p>
-              <p style={{ marginTop: '8px' }}>📞 +91 98765 43210</p>
-              <p>📧 hello@goldsmithsjewels.com</p>
+              <p style={{ marginTop: '8px' }}>📞 +91 91062 51842</p>
+              <p>📧 goldsmithvesu@gmail.com</p>
               <p style={{ marginTop: '8px' }}>🕐 Mon-Sat: 10:00 AM - 8:00 PM</p>
               <p style={{ paddingLeft: '24px' }}>Sun: 11:00 AM - 6:00 PM</p>
             </div>
-            <a href="https://wa.me/919876543210" target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', marginTop: '16px', padding: '10px 20px', background: '#25D366', color: 'white', borderRadius: 'var(--radius-md)', fontSize: 'var(--text-sm)', fontWeight: 500, transition: 'transform var(--transition-fast)' }}>
+            <a href="https://wa.me/919106251842" target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', marginTop: '16px', padding: '10px 20px', background: '#25D366', color: 'white', borderRadius: 'var(--radius-md)', fontSize: 'var(--text-sm)', fontWeight: 500, transition: 'transform var(--transition-fast)' }}>
               💬 WhatsApp Us
             </a>
           </div>

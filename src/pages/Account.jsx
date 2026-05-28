@@ -878,7 +878,7 @@ export default function Account() {
                 </div>
                 <div className="form-group">
                   <label className="form-label">Contact Phone</label>
-                  <input name="phone" type="tel" value={form.phone} onChange={handleChange} className="form-input" placeholder="e.g. +91 98765 43210" required />
+                  <input name="phone" type="tel" value={form.phone} onChange={handleChange} className="form-input" placeholder="e.g. +91 91062 51842" required />
                 </div>
               </>
             )}

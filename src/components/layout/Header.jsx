@@ -71,7 +71,7 @@ export default function Header() {
           <span style={{ display: 'none' }} className="desktop-only">|</span>
           <span style={{ display: 'none' }} className="desktop-only">🔒 100% Certified & Hallmarked</span>
           <span style={{ display: 'none' }} className="desktop-only">|</span>
-          <span style={{ display: 'none' }} className="desktop-only">📞 +91 98765 43210</span>
+          <span style={{ display: 'none' }} className="desktop-only">📞 +91 91062 51842</span>
         </div>
       </div>
 

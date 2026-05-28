@@ -92,7 +92,7 @@ export default function ProductDetail() {
 
   // Helper for WhatsApp deep link
   const getWhatsAppLink = () => {
-    const phone = '919876543210'; // Business phone
+    const phone = '919106251842'; // Business phone
     const text = encodeURIComponent(
       `Hello Goldsmiths Jewels, I am highly interested in the exquisite "${product.name}" (SKU: ${product.sku || 'N/A'}). Please connect me with a consultant to discuss pricing and specifications.`
     );

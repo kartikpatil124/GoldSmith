@@ -39,9 +39,9 @@ export default function Contact() {
               <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
                 {[
                   { icon: '📍', title: 'Visit Our Showroom', info: '123 Jewellers Lane, Zaveri Bazaar\nMumbai, Maharashtra 400002' },
-                  { icon: '📞', title: 'Call Us', info: '+91 98765 43210\nMon-Sat: 10 AM - 8 PM' },
-                  { icon: '📧', title: 'Email Us', info: 'hello@goldsmithsjewels.com\nWe reply within 24 hours' },
-                  { icon: '💬', title: 'WhatsApp', info: '+91 98765 43210\nInstant support available' },
+                  { icon: '📞', title: 'Call Us', info: '+91 91062 51842\nMon-Sat: 10 AM - 8 PM' },
+                  { icon: '📧', title: 'Email Us', info: 'goldsmithvesu@gmail.com\nWe reply within 24 hours' },
+                  { icon: '💬', title: 'WhatsApp', info: '+91 91062 51842\nInstant support available' },
                 ].map(item => (
                   <div key={item.title} style={{ display: 'flex', gap: '16px' }}>
                     <div style={{ width: '48px', height: '48px', borderRadius: 'var(--radius-lg)', background: 'var(--color-cream)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px', flexShrink: 0 }}>{item.icon}</div>

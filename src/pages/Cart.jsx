@@ -97,7 +97,7 @@ export default function Cart() {
       <p style={{ color: 'var(--color-gray-500)', marginBottom: '32px' }}>A confirmation details email has also been sent to **{form.email}**.</p>
       <div style={{ display: 'flex', gap: '16px', justifyContent: 'center' }}>
         <a 
-          href={`https://wa.me/919876543210?text=Hello%20Goldsmiths%20Jewels,%20I%20have%20just%20submitted%20a%20bulk%20consultation%20request.%20Please%20assist%20me.`} 
+          href={`https://wa.me/919106251842?text=Hello%20Goldsmiths%20Jewels,%20I%20have%20just%20submitted%20a%20bulk%20consultation%20request.%20Please%20assist%20me.`} 
           target="_blank" 
           rel="noopener noreferrer"
           className="btn btn-primary"

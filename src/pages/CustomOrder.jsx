@@ -33,7 +33,7 @@ export default function CustomOrder() {
       <div style={{ fontSize: '64px', marginBottom: '16px' }}>🎨</div>
       <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--text-3xl)', marginBottom: '12px' }}>Custom Order Received!</h2>
       <p style={{ color: 'var(--color-gray-500)', marginBottom: '8px' }}>Our design team will review your requirements and get back to you within 48 hours.</p>
-      <p style={{ color: 'var(--color-gray-500)', marginBottom: '32px' }}>For urgent requests, call us at +91 98765 43210</p>
+      <p style={{ color: 'var(--color-gray-500)', marginBottom: '32px' }}>For urgent requests, call us at +91 91062 51842</p>
     </div>
   );
 

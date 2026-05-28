@@ -135,7 +135,7 @@ export default function InquiryModal({ isOpen, onClose, product, initialInquiryT
   };
 
   const getWhatsAppLink = () => {
-    const cleanPhone = "919876543210"; // goldsmiths business whatsapp number
+    const cleanPhone = "919106251842"; // goldsmiths business whatsapp number
     const msg = `*Goldsmiths Jewels - Premium Consultation Request*\n\n` +
       `Hello, I would like to consult with a jewellery expert regarding:\n` +
       `*Product:* ${product?.name || 'General Inquiry'}\n` +

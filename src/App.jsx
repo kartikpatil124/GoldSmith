@@ -56,7 +56,7 @@ function Toast() {
 
 function WhatsAppButton() {
   return (
-    <a href="https://wa.me/919876543210" target="_blank" rel="noopener noreferrer" style={{
+    <a href="https://wa.me/919106251842" target="_blank" rel="noopener noreferrer" style={{
       position: 'fixed', bottom: '24px', left: '24px', width: '56px', height: '56px',
       borderRadius: '50%', background: '#25D366', color: 'white', display: 'flex',
       alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 15px rgba(37,211,102,0.4)',
