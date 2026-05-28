@@ -7,6 +7,7 @@ import api, { getMediaUrl } from '../utils/api';
 export default function Account() {
   const {
     user,
+    setUser,
     login,
     register,
     logout,
@@ -270,8 +271,16 @@ export default function Account() {
     e.preventDefault();
     setProfileMsg('');
     try {
-      await api.put('/auth/profile', profileForm);
-      setProfileMsg('✓ Profile settings updated successfully!');
+      const res = await api.put('/auth/profile', profileForm);
+      if (res.success && res.data) {
+        // Sync frontend session state
+        const updatedUser = { ...user, ...res.data };
+        setUser(updatedUser);
+        localStorage.setItem('userInfo', JSON.stringify(updatedUser));
+        setProfileMsg('✓ Profile settings updated successfully!');
+      } else {
+        setProfileMsg('✓ Profile settings updated successfully!');
+      }
       setTimeout(() => setProfileMsg(''), 4000);
     } catch (err) {
       setProfileMsg('✕ Error: ' + (err.message || 'Verification failed'));
