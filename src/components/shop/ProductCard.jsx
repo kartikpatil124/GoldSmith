@@ -4,6 +4,7 @@ import { useCart } from '../../context/CartContext';
 import { useWishlist } from '../../context/WishlistContext';
 import { formatPrice } from '../../data/products';
 import { getMediaUrl, getProductImage } from '../../utils/api';
+import InquiryModal from './InquiryModal';
 
 const categoryEmoji = (category) => {
   switch (category) {
@@ -23,10 +24,11 @@ const categoryEmoji = (category) => {
 };
 
 export default function ProductCard({ product, onQuickView }) {
-  const { addToCart } = useCart();
   const { toggleWishlist, isInWishlist } = useWishlist();
   const wishlisted = isInWishlist(product._id || product.id);
   const [imgError, setImgError] = useState(false);
+  const [imgLoaded, setImgLoaded] = useState(false);
+  const [isInquiryOpen, setIsInquiryOpen] = useState(false);
 
   const stars = '★'.repeat(Math.floor(product.rating)) + (product.rating % 1 >= 0.5 ? '½' : '');
   
@@ -37,6 +39,15 @@ export default function ProductCard({ product, onQuickView }) {
   return (
     <div className="product-card">
       <div className="product-card-image">
+
+        {/* Shimmering Skeleton Loader */}
+        {imageUrl && !imgLoaded && !imgError && (
+          <div className="shimmer-loader" style={{
+            position: 'absolute',
+            inset: 0,
+            zIndex: 2,
+          }} />
+        )}
 
         {/* Fallback placeholder (always rendered below) */}
         <div style={{
@@ -57,7 +68,9 @@ export default function ProductCard({ product, onQuickView }) {
           <img 
             src={imageUrl}
             alt={product.name}
-            onError={() => setImgError(true)}
+            onError={() => { setImgError(true); setImgLoaded(true); }}
+            onLoad={() => setImgLoaded(true)}
+            className={imgLoaded ? 'fade-in' : ''}
             style={{
               position: 'absolute',
               inset: 0,
@@ -65,6 +78,8 @@ export default function ProductCard({ product, onQuickView }) {
               height: '100%',
               objectFit: 'cover',
               zIndex: 1,
+              opacity: imgLoaded ? 1 : 0,
+              transition: 'opacity 0.4s ease-out',
             }}
           />
         )}
@@ -98,9 +113,9 @@ export default function ProductCard({ product, onQuickView }) {
           )}
         </div>
 
-        {/* Quick Add */}
+        {/* Quick Inquiry instead of Quick Add */}
         <div className="product-card-quick-add" style={{ zIndex: 3 }}>
-          <button onClick={(e) => { e.preventDefault(); addToCart(product); }}>Add to Bag</button>
+          <button onClick={(e) => { e.preventDefault(); setIsInquiryOpen(true); }}>Send Inquiry</button>
         </div>
       </div>
 
@@ -122,6 +137,14 @@ export default function ProductCard({ product, onQuickView }) {
           </div>
         </div>
       </Link>
+
+      <InquiryModal 
+        isOpen={isInquiryOpen} 
+        onClose={() => setIsInquiryOpen(false)} 
+        product={product} 
+        initialInquiryType="Price Inquiry"
+      />
     </div>
   );
 }
+

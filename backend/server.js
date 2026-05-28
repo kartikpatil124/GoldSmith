@@ -10,7 +10,7 @@ import connectDB from './config/db.js';
 // Route Imports
 import authRoutes from './routes/authRoutes.js';
 import productRoutes from './routes/productRoutes.js';
-import orderRoutes from './routes/orderRoutes.js';
+// import orderRoutes from './routes/orderRoutes.js'; // Disabled for inquiry-based shift
 import uploadRoutes from './routes/uploadRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
 import userRoutes from './routes/userRoutes.js';
@@ -25,6 +25,9 @@ import merchandisingRoutes from './routes/merchandisingRoutes.js';
 import collectionRoutes from './routes/collectionRoutes.js';
 import bannerRoutes from './routes/bannerRoutes.js';
 import pageContentRoutes from './routes/pageContentRoutes.js';
+import inquiryRoutes from './routes/inquiryRoutes.js';
+import meInquiryRoutes from './routes/meInquiryRoutes.js';
+import adminInquiryRoutes from './routes/adminInquiryRoutes.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -50,7 +53,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 // API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
-app.use('/api/orders', orderRoutes);
+// app.use('/api/orders', orderRoutes); // Disabled for inquiry-based shift
 app.use('/api/upload', uploadRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/users', userRoutes);
@@ -65,6 +68,9 @@ app.use('/api/merchandising', merchandisingRoutes);
 app.use('/api/collections', collectionRoutes);
 app.use('/api/banners', bannerRoutes);
 app.use('/api/page-content', pageContentRoutes);
+app.use('/api/inquiries', inquiryRoutes);
+app.use('/api/me/inquiries', meInquiryRoutes);
+app.use('/api/admin/inquiries', adminInquiryRoutes);
 
 // Base Route
 app.get('/', (req, res) => {

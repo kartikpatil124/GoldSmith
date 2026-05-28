@@ -48,14 +48,14 @@ export default function BottomNavigation() {
       )
     },
     {
-      name: 'Bag',
+      name: 'Inquiries',
       path: '#',
       onClick: (e) => {
         e.preventDefault();
         setIsCartOpen(true);
       },
       badgeCount: cartCount,
-      badgeColor: 'var(--color-ruby)',
+      badgeColor: 'var(--color-gold)',
       icon: (
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />

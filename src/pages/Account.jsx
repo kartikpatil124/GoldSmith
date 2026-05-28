@@ -31,7 +31,7 @@ export default function Account() {
 
   // Dashboard states
   const [activeTab, setActiveTab] = useState('Dashboard');
-  const [orders, setOrders] = useState([]);
+  const [inquiries, setInquiries] = useState([]);
   const [addresses, setAddresses] = useState([]);
   const [loadingData, setLoadingData] = useState(false);
   
@@ -43,13 +43,19 @@ export default function Account() {
   const [addrForm, setAddrForm] = useState({ firstName: '', lastName: '', street: '', city: '', state: '', postalCode: '', phone: '', isDefault: false });
   const [showAddrForm, setShowAddrForm] = useState(false);
 
-  // Check for reset token in URL on mount
+  // Check for reset token or tab in URL on mount
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const token = params.get('token');
     if (token) {
       setResetToken(token);
       setView('reset');
+    }
+    const tabParam = params.get('tab');
+    if (tabParam === 'orders' || tabParam === 'inquiries') {
+      setActiveTab('Inquiries');
+    } else if (tabParam === 'settings') {
+      setActiveTab('Settings');
     }
   }, []);
 
@@ -63,7 +69,7 @@ export default function Account() {
         currentPassword: '',
         password: ''
       });
-      if (activeTab === 'Orders') fetchOrders();
+      if (activeTab === 'Inquiries') fetchInquiries();
       if (activeTab === 'Addresses') fetchAddresses();
     }
   }, [user, activeTab]);
@@ -232,12 +238,12 @@ export default function Account() {
     }
   };
 
-  // Fetch Order history
-  const fetchOrders = async () => {
+  // Fetch Inquiry history
+  const fetchInquiries = async () => {
     try {
       setLoadingData(true);
-      const res = await api.get('/orders/myorders');
-      setOrders(res.data || res || []);
+      const res = await api.get('/me/inquiries');
+      setInquiries(res.data || res || []);
     } catch (e) {
       console.error(e);
     } finally {
@@ -321,9 +327,7 @@ export default function Account() {
       setFormError(`Sandbox linking error: ${msg}`);
     }
   };
-
-  const statusColors = { Pending: '#f59e0b', Processing: '#3b82f6', Shipped: '#8b5cf6', Delivered: '#22c55e', Cancelled: '#ef4444' };
-  const tabs = ['Dashboard', 'Orders', 'Wishlist', 'Addresses', 'Settings', ...(user?.role === 'Super Admin' || user?.role === 'Admin' ? ['Admin Panel'] : []), 'Logout'];
+  const tabs = ['Dashboard', 'Inquiries', 'Wishlist', 'Addresses', 'Settings', ...(user?.role === 'Super Admin' || user?.role === 'Admin' ? ['Admin Panel'] : []), 'Logout'];
 
   // ==================== AUTHENTICATED USER DASHBOARD ====================
   if (user) {
@@ -366,7 +370,7 @@ export default function Account() {
                   className="nav-btn"
                 >
                   {item === 'Dashboard' && '👤 '}
-                  {item === 'Orders' && '📦 '}
+                  {item === 'Inquiries' && '✉️ '}
                   {item === 'Wishlist' && '❤️ '}
                   {item === 'Addresses' && '📍 '}
                   {item === 'Settings' && '⚙️ '}
@@ -396,9 +400,8 @@ export default function Account() {
                       </div>
                     </div>
                   </div>
-
                   <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px' }} className="stats-grid">
-                    {[{ icon: '📦', label: 'My Orders', value: orders.length || '—', tab: 'Orders' },
+                    {[{ icon: '✉️', label: 'My Inquiries', value: inquiries.length || '—', tab: 'Inquiries' },
                       { icon: '❤️', label: 'Wishlist', link: '/wishlist' },
                       { icon: '📍', label: 'Saved Addresses', value: addresses.length || '—', tab: 'Addresses' }
                     ].map(stat => (
@@ -425,28 +428,59 @@ export default function Account() {
                 </div>
               )}
 
-              {activeTab === 'Orders' && (
+              {activeTab === 'Inquiries' && (
                 <div>
-                  <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--text-xl)', fontWeight: 600, marginBottom: '24px' }}>My Orders</h2>
-                  {loadingData ? <p>Loading order ledger...</p> : orders.length === 0 ? (
+                  <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--text-xl)', fontWeight: 600, marginBottom: '24px' }}>My Inquiries</h2>
+                  {loadingData ? <p>Loading inquiries...</p> : inquiries.length === 0 ? (
                     <div style={{ textAlign: 'center', padding: '64px', background: 'var(--color-gray-50)', borderRadius: 'var(--radius-2xl)' }}>
-                      <div style={{ fontSize: '56px', marginBottom: '16px' }}>📦</div>
-                      <p style={{ color: 'var(--color-gray-500)', marginBottom: '20px' }}>You haven't placed any orders yet.</p>
+                      <div style={{ fontSize: '56px', marginBottom: '16px' }}>✉️</div>
+                      <p style={{ color: 'var(--color-gray-500)', marginBottom: '20px' }}>You haven't submitted any inquiries yet.</p>
                       <Link to="/shop" className="btn btn-primary" style={{ display: 'inline-block' }}>Start Browsing Fine Jewellery</Link>
                     </div>
-                  ) : orders.map(o => (
-                    <div key={o._id} style={{ border: '1px solid var(--color-gray-100)', borderRadius: 'var(--radius-xl)', padding: '24px', marginBottom: '20px', background: '#fff' }}>
+                  ) : inquiries.map(i => (
+                    <div key={i._id || i.inquiryId} style={{ border: '1px solid rgba(188, 156, 108, 0.2)', borderRadius: 'var(--radius-xl)', padding: '24px', marginBottom: '20px', background: '#fff', boxShadow: '0 4px 12px rgba(0,0,0,0.02)' }}>
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', flexWrap: 'wrap', gap: '8px' }}>
                         <div>
-                          <span style={{ fontSize: 'var(--text-sm)', fontWeight: 700, color: 'var(--color-charcoal)' }}>ORDER #{o._id?.slice(-8).toUpperCase()}</span>
-                          <span style={{ fontSize: 'var(--text-xs)', color: 'var(--color-gray-400)', marginLeft: '16px' }}>{new Date(o.createdAt).toLocaleDateString()}</span>
+                          <span style={{ fontSize: 'var(--text-sm)', fontWeight: 700, color: 'var(--color-charcoal)' }}>INQUIRY #{i.inquiryId}</span>
+                          <span style={{ fontSize: 'var(--text-xs)', color: 'var(--color-gray-400)', marginLeft: '16px' }}>{new Date(i.createdAt).toLocaleDateString()}</span>
                         </div>
-                        <span style={{ padding: '6px 14px', borderRadius: 'var(--radius-full)', fontSize: '10px', fontWeight: 700, color: statusColors[o.orderStatus] || '#666', background: (statusColors[o.orderStatus] || '#666') + '15', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{o.orderStatus}</span>
+                        <span style={{ 
+                          padding: '6px 14px', 
+                          borderRadius: 'var(--radius-full)', 
+                          fontSize: '10px', 
+                          fontWeight: 700, 
+                          color: i.status === 'new' ? '#3b82f6' : i.status === 'quoted' || i.status === 'customization sent' ? '#22c55e' : '#f59e0b', 
+                          background: (i.status === 'new' ? '#3b82f6' : i.status === 'quoted' || i.status === 'customization sent' ? '#22c55e' : '#f59e0b') + '15', 
+                          textTransform: 'uppercase', 
+                          letterSpacing: '0.05em' 
+                        }}>{i.status}</span>
                       </div>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 'var(--text-sm)', borderTop: '1px solid var(--color-gray-50)', paddingTop: '12px' }}>
-                        <span style={{ color: 'var(--color-gray-500)' }}>{o.orderItems?.length || 0} Products</span>
-                        <span style={{ fontWeight: 700, color: 'var(--color-charcoal)' }}>{formatPrice(o.totalPrice)}</span>
+                      
+                      <div style={{ display: 'flex', gap: '16px', marginBottom: '16px' }}>
+                        <div style={{ width: '60px', height: '60px', borderRadius: '8px', background: 'var(--color-beige)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px', flexShrink: 0, overflow: 'hidden' }}>💎</div>
+                        <div>
+                          <h4 style={{ fontSize: 'var(--text-sm)', fontWeight: 600, color: 'var(--color-charcoal)' }}>{i.productName}</h4>
+                          <p style={{ fontSize: 'var(--text-xs)', color: 'var(--color-gray-500)', marginTop: '2px' }}>Type: {i.inquiryType} | Preferred Contact: {i.preferredContactMethod}</p>
+                        </div>
                       </div>
+
+                      <div style={{ background: 'var(--color-gray-50)', padding: '12px 16px', borderRadius: '8px', fontSize: 'var(--text-sm)', color: 'var(--color-gray-600)', marginBottom: '16px' }}>
+                        <strong>Your Message:</strong> {i.message}
+                        {i.customizationNotes && <div style={{ marginTop: '8px' }}><strong>Customization Request:</strong> {i.customizationNotes}</div>}
+                      </div>
+
+                      {i.adminResponse ? (
+                        <div style={{ borderTop: '1px solid rgba(188, 156, 108, 0.15)', paddingTop: '16px' }}>
+                          <h5 style={{ fontSize: 'var(--text-xs)', textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--color-gold)', fontWeight: 600, marginBottom: '8px' }}>Expert Consultant Response</h5>
+                          <div style={{ fontSize: 'var(--text-sm)', color: 'var(--color-charcoal)', lineHeight: 1.6, fontStyle: 'italic', background: 'rgba(188, 156, 108, 0.05)', padding: '16px', borderRadius: '8px', borderLeft: '3px solid var(--color-gold)' }}>
+                            {i.adminResponse}
+                          </div>
+                        </div>
+                      ) : (
+                        <div style={{ fontSize: 'var(--text-xs)', color: 'var(--color-gray-400)', borderTop: '1px solid var(--color-gray-50)', paddingTop: '12px' }}>
+                          ⏳ Awaiting response from our design team.
+                        </div>
+                      )}
                     </div>
                   ))}
                 </div>

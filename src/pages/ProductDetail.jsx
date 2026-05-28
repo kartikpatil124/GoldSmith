@@ -5,6 +5,7 @@ import { useCart } from '../context/CartContext';
 import { useWishlist } from '../context/WishlistContext';
 import ProductCard from '../components/shop/ProductCard';
 import api, { getMediaUrl, getProductImage } from '../utils/api';
+import InquiryModal from '../components/shop/InquiryModal';
 
 const getYouTubeEmbedId = (url) => {
   if (!url) return null;
@@ -29,6 +30,10 @@ export default function ProductDetail() {
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState('description');
   const [zoomActive, setZoomActive] = useState(false);
+
+  // Inquiry Modal States
+  const [isInquiryOpen, setIsInquiryOpen] = useState(false);
+  const [inquiryType, setInquiryType] = useState('Price Inquiry');
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -85,6 +90,20 @@ export default function ProductDetail() {
     { id: 'reviews', label: `Reviews (${productReviews.length})` },
   ];
 
+  // Helper for WhatsApp deep link
+  const getWhatsAppLink = () => {
+    const phone = '919876543210'; // Business phone
+    const text = encodeURIComponent(
+      `Hello Goldsmiths Jewels, I am highly interested in the exquisite "${product.name}" (SKU: ${product.sku || 'N/A'}). Please connect me with a consultant to discuss pricing and specifications.`
+    );
+    return `https://wa.me/${phone}?text=${text}`;
+  };
+
+  const openInquiryModal = (type) => {
+    setInquiryType(type);
+    setIsInquiryOpen(true);
+  };
+
   return (
     <div>
       {/* Breadcrumb */}
@@ -100,7 +119,7 @@ export default function ProductDetail() {
       {/* Product Section */}
       <section style={{ padding: '48px 0 80px' }}>
         <div className="container">
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '60px', alignItems: 'start' }}>
+          <div className="product-detail-layout">
             {/* Image Gallery */}
             <div>
               <div onClick={() => setZoomActive(!zoomActive)} style={{ position: 'relative', borderRadius: 'var(--radius-xl)', overflow: 'hidden', background: 'linear-gradient(135deg, var(--color-beige), var(--color-cream), var(--color-pearl))', aspectRatio: '1', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '120px', cursor: 'zoom-in', transition: 'transform var(--transition-slow)', transform: zoomActive ? 'scale(1.15)' : 'scale(1)', zIndex: 10 }}>
@@ -217,7 +236,7 @@ export default function ProductDetail() {
               <p style={{ color: 'var(--color-gray-600)', lineHeight: 1.8, marginBottom: '24px', fontSize: 'var(--text-base)' }}>{product.description}</p>
 
               {/* Key Details */}
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '24px', padding: '20px', background: 'var(--color-gray-50)', borderRadius: 'var(--radius-lg)' }}>
+              <div className="detail-specs-grid" style={{ marginBottom: '24px', padding: '20px', background: 'var(--color-gray-50)', borderRadius: 'var(--radius-lg)' }}>
                 {[
                   { label: 'Metal', value: product.metal },
                   { label: 'Purity', value: product.purity },
@@ -244,34 +263,91 @@ export default function ProductDetail() {
                 <p style={{ fontSize: 'var(--text-sm)', color: 'var(--color-gray-600)' }}>{product.size}</p>
               </div>
 
-              {/* Quantity & Actions */}
-              <div style={{ display: 'flex', gap: '12px', marginBottom: '16px' }}>
-                <div style={{ display: 'flex', alignItems: 'center', border: '1px solid var(--color-gray-200)', borderRadius: 'var(--radius-md)', overflow: 'hidden' }}>
-                  <button onClick={() => setQuantity(Math.max(1, quantity - 1))} style={{ width: '44px', height: '44px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'none', border: 'none', cursor: 'pointer', fontSize: '18px' }}>−</button>
-                  <span style={{ width: '44px', textAlign: 'center', fontWeight: 600 }}>{quantity}</span>
-                  <button onClick={() => setQuantity(quantity + 1)} style={{ width: '44px', height: '44px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'none', border: 'none', cursor: 'pointer', fontSize: '18px' }}>+</button>
+              {/* Inquiry & Actions */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '24px' }}>
+                <div style={{ display: 'flex', gap: '12px' }}>
+                  <button 
+                    onClick={() => openInquiryModal('Price Inquiry')} 
+                    className="btn btn-primary btn-lg" 
+                    style={{ flex: 1, textTransform: 'uppercase', letterSpacing: '0.05em' }}
+                  >
+                    ✨ Send Inquiry / Request Price
+                  </button>
+                  
+                  <button 
+                    onClick={() => toggleWishlist(product)} 
+                    style={{ 
+                      width: '48px', 
+                      height: '48px', 
+                      borderRadius: 'var(--radius-md)', 
+                      border: '1px solid var(--color-gray-200)', 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      justifyContent: 'center', 
+                      background: wishlisted ? 'var(--color-ruby)' : 'transparent', 
+                      color: wishlisted ? 'white' : 'var(--color-gray-600)', 
+                      cursor: 'pointer', 
+                      transition: 'all var(--transition-fast)' 
+                    }}
+                  >
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill={wishlisted ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2">
+                      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+                    </svg>
+                  </button>
                 </div>
-                <button onClick={() => addToCart(product, quantity)} className="btn btn-primary btn-lg" style={{ flex: 1 }}>Add to Bag</button>
-                <button onClick={() => toggleWishlist(product)} style={{ width: '48px', height: '48px', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-gray-200)', display: 'flex', alignItems: 'center', justifyContent: 'center', background: wishlisted ? 'var(--color-ruby)' : 'transparent', color: wishlisted ? 'white' : 'var(--color-gray-600)', cursor: 'pointer', transition: 'all var(--transition-fast)' }}>
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill={wishlisted ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" /></svg>
-                </button>
+
+                <div className="detail-actions-grid">
+                  <button 
+                    onClick={() => openInquiryModal('Customization Inquiry')} 
+                    className="btn btn-secondary"
+                    style={{ padding: '10px 16px', fontSize: 'var(--text-sm)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}
+                  >
+                    🎨 Request Custom Design
+                  </button>
+
+                  <a 
+                    href={getWhatsAppLink()} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="btn btn-dark"
+                    style={{ 
+                      padding: '10px 16px', 
+                      fontSize: 'var(--text-sm)', 
+                      background: '#25D366', 
+                      color: 'white', 
+                      border: 'none', 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      justifyContent: 'center', 
+                      gap: '8px' 
+                    }}
+                  >
+                    💬 Chat on WhatsApp
+                  </a>
+                </div>
               </div>
 
-              <button className="btn btn-dark btn-lg" style={{ width: '100%', marginBottom: '24px' }}>Buy Now</button>
-
               {/* Trust Indicators */}
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+              <div className="detail-trust-grid">
                 {[
                   { icon: '🚚', text: product.deliveryEstimate || '5-7 Business Days' },
                   { icon: '↩️', text: product.returnPolicy || '15-Day Returns' },
-                  { icon: '🔒', text: 'Secure Payment' },
-                  { icon: '📜', text: product.hallmark || 'Certified' },
+                  { icon: '🤵', text: 'Expert Consultation' },
+                  { icon: '📜', text: product.hallmark || 'Certified Hallmark' },
                 ].map(item => (
                   <div key={item.text} style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 12px', background: 'var(--color-gray-50)', borderRadius: 'var(--radius-md)', fontSize: 'var(--text-xs)', color: 'var(--color-gray-600)' }}>
                     <span>{item.icon}</span>{item.text}
                   </div>
                 ))}
               </div>
+
+              {/* Inquiry Modal */}
+              <InquiryModal 
+                isOpen={isInquiryOpen} 
+                onClose={() => setIsInquiryOpen(false)} 
+                product={product} 
+                initialInquiryType={inquiryType}
+              />
             </div>
           </div>
 
@@ -288,7 +364,7 @@ export default function ProductDetail() {
             {activeTab === 'description' && <div style={{ maxWidth: '800px', lineHeight: 2, color: 'var(--color-gray-600)' }}><p>{product.description}</p><h4 style={{ fontFamily: 'var(--font-display)', marginTop: '24px', marginBottom: '8px', color: 'var(--color-charcoal)' }}>Care Instructions</h4><p>{product.careInstructions || 'Keep away from moisture and harsh chemicals. Store in the provided box.'}</p></div>}
 
             {activeTab === 'details' && (
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', maxWidth: '800px' }}>
+              <div className="detail-specs-grid" style={{ maxWidth: '800px' }}>
                 {[
                   ['SKU', product.sku], ['Metal', product.metal], ['Purity', product.purity], ['Weight', product.weight],
                   ['Size', product.size], ['Finish', product.finish], ['Hallmark', product.hallmark], ['Certification', product.certification],

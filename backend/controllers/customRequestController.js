@@ -34,3 +34,19 @@ export const updateCustomRequestStatus = async (req, res, next) => {
     next(error);
   }
 };
+
+export const deleteCustomRequest = async (req, res, next) => {
+  try {
+    const request = await CustomRequest.findById(req.params.id);
+
+    if (request) {
+      await request.deleteOne();
+      res.json({ success: true, message: 'Custom request deleted successfully' });
+    } else {
+      res.status(404);
+      next(new Error('Custom request not found'));
+    }
+  } catch (error) {
+    next(error);
+  }
+};

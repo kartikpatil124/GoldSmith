@@ -229,12 +229,12 @@ export default function Header() {
                       }}>
                         👤 My Account
                       </Link>
-                      <Link to="/account?tab=orders" style={{
+                      <Link to="/account?tab=inquiries" style={{
                         display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 12px', fontSize: 'var(--text-sm)',
                         color: 'var(--color-charcoal)', borderRadius: 'var(--radius-md)',
                         transition: 'all var(--transition-fast)'
                       }}>
-                        📦 My Orders
+                        ✉️ My Inquiries
                       </Link>
                       <Link to="/wishlist" style={{
                         display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 12px', fontSize: 'var(--text-sm)',
@@ -264,11 +264,11 @@ export default function Header() {
                 </div>
               )}
             </div>
-
-            {/* Cart */}
-            <button onClick={() => setIsCartOpen(true)} style={{ width: '40px', height: '40px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', background: 'none', border: 'none', cursor: 'pointer' }} aria-label="Cart">
+ 
+            {/* Inquiry Basket Button */}
+            <button onClick={() => setIsCartOpen(true)} style={{ width: '40px', height: '40px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', background: 'none', border: 'none', cursor: 'pointer' }} aria-label="Inquiry Basket">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" /><line x1="3" y1="6" x2="21" y2="6" /><path d="M16 10a4 4 0 0 1-8 0" /></svg>
-              {cartCount > 0 && <span style={{ position: 'absolute', top: '2px', right: '2px', width: '16px', height: '16px', borderRadius: '50%', background: 'var(--color-ruby)', color: 'var(--color-white)', fontSize: '10px', fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{cartCount}</span>}
+              {cartCount > 0 && <span style={{ position: 'absolute', top: '2px', right: '2px', width: '16px', height: '16px', borderRadius: '50%', background: 'var(--color-gold)', color: 'var(--color-white)', fontSize: '10px', fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{cartCount}</span>}
             </button>
           </div>
         </div>

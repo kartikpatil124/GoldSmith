@@ -8,7 +8,7 @@ export default function AdminSidebar() {
   const menuItems = [
     { name: 'Dashboard', path: '/admin', icon: '📊' },
     { name: 'Products', path: '/admin/products', icon: '💎' },
-    { name: 'Orders', path: '/admin/orders', icon: '📦' },
+    { name: 'Inquiries', path: '/admin/inquiries', icon: '✉️' },
     { name: 'Customers', path: '/admin/customers', icon: '👥' },
     { name: 'Custom Requests', path: '/admin/custom-requests', icon: '🎨' },
     { name: 'Coupons', path: '/admin/coupons', icon: '🏷️' },

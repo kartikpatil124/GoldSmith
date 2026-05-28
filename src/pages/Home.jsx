@@ -21,8 +21,8 @@ const staggerContainer = {
 };
 
 const categories = [
-  { id: 1, name: 'Rings', image: 'https://images.unsplash.com/photo-1605100804763-247f67b2548e?auto=format&fit=crop&q=80', link: '/shop?category=rings' },
-  { id: 2, name: 'Necklaces', image: 'https://images.unsplash.com/photo-1599643478524-fb66f70d00f0?auto=format&fit=crop&q=80', link: '/shop?category=necklaces' },
+  { id: 1, name: 'Rings', image: 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cmluZ3xlbnwwfHwwfHx8MA%3D%3D', link: '/shop?category=rings' },
+  { id: 2, name: 'Necklaces', image: 'https://images.unsplash.com/photo-1610694955371-d4a3e0ce4b52?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fG5lY2tsYWNlfGVufDB8fDB8fHww', link: '/shop?category=necklaces' },
   { id: 3, name: 'Earrings', image: 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&q=80', link: '/shop?category=earrings' },
   { id: 4, name: 'Bracelets', image: 'https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&q=80', link: '/shop?category=bracelets' }
 ];

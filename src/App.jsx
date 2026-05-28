@@ -26,7 +26,8 @@ import Account from './pages/Account';
 import AdminLayout from './components/admin/AdminLayout';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminProducts from './pages/admin/AdminProducts';
-import AdminOrders from './pages/admin/AdminOrders';
+// import AdminOrders from './pages/admin/AdminOrders'; // Disabled for inquiry-based shift
+import AdminInquiries from './pages/admin/AdminInquiries';
 import AdminLogin from './pages/admin/AdminLogin';
 import AdminCustomers from './pages/admin/AdminCustomers';
 import AdminCoupons from './pages/admin/AdminCoupons';
@@ -78,7 +79,7 @@ function AppContent() {
           <Route path="/product/:slug" element={<ProductDetail />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/wishlist" element={<Wishlist />} />
-          <Route path="/checkout" element={<Checkout />} />
+          <Route path="/checkout" element={<Shop />} /> {/* Redirect checkout to shop */}
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/faq" element={<FAQ />} />
@@ -109,7 +110,7 @@ function AdminApp() {
       <Route path="/" element={<AdminLayout />}>
         <Route index element={<AdminDashboard />} />
         <Route path="products" element={<AdminProducts />} />
-        <Route path="orders" element={<AdminOrders />} />
+        <Route path="inquiries" element={<AdminInquiries />} />
         <Route path="customers" element={<AdminCustomers />} />
         <Route path="custom-requests" element={<AdminCustomRequests />} />
         <Route path="coupons" element={<AdminCoupons />} />
