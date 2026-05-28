@@ -4,6 +4,7 @@ import { useCart } from '../../context/CartContext';
 import { useWishlist } from '../../context/WishlistContext';
 import { useAuth } from '../../context/AuthContext';
 import { products, categories } from '../../data/products';
+import { getMediaUrl } from '../../utils/api';
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -187,7 +188,7 @@ export default function Header() {
                   transition: 'all var(--transition-fast)'
                 }} aria-label="Account">
                   {user.avatar ? (
-                    <img src={user.avatar} alt={user.fullName || user.email} style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} />
+                    <img src={getMediaUrl(user.avatar)} alt={user.fullName || user.email} style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} />
                   ) : (
                     <span>{(user.fullName || user.email || 'U').charAt(0).toUpperCase()}</span>
                   )}
@@ -298,7 +299,7 @@ export default function Header() {
                       fontWeight: 600, fontSize: 'var(--text-xs)', color: 'var(--color-charcoal)'
                     }}>
                       {user.avatar ? (
-                        <img src={user.avatar} alt="Avatar" style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} />
+                        <img src={getMediaUrl(user.avatar)} alt="Avatar" style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} />
                       ) : (
                         <span>{(user.fullName || user.email || 'U').charAt(0).toUpperCase()}</span>
                       )}

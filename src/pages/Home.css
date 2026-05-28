@@ -240,7 +240,7 @@
   border-top-left-radius: 999px;
   border-top-right-radius: 999px;
   overflow: hidden;
-  border: 8px solid var(--color-cream);
+  border: 8px solid rgba(143, 143, 143, 0.289);
   box-shadow: var(--shadow-2xl);
 }
 

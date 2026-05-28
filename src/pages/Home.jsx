@@ -148,7 +148,7 @@ export default function Home() {
             <div className="about-image-wrapper">
               <div className="about-image-inner">
                 <img 
-                  src="https://images.unsplash.com/photo-1573408301145-b98c46544405?auto=format&fit=crop&q=80" 
+                  src="https://images.unsplash.com/photo-1601121141418-c1caa10a2a0b?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aGFuZG1hZGUlMjBqZXdlbGxlcnl8ZW58MHx8MHx8fDA%3D" 
                   alt="Jewellery Crafting" 
                 />
               </div>

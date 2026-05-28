@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { formatPrice } from '../data/products';
-import api from '../utils/api';
+import api, { getMediaUrl } from '../utils/api';
 
 export default function Account() {
   const {
@@ -388,7 +388,7 @@ export default function Account() {
                   <div style={{ background: 'var(--color-gray-50)', borderRadius: 'var(--radius-2xl)', padding: '36px', marginBottom: '32px', border: '1px solid var(--color-gray-100)' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '12px' }}>
                       {user.avatar ? (
-                        <img src={user.avatar} alt={user.name} style={{ width: '64px', height: '64px', borderRadius: '50%', objectFit: 'cover', border: '2px solid var(--color-gold)' }} />
+                        <img src={getMediaUrl(user.avatar)} alt={user.name} style={{ width: '64px', height: '64px', borderRadius: '50%', objectFit: 'cover', border: '2px solid var(--color-gold)' }} />
                       ) : (
                         <div style={{ width: '64px', height: '64px', borderRadius: '50%', background: 'var(--color-gold)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '24px', fontWeight: 700 }}>
                           {user.name?.charAt(0).toUpperCase()}
