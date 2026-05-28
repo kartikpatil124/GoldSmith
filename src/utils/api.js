@@ -1,6 +1,17 @@
 import axios from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+const getApiBaseUrl = () => {
+  if (import.meta.env.VITE_API_URL) {
+    return import.meta.env.VITE_API_URL;
+  }
+  // Dynamic local dev vs production render API resolution
+  if (typeof window !== 'undefined' && window.location.hostname === 'localhost') {
+    return "http://localhost:5000/api";
+  }
+  return "https://goldsmiths-api.onrender.com/api";
+};
+
+const API_BASE_URL = getApiBaseUrl();
 
 const api = axios.create({
   baseURL: API_BASE_URL,

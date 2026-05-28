@@ -1,7 +1,18 @@
 import { useState, useEffect } from 'react';
 import api, { getProductImage, getMediaUrl } from '../../utils/api';
 
-const API_BASE = import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5000';
+const getApiBase = () => {
+  if (import.meta.env.VITE_API_URL) {
+    return import.meta.env.VITE_API_URL.replace('/api', '');
+  }
+  // Dynamic local dev vs production render API resolution
+  if (typeof window !== 'undefined' && window.location.hostname === 'localhost') {
+    return 'http://localhost:5000';
+  }
+  return 'https://goldsmiths-api.onrender.com';
+};
+
+const API_BASE = getApiBase();
 
 const emptyForm = {
   name: '', sku: '', slug: '', price: '', salePrice: '', category: 'Rings', subcategory: '', collectionName: '',
