@@ -187,10 +187,26 @@ export default function Header() {
                   boxShadow: 'var(--shadow-sm)',
                   transition: 'all var(--transition-fast)'
                 }} aria-label="Account">
-                  {user.avatar ? (
-                    <img src={getMediaUrl(user.avatar)} alt={user.fullName || user.email} style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} />
+                  {user.avatar && user.avatar.url ? (
+                    <img src={getMediaUrl(user.avatar)} alt={user.fullName || user.email} style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover', transition: 'opacity 0.3s ease' }} />
                   ) : (
-                    <span>{(user.fullName || user.email || 'U').charAt(0).toUpperCase()}</span>
+                    <div style={{
+                      width: '100%',
+                      height: '100%',
+                      borderRadius: '50%',
+                      background: 'linear-gradient(135deg, var(--color-charcoal) 0%, #2C2621 100%)',
+                      color: 'var(--color-gold)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontFamily: 'var(--font-display)',
+                      fontWeight: 700,
+                      fontSize: 'var(--text-sm)',
+                      textShadow: '0 1px 2px rgba(0,0,0,0.3)',
+                      letterSpacing: '0.02em'
+                    }}>
+                      {(user.fullName || user.email || 'U').charAt(0).toUpperCase()}
+                    </div>
                   )}
                 </Link>
               ) : (
@@ -298,10 +314,25 @@ export default function Header() {
                       border: '2px solid var(--color-gold)', display: 'flex', alignItems: 'center', justifyContent: 'center',
                       fontWeight: 600, fontSize: 'var(--text-xs)', color: 'var(--color-charcoal)'
                     }}>
-                      {user.avatar ? (
-                        <img src={getMediaUrl(user.avatar)} alt="Avatar" style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} />
+                       {user.avatar && user.avatar.url ? (
+                        <img src={getMediaUrl(user.avatar)} alt="Avatar" style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover', transition: 'opacity 0.3s ease' }} />
                       ) : (
-                        <span>{(user.fullName || user.email || 'U').charAt(0).toUpperCase()}</span>
+                        <div style={{
+                          width: '100%',
+                          height: '100%',
+                          borderRadius: '50%',
+                          background: 'linear-gradient(135deg, var(--color-charcoal) 0%, #2C2621 100%)',
+                          color: 'var(--color-gold)',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          fontFamily: 'var(--font-display)',
+                          fontWeight: 700,
+                          fontSize: 'var(--text-xs)',
+                          textShadow: '0 1px 2px rgba(0,0,0,0.3)'
+                        }}>
+                          {(user.fullName || user.email || 'U').charAt(0).toUpperCase()}
+                        </div>
                       )}
                     </div>
                     <div style={{ overflow: 'hidden' }}>

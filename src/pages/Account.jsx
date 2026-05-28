@@ -38,6 +38,7 @@ export default function Account() {
   // Profile settings states
   const [profileForm, setProfileForm] = useState({ name: '', email: '', phone: '', currentPassword: '', password: '' });
   const [profileMsg, setProfileMsg] = useState('');
+  const [uploading, setUploading] = useState(false);
   
   // Address form states
   const [addrForm, setAddrForm] = useState({ firstName: '', lastName: '', street: '', city: '', state: '', postalCode: '', phone: '', isDefault: false });
@@ -277,6 +278,76 @@ export default function Account() {
     }
   };
 
+  const handleAvatarUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    setProfileMsg('');
+
+    // 1. Client-side Type Validation (images only)
+    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+    if (!allowedTypes.includes(file.type)) {
+      setProfileMsg('✕ Error: Invalid file type. Allowed formats: JPG, JPEG, PNG, WebP.');
+      return;
+    }
+
+    // 2. Client-side File Size Validation (strictly 2MB)
+    const maxSize = 2 * 1024 * 1024; // 2MB
+    if (file.size > maxSize) {
+      setProfileMsg('✕ Error: File too large. Profile photos must not exceed 2MB in size.');
+      return;
+    }
+
+    try {
+      setUploading(true);
+      const formData = new FormData();
+      formData.append('avatar', file);
+
+      const res = await api.put('/auth/avatar', formData);
+      if (res.success && res.data) {
+        // Sync frontend session state
+        const updatedUser = { ...user, avatar: res.data.avatar };
+        setUser(updatedUser);
+        localStorage.setItem('userInfo', JSON.stringify(updatedUser));
+        setProfileMsg('✓ Profile photo updated successfully!');
+      } else {
+        setProfileMsg(`✕ Error: ${res.message || 'Upload failed'}`);
+      }
+    } catch (err) {
+      const msg = err.message || (typeof err === 'string' ? err : (err.error || 'Server error'));
+      setProfileMsg(`✕ Error uploading avatar: ${msg}`);
+    } finally {
+      setUploading(false);
+      e.target.value = ''; // Allow uploading the same file again
+    }
+  };
+
+  const handleAvatarRemove = async () => {
+    if (!window.confirm('Are you sure you want to permanently remove your profile photograph?')) {
+      return;
+    }
+
+    setProfileMsg('');
+    try {
+      setUploading(true);
+      const res = await api.delete('/auth/avatar');
+      if (res.success && res.data) {
+        // Sync frontend session state
+        const updatedUser = { ...user, avatar: res.data.avatar };
+        setUser(updatedUser);
+        localStorage.setItem('userInfo', JSON.stringify(updatedUser));
+        setProfileMsg('✓ Profile photo removed successfully!');
+      } else {
+        setProfileMsg(`✕ Error: ${res.message || 'Removal failed'}`);
+      }
+    } catch (err) {
+      const msg = err.message || (typeof err === 'string' ? err : (err.error || 'Server error'));
+      setProfileMsg(`✕ Error removing avatar: ${msg}`);
+    } finally {
+      setUploading(false);
+    }
+  };
+
   // Add Address helper
   const handleAddAddress = async (e) => {
     e.preventDefault();
@@ -387,7 +458,7 @@ export default function Account() {
                 <div>
                   <div style={{ background: 'var(--color-gray-50)', borderRadius: 'var(--radius-2xl)', padding: '36px', marginBottom: '32px', border: '1px solid var(--color-gray-100)' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '12px' }}>
-                      {user.avatar ? (
+                      {user.avatar && user.avatar.url ? (
                         <img src={getMediaUrl(user.avatar)} alt={user.name} style={{ width: '64px', height: '64px', borderRadius: '50%', objectFit: 'cover', border: '2px solid var(--color-gold)' }} />
                       ) : (
                         <div style={{ width: '64px', height: '64px', borderRadius: '50%', background: 'var(--color-gold)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '24px', fontWeight: 700 }}>
@@ -540,6 +611,116 @@ export default function Account() {
               {activeTab === 'Settings' && (
                 <div>
                   <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--text-xl)', fontWeight: 600, marginBottom: '24px' }}>Account Settings</h2>
+                  
+                  {/* Luxury Profile Photo Editor */}
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '24px',
+                    padding: '24px',
+                    background: 'var(--color-cream)',
+                    borderRadius: 'var(--radius-xl)',
+                    border: '1px solid rgba(212, 175, 55, 0.15)',
+                    marginBottom: '32px'
+                  }} className="profile-photo-editor">
+                    
+                    {/* Circle Avatar Preview */}
+                    <div style={{ position: 'relative', width: '80px', height: '80px', flexShrink: 0 }}>
+                      {user.avatar && user.avatar.url ? (
+                        <img 
+                          src={getMediaUrl(user.avatar)} 
+                          alt={user.name} 
+                          style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover', border: '3px solid var(--color-gold)', boxShadow: 'var(--shadow-md)' }} 
+                        />
+                      ) : (
+                        <div style={{
+                          width: '100%',
+                          height: '100%',
+                          borderRadius: '50%',
+                          background: 'linear-gradient(135deg, var(--color-charcoal) 0%, #2A2421 100%)',
+                          color: 'var(--color-gold)',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          fontFamily: 'var(--font-display)',
+                          fontWeight: 700,
+                          fontSize: '32px',
+                          border: '3px solid var(--color-gold)',
+                          textShadow: '0 1px 3px rgba(0,0,0,0.3)',
+                          boxShadow: 'var(--shadow-md)'
+                        }}>
+                          {user.name?.charAt(0).toUpperCase()}
+                        </div>
+                      )}
+                      
+                      {/* Loading Spinner Overlay */}
+                      {uploading && (
+                        <div style={{
+                          position: 'absolute',
+                          inset: 0,
+                          background: 'rgba(0,0,0,0.6)',
+                          borderRadius: '50%',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          color: 'var(--color-gold)',
+                          fontSize: '11px',
+                          fontWeight: 600
+                        }}>
+                          Loading...
+                        </div>
+                      )}
+                    </div>
+                    
+                    {/* Action Controls */}
+                    <div>
+                      <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--text-base)', fontWeight: 600, color: 'var(--color-charcoal)', marginBottom: '6px' }}>Profile Photograph</h3>
+                      <p style={{ fontSize: 'var(--text-xs)', color: 'var(--color-gray-500)', lineHeight: 1.4, marginBottom: '14px' }}>
+                        Allowed formats: JPG, JPEG, PNG, or WebP. Maximum size: 2MB.
+                      </p>
+                      
+                      <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+                        <button
+                          type="button"
+                          className="btn btn-outline-gold"
+                          onClick={() => document.getElementById('avatarFileInput').click()}
+                          disabled={uploading}
+                          style={{ padding: '8px 16px', fontSize: 'var(--text-xs)', height: 'auto' }}
+                        >
+                          {uploading ? 'Processing...' : 'Upload Photo'}
+                        </button>
+                        
+                        {user.avatar && user.avatar.url && (
+                          <button
+                            type="button"
+                            onClick={handleAvatarRemove}
+                            disabled={uploading}
+                            style={{
+                              background: 'none',
+                              border: 'none',
+                              color: 'var(--color-ruby)',
+                              fontSize: 'var(--text-xs)',
+                              fontWeight: 600,
+                              cursor: 'pointer',
+                              padding: '8px 0',
+                              transition: 'color var(--transition-fast)'
+                            }}
+                          >
+                            Remove Photo
+                          </button>
+                        )}
+                      </div>
+                      
+                      {/* Hidden File Input */}
+                      <input 
+                        type="file" 
+                        id="avatarFileInput" 
+                        accept="image/jpeg,image/jpg,image/png,image/webp" 
+                        onChange={handleAvatarUpload} 
+                        style={{ display: 'none' }} 
+                      />
+                    </div>
+                  </div>
                   {profileMsg && (
                     <div style={{
                       padding: '14px',

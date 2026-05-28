@@ -34,8 +34,8 @@ const userSchema = new mongoose.Schema(
       default: 'Customer',
     },
     avatar: {
-      type: String,
-      default: '',
+      url: { type: String, default: '' },
+      public_id: { type: String, default: '' }
     },
     emailVerified: {
       type: Boolean,
@@ -125,6 +125,27 @@ userSchema.pre('save', async function (next) {
   } catch (err) {
     next(err);
   }
+});
+
+// Dynamic legacy string to object compatibility layer (hydrates flat avatar strings)
+userSchema.pre('init', function(rawDoc) {
+  if (rawDoc && typeof rawDoc.avatar === 'string') {
+    rawDoc.avatar = {
+      url: rawDoc.avatar,
+      public_id: ''
+    };
+  }
+});
+
+// Safety string pre-save converter hook
+userSchema.pre('save', function(next) {
+  if (typeof this.avatar === 'string') {
+    this.avatar = {
+      url: this.avatar,
+      public_id: ''
+    };
+  }
+  next();
 });
 
 // Compare password method

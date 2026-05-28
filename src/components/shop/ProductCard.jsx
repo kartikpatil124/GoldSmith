@@ -45,7 +45,7 @@ export default function ProductCard({ product, onQuickView }) {
           <div className="shimmer-loader" style={{
             position: 'absolute',
             inset: 0,
-            zIndex: 2,
+            zIndex: 1,
           }} />
         )}
 
@@ -63,7 +63,7 @@ export default function ProductCard({ product, onQuickView }) {
           {categoryEmoji(product.category)}
         </div>
 
-        {/* Product Image (on top of fallback) */}
+        {/* Product Image (on top of fallback & shimmer) */}
         {imageUrl && (
           <img 
             src={imageUrl}
@@ -77,7 +77,7 @@ export default function ProductCard({ product, onQuickView }) {
               width: '100%',
               height: '100%',
               objectFit: 'cover',
-              zIndex: 1,
+              zIndex: 2,
               opacity: imgLoaded ? 1 : 0,
               transition: 'opacity 0.4s ease-out',
             }}

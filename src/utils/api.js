@@ -49,15 +49,22 @@ api.interceptors.response.use(
 
 export const getMediaUrl = (url) => {
   if (!url) return '';
-  if (typeof url !== 'string') return '';
+  
+  // Support passing user avatar object shape { url, public_id }
+  let targetUrl = url;
+  if (url && typeof url === 'object' && typeof url.url === 'string') {
+    targetUrl = url.url;
+  }
+  
+  if (typeof targetUrl !== 'string') return '';
   
   // If it's already a full external URL, return it as-is
-  if (url.startsWith('http://') || url.startsWith('https://') || url.startsWith('data:')) {
-    return url;
+  if (targetUrl.startsWith('http://') || targetUrl.startsWith('https://') || targetUrl.startsWith('data:')) {
+    return targetUrl;
   }
   
   // Normalize backslashes to forward slashes
-  const normalizedUrl = url.replace(/\\/g, '/');
+  const normalizedUrl = targetUrl.replace(/\\/g, '/');
   
   // Check if it's an uploaded asset (contains uploads/ or starts with uploads/)
   if (normalizedUrl.includes('uploads/') || normalizedUrl.startsWith('uploads/')) {

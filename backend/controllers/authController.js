@@ -4,6 +4,12 @@ import EmailVerificationToken from '../models/EmailVerificationToken.js';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import crypto from 'crypto';
+import path from 'path';
+import fs from 'fs';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Generate JWT token
 const generateToken = (id) => {
@@ -176,7 +182,17 @@ export const updateUserProfile = async (req, res, next) => {
 
     user.name = req.body.name || user.name;
     user.phone = req.body.phone !== undefined ? req.body.phone : user.phone;
-    user.avatar = req.body.avatar !== undefined ? req.body.avatar : user.avatar;
+    
+    if (req.body.avatar !== undefined) {
+      if (typeof req.body.avatar === 'string') {
+        user.avatar = { url: req.body.avatar, public_id: '' };
+      } else if (req.body.avatar && typeof req.body.avatar === 'object') {
+        user.avatar = {
+          url: req.body.avatar.url || '',
+          public_id: req.body.avatar.public_id || ''
+        };
+      }
+    }
 
     if (req.body.password) {
       if (user.authProvider === 'local' && req.body.currentPassword) {
@@ -375,7 +391,9 @@ export const googleLogin = async (req, res, next) => {
       if (user) {
         // Link Google ID to existing account
         user.googleId = googleId;
-        if (avatar) user.avatar = avatar; // Always sync Google photo
+        if (avatar) {
+          user.avatar = { url: avatar, public_id: `google_${googleId}` };
+        }
         user.emailVerified = true; // Google verifies emails
         
         // If logged in via google, track it
@@ -390,7 +408,7 @@ export const googleLogin = async (req, res, next) => {
           name: name || 'Google User',
           email: emailLower,
           googleId,
-          avatar,
+          avatar: { url: avatar || '', public_id: avatar ? `google_${googleId}` : '' },
           authProvider: 'google',
           emailVerified: true,
           providerAccounts: ['google'],
@@ -400,7 +418,7 @@ export const googleLogin = async (req, res, next) => {
     } else {
       // User already exists. Always sync their latest Google profile picture
       if (avatar) {
-        user.avatar = avatar;
+        user.avatar = { url: avatar, public_id: `google_${googleId}` };
       }
     }
 
@@ -622,6 +640,124 @@ export const setupAdmin = async (req, res, next) => {
       success: true,
       message: 'Admin account created successfully!',
       data: { email: emailLower }
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @desc    Update user avatar (local upload uploader with disk pruning)
+// @route   PUT /api/auth/avatar
+// @access  Private
+export const updateUserAvatar = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user._id);
+
+    if (!user) {
+      res.status(404);
+      return next(new Error('User not found'));
+    }
+
+    if (!req.file) {
+      res.status(400);
+      return next(new Error('No image file provided or file exceeds 2MB limit'));
+    }
+
+    // Helper: normalize path for URL
+    const toUrl = (filePath) => {
+      const relative = path.relative(path.join(__dirname, '..'), filePath);
+      return '/' + relative.replace(/\\/g, '/');
+    };
+
+    const newUrl = toUrl(req.file.path);
+    const newPublicId = req.file.filename;
+
+    // Prune/delete old avatar file from disk if it was a local file to save space
+    if (user.avatar && user.avatar.url && user.avatar.url.startsWith('/uploads/')) {
+      const oldPath = path.join(__dirname, '..', user.avatar.url);
+      if (fs.existsSync(oldPath)) {
+        try {
+          fs.unlinkSync(oldPath);
+          console.log(`[FILE DELETED]: Old avatar file deleted from ${oldPath}`);
+        } catch (unlinkErr) {
+          console.error('Failed to delete old avatar file:', unlinkErr.message);
+        }
+      }
+    }
+
+    // Update avatar object in DB
+    user.avatar = {
+      url: newUrl,
+      public_id: newPublicId
+    };
+
+    await user.save();
+
+    res.json({
+      success: true,
+      message: 'Profile photo updated successfully!',
+      data: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        phone: user.phone,
+        avatar: user.avatar,
+        authProvider: user.authProvider,
+        emailVerified: user.emailVerified,
+      }
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @desc    Delete user avatar and remove from disk
+// @route   DELETE /api/auth/avatar
+// @access  Private
+export const deleteUserAvatar = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user._id);
+
+    if (!user) {
+      res.status(404);
+      return next(new Error('User not found'));
+    }
+
+    // Prune/delete physical avatar file from disk if stored locally
+    if (user.avatar && user.avatar.url && user.avatar.url.startsWith('/uploads/')) {
+      const oldPath = path.join(__dirname, '..', user.avatar.url);
+      if (fs.existsSync(oldPath)) {
+        try {
+          fs.unlinkSync(oldPath);
+          console.log(`[FILE DELETED]: Avatar file deleted from ${oldPath}`);
+        } catch (unlinkErr) {
+          console.error('Failed to delete avatar file:', unlinkErr.message);
+        }
+      }
+    }
+
+    // Reset avatar fields in database
+    user.avatar = {
+      url: '',
+      public_id: ''
+    };
+
+    await user.save();
+
+    res.json({
+      success: true,
+      message: 'Profile photo removed successfully!',
+      data: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        phone: user.phone,
+        avatar: user.avatar,
+        authProvider: user.authProvider,
+        emailVerified: user.emailVerified,
+      }
     });
   } catch (error) {
     next(error);
