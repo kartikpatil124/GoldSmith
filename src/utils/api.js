@@ -68,7 +68,15 @@ export const getMediaUrl = (url) => {
   
   // Check if it's an uploaded asset (contains uploads/ or starts with uploads/)
   if (normalizedUrl.includes('uploads/') || normalizedUrl.startsWith('uploads/')) {
-    const baseHost = API_BASE_URL.replace('/api', '');
+    let baseHost = API_BASE_URL.replace('/api', '');
+    if (!baseHost || baseHost.startsWith('/')) {
+      // Self-healing port resolution for localhost dev server
+      if (typeof window !== 'undefined' && window.location.hostname === 'localhost') {
+        baseHost = 'http://localhost:5000';
+      } else if (typeof window !== 'undefined') {
+        baseHost = window.location.origin;
+      }
+    }
     const sanitizedUrl = normalizedUrl.startsWith('/') ? normalizedUrl : `/${normalizedUrl}`;
     return `${baseHost}${sanitizedUrl}`;
   }

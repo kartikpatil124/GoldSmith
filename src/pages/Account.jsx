@@ -18,6 +18,7 @@ export default function Account() {
     loading,
     error
   } = useAuth();
+  const avatarUrl = user ? (user.avatar?.url || (typeof user.avatar === 'string' ? user.avatar : '') || user.googleAvatarUrl || '') : '';
 
   // Authentication UI view states: 'login' | 'signup' | 'forgot' | 'reset'
   const [view, setView] = useState('login');
@@ -467,8 +468,8 @@ export default function Account() {
                 <div>
                   <div style={{ background: 'var(--color-gray-50)', borderRadius: 'var(--radius-2xl)', padding: '36px', marginBottom: '32px', border: '1px solid var(--color-gray-100)' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '12px' }}>
-                      {user.avatar && user.avatar.url ? (
-                        <img src={getMediaUrl(user.avatar)} alt={user.name} style={{ width: '64px', height: '64px', borderRadius: '50%', objectFit: 'cover', border: '2px solid var(--color-gold)' }} />
+                      {avatarUrl ? (
+                        <img src={getMediaUrl(avatarUrl)} alt={user.name} style={{ width: '64px', height: '64px', borderRadius: '50%', objectFit: 'cover', border: '2px solid var(--color-gold)' }} />
                       ) : (
                         <div style={{ width: '64px', height: '64px', borderRadius: '50%', background: 'var(--color-gold)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '24px', fontWeight: 700 }}>
                           {user.name?.charAt(0).toUpperCase()}
@@ -635,9 +636,9 @@ export default function Account() {
                     
                     {/* Circle Avatar Preview */}
                     <div style={{ position: 'relative', width: '80px', height: '80px', flexShrink: 0 }}>
-                      {user.avatar && user.avatar.url ? (
+                      {avatarUrl ? (
                         <img 
-                          src={getMediaUrl(user.avatar)} 
+                          src={getMediaUrl(avatarUrl)} 
                           alt={user.name} 
                           style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover', border: '3px solid var(--color-gold)', boxShadow: 'var(--shadow-md)' }} 
                         />
@@ -699,7 +700,7 @@ export default function Account() {
                           {uploading ? 'Processing...' : 'Upload Photo'}
                         </button>
                         
-                        {user.avatar && user.avatar.url && (
+                        {user.avatar && user.avatar.url && user.avatar.public_id && !user.avatar.public_id.startsWith('google_') && (
                           <button
                             type="button"
                             onClick={handleAvatarRemove}

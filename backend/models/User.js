@@ -50,6 +50,10 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: null,
     },
+    googleAvatarUrl: {
+      type: String,
+      default: '',
+    },
     appleId: {
       type: String,
       default: null,

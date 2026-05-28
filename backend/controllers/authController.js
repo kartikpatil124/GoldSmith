@@ -152,6 +152,7 @@ export const getUserProfile = async (req, res, next) => {
           role: user.role,
           phone: user.phone,
           avatar: user.avatar,
+          googleAvatarUrl: user.googleAvatarUrl,
           authProvider: user.authProvider,
           emailVerified: user.emailVerified,
           addresses: user.addresses,
@@ -392,7 +393,11 @@ export const googleLogin = async (req, res, next) => {
         // Link Google ID to existing account
         user.googleId = googleId;
         if (avatar) {
-          user.avatar = { url: avatar, public_id: `google_${googleId}` };
+          user.googleAvatarUrl = avatar;
+          // Set active avatar ONLY if they don't already have a custom manual upload
+          if (!user.avatar || !user.avatar.url) {
+            user.avatar = { url: avatar, public_id: `google_${googleId}` };
+          }
         }
         user.emailVerified = true; // Google verifies emails
         
@@ -408,6 +413,7 @@ export const googleLogin = async (req, res, next) => {
           name: name || 'Google User',
           email: emailLower,
           googleId,
+          googleAvatarUrl: avatar || '',
           avatar: { url: avatar || '', public_id: avatar ? `google_${googleId}` : '' },
           authProvider: 'google',
           emailVerified: true,
@@ -418,7 +424,11 @@ export const googleLogin = async (req, res, next) => {
     } else {
       // User already exists. Always sync their latest Google profile picture
       if (avatar) {
-        user.avatar = { url: avatar, public_id: `google_${googleId}` };
+        user.googleAvatarUrl = avatar;
+        // Sync active avatar ONLY if it is a google avatar (meaning they haven't overridden it with a manual upload)
+        if (!user.avatar || !user.avatar.url || user.avatar.public_id === `google_${googleId}`) {
+          user.avatar = { url: avatar, public_id: `google_${googleId}` };
+        }
       }
     }
 
@@ -436,6 +446,7 @@ export const googleLogin = async (req, res, next) => {
         role: user.role,
         phone: user.phone,
         avatar: user.avatar,
+        googleAvatarUrl: user.googleAvatarUrl,
         authProvider: user.authProvider,
         emailVerified: user.emailVerified,
         token: generateToken(user._id),
@@ -703,6 +714,7 @@ export const updateUserAvatar = async (req, res, next) => {
         role: user.role,
         phone: user.phone,
         avatar: user.avatar,
+        googleAvatarUrl: user.googleAvatarUrl,
         authProvider: user.authProvider,
         emailVerified: user.emailVerified,
       }
@@ -755,6 +767,7 @@ export const deleteUserAvatar = async (req, res, next) => {
         role: user.role,
         phone: user.phone,
         avatar: user.avatar,
+        googleAvatarUrl: user.googleAvatarUrl,
         authProvider: user.authProvider,
         emailVerified: user.emailVerified,
       }

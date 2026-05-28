@@ -15,6 +15,7 @@ export default function Header() {
   const { cartCount, setIsCartOpen } = useCart();
   const { wishlistCount } = useWishlist();
   const { user, logout } = useAuth();
+  const avatarUrl = user ? (user.avatar?.url || (typeof user.avatar === 'string' ? user.avatar : '') || user.googleAvatarUrl || '') : '';
   const location = useLocation();
   const navigate = useNavigate();
   const searchRef = useRef(null);
@@ -187,8 +188,8 @@ export default function Header() {
                   boxShadow: 'var(--shadow-sm)',
                   transition: 'all var(--transition-fast)'
                 }} aria-label="Account">
-                  {user.avatar && user.avatar.url ? (
-                    <img src={getMediaUrl(user.avatar)} alt={user.fullName || user.email} style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover', transition: 'opacity 0.3s ease' }} />
+                  {avatarUrl ? (
+                    <img src={getMediaUrl(avatarUrl)} alt={user.fullName || user.email} style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover', transition: 'opacity 0.3s ease' }} />
                   ) : (
                     <div style={{
                       width: '100%',
@@ -203,7 +204,7 @@ export default function Header() {
                       fontWeight: 700,
                       fontSize: 'var(--text-sm)',
                       textShadow: '0 1px 2px rgba(0,0,0,0.3)',
-                      letterSpacing: '0.02em'
+                      boxShadow: 'var(--shadow-sm)'
                     }}>
                       {(user.fullName || user.email || 'U').charAt(0).toUpperCase()}
                     </div>
@@ -314,8 +315,8 @@ export default function Header() {
                       border: '2px solid var(--color-gold)', display: 'flex', alignItems: 'center', justifyContent: 'center',
                       fontWeight: 600, fontSize: 'var(--text-xs)', color: 'var(--color-charcoal)'
                     }}>
-                       {user.avatar && user.avatar.url ? (
-                        <img src={getMediaUrl(user.avatar)} alt="Avatar" style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover', transition: 'opacity 0.3s ease' }} />
+                       {avatarUrl ? (
+                        <img src={getMediaUrl(avatarUrl)} alt="Avatar" style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover', transition: 'opacity 0.3s ease' }} />
                       ) : (
                         <div style={{
                           width: '100%',
@@ -329,7 +330,8 @@ export default function Header() {
                           fontFamily: 'var(--font-display)',
                           fontWeight: 700,
                           fontSize: 'var(--text-xs)',
-                          textShadow: '0 1px 2px rgba(0,0,0,0.3)'
+                          textShadow: '0 1px 2px rgba(0,0,0,0.3)',
+                          boxShadow: 'var(--shadow-sm)'
                         }}>
                           {(user.fullName || user.email || 'U').charAt(0).toUpperCase()}
                         </div>
