@@ -272,13 +272,34 @@ export default function Account() {
     e.preventDefault();
     setProfileMsg('');
     try {
-      const res = await api.put('/auth/profile', profileForm);
+      const updateData = {
+        name: profileForm.name,
+        phone: profileForm.phone
+      };
+
+      if (profileForm.password && profileForm.password.trim() !== '') {
+        if (!profileForm.currentPassword || profileForm.currentPassword.trim() === '') {
+          setProfileMsg('✕ Error: Current password is required to set a new password.');
+          return;
+        }
+        updateData.password = profileForm.password;
+        updateData.currentPassword = profileForm.currentPassword;
+      }
+
+      const res = await api.put('/auth/profile', updateData);
       if (res.success && res.data) {
         // Sync frontend session state
         const updatedUser = { ...user, ...res.data };
         setUser(updatedUser);
         localStorage.setItem('userInfo', JSON.stringify(updatedUser));
         setProfileMsg('✓ Profile settings updated successfully!');
+        
+        // Clear password fields on successful update
+        setProfileForm(prev => ({
+          ...prev,
+          currentPassword: '',
+          password: ''
+        }));
       } else {
         setProfileMsg('✓ Profile settings updated successfully!');
       }
@@ -753,8 +774,8 @@ export default function Account() {
                     {user.authProvider === 'local' && (
                       <>
                         <h4 style={{ fontSize: 'var(--text-sm)', fontWeight: 700, margin: '32px 0 16px', color: 'var(--color-gray-600)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Security — Update Password</h4>
-                        <div className="form-group"><label className="form-label">Current Password</label><input value={profileForm.currentPassword} onChange={e => setProfileForm(p => ({ ...p, currentPassword: e.target.value }))} className="form-input" type="password" /></div>
-                        <div className="form-group"><label className="form-label">New Password</label><input value={profileForm.password} onChange={e => setProfileForm(p => ({ ...p, password: e.target.value }))} className="form-input" type="password" /></div>
+                        <div className="form-group"><label className="form-label">Current Password</label><input value={profileForm.currentPassword} onChange={e => setProfileForm(p => ({ ...p, currentPassword: e.target.value }))} className="form-input" type="password" autoComplete="new-password" /></div>
+                        <div className="form-group"><label className="form-label">New Password</label><input value={profileForm.password} onChange={e => setProfileForm(p => ({ ...p, password: e.target.value }))} className="form-input" type="password" autoComplete="new-password" /></div>
                       </>
                     )}
                     <button type="submit" className="btn btn-primary" style={{ marginTop: '24px' }}>Update Profile</button>
