@@ -839,47 +839,6 @@ export default function Account() {
                 Apple
               </button>
             </div>
-            
-            {/* Account Linking Developer Sandbox Tool */}
-            <div style={{ marginTop: '24px', padding: '16px', background: 'var(--color-cream)50', borderRadius: 'var(--radius-lg)', border: '1px solid rgba(212, 175, 55, 0.2)' }}>
-              <div style={{ fontSize: '11px', fontWeight: 700, color: 'var(--color-gold)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '8px' }}>
-                🛠️ Developer Sandbox Assistant
-              </div>
-              <p style={{ fontSize: '11px', color: 'var(--color-gray-500)', lineHeight: 1.4, marginBottom: '10px' }}>
-                Use this to simulate social logins and test real-time **Account Linking** between email and Google/Apple profiles securely.
-              </p>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                <input
-                  type="email"
-                  id="sandbox-email"
-                  className="form-input"
-                  style={{ fontSize: '11px', padding: '6px 10px', height: 'auto', background: '#fff' }}
-                  placeholder="Target email (e.g. test@gmail.com)"
-                />
-                <div style={{ display: 'flex', gap: '8px' }}>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      const emailInput = document.getElementById('sandbox-email').value;
-                      handleDeveloperSocialSimulate('google', emailInput);
-                    }}
-                    style={{ flex: 1, fontSize: '10px', background: 'var(--color-charcoal)', color: '#fff', border: 'none', padding: '6px 8px', borderRadius: 'var(--radius-sm)', cursor: 'pointer', fontWeight: 600 }}
-                  >
-                    Simulate Google Link
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      const emailInput = document.getElementById('sandbox-email').value;
-                      handleDeveloperSocialSimulate('apple', emailInput);
-                    }}
-                    style={{ flex: 1, fontSize: '10px', background: 'var(--color-gold)', color: '#fff', border: 'none', padding: '6px 8px', borderRadius: 'var(--radius-sm)', cursor: 'pointer', fontWeight: 600 }}
-                  >
-                    Simulate Apple Link
-                  </button>
-                </div>
-              </div>
-            </div>
           </div>
         )}
 
