@@ -375,7 +375,7 @@ export const googleLogin = async (req, res, next) => {
       if (user) {
         // Link Google ID to existing account
         user.googleId = googleId;
-        if (!user.avatar) user.avatar = avatar;
+        if (avatar) user.avatar = avatar; // Always sync Google photo
         user.emailVerified = true; // Google verifies emails
         
         // If logged in via google, track it
@@ -396,6 +396,11 @@ export const googleLogin = async (req, res, next) => {
           providerAccounts: ['google'],
         });
         console.log(`[USER CREATED VIA GOOGLE]: ${user.email}`);
+      }
+    } else {
+      // User already exists. Always sync their latest Google profile picture
+      if (avatar) {
+        user.avatar = avatar;
       }
     }
 
