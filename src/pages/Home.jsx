@@ -39,9 +39,9 @@ export default function Home() {
     b => b.pageKey === 'home' && b.position === 'hero' && b.isActive
   );
   
-  const heroBgImage = activeHeroBanner?.image 
-    ? getMediaUrl(activeHeroBanner.image) 
-    : "https://images.unsplash.com/photo-1515562141207-7a8f73f5006c?auto=format&fit=crop&q=80";
+  const heroBgImage = (activeHeroBanner?.image && activeHeroBanner.image.trim())
+    ? getMediaUrl(activeHeroBanner.image.trim())
+    : "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=1920&auto=format&fit=crop&q=80";
 
   // Use dynamic homepage configuration or fallback defaults
   const heroTitle = homepageConfig?.heroTitle || 'Elegance Forged in Eternity';
@@ -60,7 +60,8 @@ export default function Home() {
         <div className="home-hero-bg">
           <img 
             src={heroBgImage} 
-            alt={activeHeroBanner?.title || "Luxury Jewellery"} 
+            alt={activeHeroBanner?.title || "Luxury Jewellery"}
+            onError={(e) => { e.currentTarget.src = "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=1920&auto=format&fit=crop&q=80"; }}
           />
           <div className="home-hero-overlay"></div>
         </div>

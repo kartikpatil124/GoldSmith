@@ -16,17 +16,22 @@ export const protect = async (req, res, next) => {
       // Get user from the token
       req.user = await User.findById(decoded.id).select('-password');
 
-      next();
+      if (!req.user) {
+        res.status(401);
+        return next(new Error('Not authorized, user not found'));
+      }
+
+      return next();
     } catch (error) {
       console.error(error);
       res.status(401);
-      next(new Error('Not authorized, token failed'));
+      return next(new Error('Not authorized, token failed'));
     }
   }
 
   if (!token) {
     res.status(401);
-    next(new Error('Not authorized, no token'));
+    return next(new Error('Not authorized, no token'));
   }
 };
 
@@ -37,6 +42,6 @@ export const authorize = (...roles) => {
       res.status(403);
       return next(new Error(`User role ${req.user.role} is not authorized to access this route`));
     }
-    next();
+    return next();
   };
 };

@@ -134,6 +134,7 @@ export default function ProductDetail() {
                   <img 
                     src={getMediaUrl(activeMedia)} 
                     alt={product.name} 
+                    onError={(e) => { e.currentTarget.style.display = 'none'; }}
                     style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 1 }}
                   />
                 ) : null}

@@ -3,7 +3,7 @@ import { Navigate, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 
 export default function AdminLogin() {
-  const { user, login, loading } = useAuth();
+  const { user, adminLogin, loading } = useAuth();
   const [form, setForm] = useState({ email: '', password: '' });
   const [formError, setFormError] = useState('');
   const navigate = useNavigate();
@@ -18,13 +18,8 @@ export default function AdminLogin() {
     e.preventDefault();
     setFormError('');
     try {
-      const data = await login(form.email, form.password);
-      const loggedUser = data.data || data;
-      if (loggedUser.role !== 'Super Admin' && loggedUser.role !== 'Admin') {
-        setFormError('Access Denied. You are not an admin.');
-      } else {
-        navigate('/admin');
-      }
+      await adminLogin(form.email, form.password);
+      navigate('/admin');
     } catch (err) {
       setFormError(err.message || 'Authentication failed');
     }

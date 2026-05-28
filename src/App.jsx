@@ -99,35 +99,25 @@ function AppContent() {
 }
 
 function MainApp() {
-  return (
-    <AuthProvider>
-      <CartProvider>
-        <WishlistProvider>
-          <AppContent />
-        </WishlistProvider>
-      </CartProvider>
-    </AuthProvider>
-  );
+  return <AppContent />;
 }
 
 function AdminApp() {
   return (
-    <AuthProvider>
-      <Routes>
-        <Route path="login" element={<AdminLogin />} />
-        <Route path="/" element={<AdminLayout />}>
-          <Route index element={<AdminDashboard />} />
-          <Route path="products" element={<AdminProducts />} />
-          <Route path="orders" element={<AdminOrders />} />
-          <Route path="customers" element={<AdminCustomers />} />
-          <Route path="custom-requests" element={<AdminCustomRequests />} />
-          <Route path="coupons" element={<AdminCoupons />} />
-          <Route path="content" element={<AdminContent />} />
-          <Route path="site-manager" element={<AdminSiteManager />} />
-          <Route path="settings" element={<AdminSettings />} />
-        </Route>
-      </Routes>
-    </AuthProvider>
+    <Routes>
+      <Route path="login" element={<AdminLogin />} />
+      <Route path="/" element={<AdminLayout />}>
+        <Route index element={<AdminDashboard />} />
+        <Route path="products" element={<AdminProducts />} />
+        <Route path="orders" element={<AdminOrders />} />
+        <Route path="customers" element={<AdminCustomers />} />
+        <Route path="custom-requests" element={<AdminCustomRequests />} />
+        <Route path="coupons" element={<AdminCoupons />} />
+        <Route path="content" element={<AdminContent />} />
+        <Route path="site-manager" element={<AdminSiteManager />} />
+        <Route path="settings" element={<AdminSettings />} />
+      </Route>
+    </Routes>
   );
 }
 
@@ -167,12 +157,18 @@ function NotFound() {
 export default function App() {
   return (
     <Router>
-      <SiteProvider>
-        <Routes>
-          <Route path="/admin/*" element={<AdminApp />} />
-          <Route path="*" element={<MainApp />} />
-        </Routes>
-      </SiteProvider>
+      <AuthProvider>
+        <SiteProvider>
+          <CartProvider>
+            <WishlistProvider>
+              <Routes>
+                <Route path="/admin/*" element={<AdminApp />} />
+                <Route path="*" element={<MainApp />} />
+              </Routes>
+            </WishlistProvider>
+          </CartProvider>
+        </SiteProvider>
+      </AuthProvider>
     </Router>
   );
 }
