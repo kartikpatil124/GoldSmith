@@ -6,6 +6,7 @@ import morgan from 'morgan';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import connectDB from './config/db.js';
+import mongoose from 'mongoose';
 
 // Route Imports
 import authRoutes from './routes/authRoutes.js';
@@ -75,6 +76,32 @@ app.use('/api/admin/inquiries', adminInquiryRoutes);
 // Base Route
 app.get('/', (req, res) => {
   res.send('goldsmiths Jewels API is running...');
+});
+
+// Debug DB Endpoint
+app.get('/api/debug-db', async (req, res) => {
+  try {
+    const conn = mongoose.connection;
+    const dbName = conn.db ? conn.db.databaseName : 'N/A';
+    const host = conn.host || 'N/A';
+    
+    // Check product count using the model or raw collection
+    let count = 0;
+    if (conn.db) {
+      count = await conn.db.collection('products').countDocuments();
+    }
+    
+    res.json({
+      success: true,
+      connected: conn.readyState === 1,
+      host,
+      dbName,
+      productCount: count,
+      mongoUriProvided: !!process.env.MONGO_URI,
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
 });
 
 // Error Handling Middleware
