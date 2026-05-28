@@ -1,8 +1,13 @@
 import axios from 'axios';
 
 const getApiBaseUrl = () => {
-  if (import.meta.env.VITE_API_URL) {
-    return import.meta.env.VITE_API_URL;
+  let url = import.meta.env.VITE_API_URL;
+  if (url) {
+    // Self-healing: if the user forgot to append /api to the environment variable, automatically fix it!
+    if (!url.endsWith('/api') && !url.endsWith('/api/')) {
+      url = url.endsWith('/') ? `${url}api` : `${url}/api`;
+    }
+    return url;
   }
   // Dynamic local dev vs production render API resolution
   if (typeof window !== 'undefined' && window.location.hostname === 'localhost') {
