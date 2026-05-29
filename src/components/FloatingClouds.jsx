@@ -1,58 +1,51 @@
 import React from 'react';
 
+/**
+ * FloatingClouds renders one of three cloud layers.
+ * Each layer has fixed opacity, height, and z-index matching the reference image.
+ * Refs are passed up to HomeHeroOverlay for GSAP control.
+ */
 export default function FloatingClouds({ layer, cloudRef }) {
-  let imgSrc = '';
-  let zIndexClass = '';
-  let altText = '';
-  let sizeClass = 'h-[55%] md:h-[62%] lg:h-[68%]';
-  let opacityClass = 'opacity-70';
-  let blurStyle = 'drop-shadow(0 0 24px rgba(255, 235, 210, 0.10)) blur(0.35px)';
-
-  switch (layer) {
-    case 'back':
-      imgSrc = '/layers/cloud-back.png';
-      zIndexClass = 'z-[5]';
-      altText = 'Distant Sunset Clouds';
-      sizeClass = 'h-[42%] md:h-[48%] lg:h-[52%]';
-      opacityClass = 'opacity-55';
-      blurStyle = 'drop-shadow(0 0 18px rgba(255, 235, 210, 0.08)) blur(0.2px)';
-      break;
-    case 'middle':
-      imgSrc = '/layers/cloud-middle.png';
-      zIndexClass = 'z-[10]';
-      altText = 'Atmospheric Midground Clouds';
-      sizeClass = 'h-[50%] md:h-[58%] lg:h-[64%]';
-      opacityClass = 'opacity-65';
-      blurStyle = 'drop-shadow(0 0 22px rgba(255, 235, 210, 0.10)) blur(0.25px)';
-      break;
-    case 'front':
-      imgSrc = '/layers/cloud-front.png';
-      zIndexClass = 'z-[30]';
-      altText = 'Dreamy Foreground Clouds';
-      // Front cloud must partially frame the ring and NEVER cover the ring center
-      sizeClass = 'h-[38%] md:h-[42%] lg:h-[46%]';
-      opacityClass = 'opacity-65';
-      blurStyle = 'drop-shadow(0 0 20px rgba(255, 235, 210, 0.12)) blur(0.2px)';
-      break;
-    default:
-      imgSrc = '/layers/cloud-middle.png';
-      zIndexClass = 'z-[10]';
-      altText = 'Clouds';
-  }
+  // Layer-specific configuration
+  const config = {
+    back: {
+      src: '/layers/cloud-back.png',
+      zIndex: 'z-[5]',
+      alt: 'Back clouds',
+      // Back cloud: fills lower 45% of hero, softer opacity
+      className: 'h-[45%] opacity-60',
+    },
+    middle: {
+      src: '/layers/cloud-middle.png',
+      zIndex: 'z-[10]',
+      alt: 'Middle clouds',
+      // Middle cloud: fills lower 60%, slightly denser
+      className: 'h-[60%] opacity-70',
+    },
+    front: {
+      src: '/layers/cloud-front.png',
+      zIndex: 'z-[30]',
+      alt: 'Front clouds',
+      // Front cloud: CRITICAL — max 42% height so it only hides the ring base,
+      // never the ring center or diamond. Opacity 0 at start; GSAP fades it in.
+      className: 'h-[42%] opacity-0',
+    },
+  }[layer] || {};
 
   return (
     <div
       ref={cloudRef}
-      className={`absolute inset-0 w-full h-full pointer-events-none select-none overflow-hidden ${zIndexClass} will-change-transform`}
+      className={`absolute inset-0 w-full h-full pointer-events-none select-none overflow-hidden ${config.zIndex} will-change-transform`}
       style={{ transform: 'translate3d(0,0,0)' }}
     >
       <img
-        src={imgSrc}
-        alt={altText}
-        className={`absolute bottom-0 left-0 w-full ${sizeClass} object-cover object-bottom ${opacityClass} scale-105 will-change-transform`}
+        src={config.src}
+        alt={config.alt}
+        className={`absolute bottom-0 left-0 w-full object-cover object-bottom scale-[1.04] will-change-transform ${config.className}`}
         style={{
-          transform: 'translate3d(0, 0, 0)',
-          filter: blurStyle,
+          transform: 'translate3d(0,0,0)',
+          // Very minimal filter — no fog/blur treatment
+          filter: 'none',
         }}
       />
     </div>

@@ -4,75 +4,104 @@ import { gsap } from 'gsap';
 export default function Bubbles() {
   const containerRef = useRef(null);
 
+  // Bubble config: each has a fixed position, size, and animation offset
+  const bubbles = [
+    { x: '18%',  y: '10%', size: 80,  delay: 0 },
+    { x: '11%',  y: '38%', size: 52,  delay: 0.6 },
+    { x: '8%',   y: '62%', size: 68,  delay: 1.2 },
+    { x: '14%',  y: '80%', size: 40,  delay: 0.3 },
+    { x: '78%',  y: '8%',  size: 62,  delay: 0.9 },
+    { x: '88%',  y: '28%', size: 44,  delay: 0.4 },
+    { x: '92%',  y: '55%', size: 58,  delay: 1.5 },
+    { x: '82%',  y: '72%', size: 36,  delay: 0.7 },
+    { x: '50%',  y: '5%',  size: 30,  delay: 1.1 },
+    { x: '35%',  y: '88%', size: 48,  delay: 0.2 },
+  ];
+
   useEffect(() => {
-    const bubbles = containerRef.current.querySelectorAll('.bubble-element');
-    
-    bubbles.forEach((bubble) => {
-      // Set random initial positions
-      const startX = Math.random() * 100;
-      const startY = Math.random() * 100 + 100; // start below the viewport
-      const size = Math.random() * 40 + 15; // sizes between 15px and 55px
-      const duration = Math.random() * 15 + 15; // duration between 15s and 30s
-      const delay = Math.random() * -20; // negative delay to distribute initially
+    const els = containerRef.current?.querySelectorAll('.bubble-item');
+    if (!els) return;
 
-      gsap.set(bubble, {
-        xPercent: startX,
-        yPercent: startY,
-        width: size,
-        height: size,
-        opacity: Math.random() * 0.3 + 0.1, // opacity between 0.1 and 0.4
+    els.forEach((el, i) => {
+      const cfg = bubbles[i];
+      // start invisible
+      gsap.set(el, { opacity: 0, y: 20 });
+      // fade in staggered
+      gsap.to(el, {
+        opacity: 1,
+        y: 0,
+        duration: 1.2,
+        delay: 1.6 + cfg.delay,
+        ease: 'power2.out',
       });
-
-      // Floating up animation
-      gsap.to(bubble, {
-        yPercent: -120, // float past the top of the container
-        xPercent: `+=${Math.random() * 30 - 15}`, // drift horizontally
-        duration: duration,
-        delay: delay,
+      // subtle continuous float
+      gsap.to(el, {
+        y: `+=${6 + (i % 3) * 4}`,
+        duration: 3.5 + (i % 4) * 0.8,
         repeat: -1,
-        ease: 'power1.inOut',
-        // Slight rotation for bubble sheen/reflection dynamic effect
-        rotation: Math.random() * 360,
-      });
-
-      // Subtly animate rotation separately for natural feel
-      gsap.to(bubble, {
-        rotation: '+=360',
-        duration: Math.random() * 20 + 20,
-        repeat: -1,
-        ease: 'none',
+        yoyo: true,
+        ease: 'sine.inOut',
+        delay: 2 + cfg.delay,
+        force3D: true,
       });
     });
   }, []);
 
-  // Create an array of 10 bubbles
-  const bubbleArray = Array.from({ length: 10 });
-
   return (
-    <div 
-      ref={containerRef} 
-      className="absolute inset-0 z-10 pointer-events-none overflow-hidden"
+    <div
+      ref={containerRef}
+      className="absolute inset-0 z-[35] pointer-events-none overflow-hidden"
     >
-      {bubbleArray.map((_, index) => (
+      {bubbles.map((b, i) => (
         <div
-          key={index}
-          className="bubble-element absolute rounded-full border border-white/30 backdrop-blur-[1px]"
+          key={i}
+          className="bubble-item absolute will-change-transform"
           style={{
-            background: 'radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.05) 50%, rgba(201, 168, 76, 0.1) 100%)',
-            boxShadow: 'inset -2px -2px 6px rgba(255, 255, 255, 0.3), inset 2px 2px 6px rgba(0, 0, 0, 0.1), 0 4px 10px rgba(0, 0, 0, 0.05)',
+            left: b.x,
+            top: b.y,
+            width: b.size,
+            height: b.size,
+            transform: 'translate(-50%, -50%)',
           }}
         >
-          {/* Glass light reflection highlight inside the bubble */}
-          <div 
-            className="absolute rounded-full bg-white/60"
+          {/* Outer glass sphere */}
+          <div
+            className="w-full h-full rounded-full"
             style={{
-              top: '15%',
-              left: '15%',
-              width: '25%',
-              height: '25%',
-              filter: 'blur(0.5px)',
+              background:
+                'radial-gradient(circle at 35% 32%, rgba(255,255,255,0.55) 0%, rgba(255,220,255,0.18) 35%, rgba(200,180,255,0.08) 60%, transparent 80%)',
+              border: '1px solid rgba(255, 255, 255, 0.35)',
+              boxShadow:
+                'inset -3px -3px 10px rgba(255,255,255,0.2), inset 2px 2px 6px rgba(255,200,255,0.15), 0 4px 20px rgba(180,130,255,0.12)',
+              backdropFilter: 'blur(1px)',
             }}
-          />
+          >
+            {/* Inner highlight */}
+            <div
+              className="absolute rounded-full"
+              style={{
+                width: '28%',
+                height: '28%',
+                top: '14%',
+                left: '16%',
+                background:
+                  'radial-gradient(circle, rgba(255,255,255,0.85) 0%, transparent 70%)',
+                filter: 'blur(1px)',
+              }}
+            />
+            {/* Bottom soft reflection */}
+            <div
+              className="absolute rounded-full"
+              style={{
+                width: '40%',
+                height: '12%',
+                bottom: '12%',
+                left: '30%',
+                background: 'rgba(255,220,255,0.25)',
+                filter: 'blur(2px)',
+              }}
+            />
+          </div>
         </div>
       ))}
     </div>

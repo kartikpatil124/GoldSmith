@@ -1,115 +1,90 @@
 import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 
+// 6 sparkles precisely clustered around the ring center with elegant 4-point star design
+const SPARKLE_POSITIONS = [
+  { x: -130, y: -90,  size: 18, delay: 0 },
+  { x: 140,  y: -120, size: 14, delay: 0.4 },
+  { x: -160, y: 20,   size: 10, delay: 0.8 },
+  { x: 170,  y: 60,   size: 16, delay: 0.2 },
+  { x: 20,   y: -150, size: 12, delay: 0.6 },
+  { x: -20,  y: 130,  size: 10, delay: 1.0 },
+];
+
 export default function Sparkles() {
   const containerRef = useRef(null);
 
   useEffect(() => {
-    if (!containerRef.current) return;
+    const els = containerRef.current?.querySelectorAll('.sparkle-item');
+    if (!els) return;
 
-    const sparkles = containerRef.current.querySelectorAll('.sparkle-element');
-    const dustParticles = containerRef.current.querySelectorAll('.dust-element');
+    els.forEach((el, i) => {
+      const cfg = SPARKLE_POSITIONS[i];
 
-    sparkles.forEach((sparkle) => {
-      const angle = Math.random() * Math.PI * 2;
-      const radius = Math.random() * 180 + 45;
+      gsap.set(el, { opacity: 0, scale: 0.5 });
 
-      const x = Math.cos(angle) * radius;
-      const y = Math.sin(angle) * radius - 20;
-      const scale = Math.random() * 0.55 + 0.25;
-      const rotation = Math.random() * 90;
-
-      gsap.set(sparkle, {
-        x,
-        y,
-        scale,
-        rotation,
-        opacity: 0,
+      // Delayed entrance after ring appears
+      const tl = gsap.timeline({
+        repeat: -1,
+        delay: 2.0 + cfg.delay,
       });
 
-      const tl = gsap.timeline({ repeat: -1, delay: Math.random() * 3 });
-
-      tl.to(sparkle, {
-        opacity: Math.random() * 0.55 + 0.25,
-        scale: scale * 1.25,
-        rotation: '+=45',
-        duration: Math.random() * 1.2 + 0.8,
+      tl.to(el, {
+        opacity: 0.75,
+        scale: 1,
+        duration: 0.9,
         ease: 'power2.out',
-      }).to(sparkle, {
+      })
+      .to(el, {
         opacity: 0,
-        scale: scale * 0.85,
-        rotation: '+=40',
-        duration: Math.random() * 1.8 + 1.2,
+        scale: 0.6,
+        duration: 1.4,
         ease: 'power1.in',
+      })
+      .to(el, {
+        opacity: 0,
+        duration: 1.0 + cfg.delay * 0.5,
       });
 
-      gsap.to(sparkle, {
-        x: `+=${Math.random() * 30 - 15}`,
-        y: `+=${Math.random() * 30 - 15}`,
-        duration: Math.random() * 7 + 7,
+      // Subtle floating drift
+      gsap.to(el, {
+        x: `+=${8}`,
+        y: `+=${-6}`,
+        duration: 4 + i * 0.5,
         repeat: -1,
         yoyo: true,
         ease: 'sine.inOut',
-      });
-    });
-
-    dustParticles.forEach((dust) => {
-      const startX = Math.random() * window.innerWidth - window.innerWidth / 2;
-      const startY = Math.random() * window.innerHeight - window.innerHeight / 2;
-      const size = Math.random() * 2.5 + 1;
-
-      gsap.set(dust, {
-        x: startX,
-        y: startY,
-        width: size,
-        height: size,
-        opacity: Math.random() * 0.3 + 0.08,
-      });
-
-      gsap.to(dust, {
-        y: `+=${Math.random() * 160 - 80}`,
-        x: `+=${Math.random() * 160 - 80}`,
-        opacity: Math.random() * 0.35 + 0.08,
-        duration: Math.random() * 11 + 9,
-        repeat: -1,
-        yoyo: true,
-        ease: 'sine.inOut',
+        delay: 2.0 + cfg.delay,
+        force3D: true,
       });
     });
   }, []);
 
-  const sparkleCount = 12;
-  const dustCount = 16;
-
   return (
     <div
       ref={containerRef}
-      className="absolute inset-0 z-[32] pointer-events-none flex items-center justify-center overflow-hidden"
+      className="absolute inset-0 z-[33] pointer-events-none flex items-center justify-center overflow-hidden"
     >
-      {Array.from({ length: dustCount }).map((_, index) => (
+      {SPARKLE_POSITIONS.map((cfg, i) => (
         <div
-          key={`dust-${index}`}
-          className="dust-element absolute rounded-full bg-amber-100/35"
+          key={i}
+          className="sparkle-item absolute will-change-transform"
           style={{
-            boxShadow: '0 0 6px 1px rgba(255, 235, 180, 0.35)',
-            filter: 'blur(0.5px)',
+            transform: `translate3d(${cfg.x}px, ${cfg.y}px, 0)`,
+            width: cfg.size,
+            height: cfg.size,
           }}
-        />
-      ))}
-
-      {Array.from({ length: sparkleCount }).map((_, index) => (
-        <div
-          key={`sparkle-${index}`}
-          className="sparkle-element absolute w-7 h-7 flex items-center justify-center"
         >
           <svg
             viewBox="0 0 24 24"
-            fill="none"
-            className="w-full h-full text-amber-100 drop-shadow-[0_0_8px_rgba(245,230,184,0.8)]"
+            className="w-full h-full"
+            style={{
+              filter: 'drop-shadow(0 0 6px rgba(255, 240, 200, 0.9))',
+            }}
           >
             <path
-              d="M12 0L14.3 9.7L24 12L14.3 14.3L12 24L9.7 14.3L0 12L9.7 9.7L12 0Z"
-              fill="currentColor"
+              d="M12 0 L13.8 9.2 L23 12 L13.8 14.8 L12 24 L10.2 14.8 L1 12 L10.2 9.2 Z"
+              fill="rgba(255, 250, 230, 0.95)"
             />
           </svg>
         </div>

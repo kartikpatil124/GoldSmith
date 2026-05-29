@@ -1,58 +1,100 @@
 import React from 'react';
 
-export function HeroTextBack({ textBackRef }) {
+/**
+ * HeroTextBack: Large campaign-style words "POWERFUL." and "PURE."
+ * Positioned behind the ring at z-[15].
+ * Bold, white, large — clearly visible against the sky.
+ */
+export function HeroTextBack({ textRef }) {
   return (
     <div
-      ref={textBackRef}
-      className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none select-none z-[15] overflow-hidden will-change-transform"
-      style={{ transform: 'translate3d(0, 0, 0)' }}
+      ref={textRef}
+      className="absolute inset-0 z-[15] pointer-events-none select-none will-change-transform overflow-hidden"
+      style={{ transform: 'translate3d(0,0,0)' }}
     >
-      <div className="flex flex-col items-center justify-center text-center mt-[-60px] md:mt-[-100px]">
-        <h1
-          className="text-[12vw] md:text-[9vw] font-bold leading-none tracking-[0.18em] text-white/12 font-display select-none uppercase"
+      {/* Positioned toward center-left of hero, matching reference image */}
+      <div
+        className="absolute"
+        style={{
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -52%)',
+          textAlign: 'left',
+          lineHeight: 1.0,
+          whiteSpace: 'nowrap',
+        }}
+      >
+        {/* POWERFUL. */}
+        <div
           style={{
-            textShadow: '0 0 40px rgba(255, 255, 255, 0.04)',
-            fontFamily: 'var(--font-display)',
+            fontFamily: "'Playfair Display', Georgia, serif",
+            fontWeight: 700,
+            fontSize: 'clamp(52px, 9.5vw, 140px)',
+            color: 'rgba(255, 255, 255, 0.92)',
+            letterSpacing: '-0.01em',
+            textShadow: '0 2px 30px rgba(180, 120, 255, 0.2)',
+            lineHeight: 1.05,
           }}
         >
           POWERFUL.
-        </h1>
+        </div>
 
-        <h1
-          className="text-[12vw] md:text-[9vw] font-bold leading-none tracking-[0.25em] text-white/18 font-display select-none uppercase mt-2 md:mt-4"
+        {/* PURE. — slightly indented right per the reference */}
+        <div
           style={{
-            background:
-              'linear-gradient(to bottom, rgba(255, 255, 255, 0.18) 0%, rgba(201, 168, 76, 0.05) 100%)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            fontFamily: 'var(--font-display)',
+            fontFamily: "'Playfair Display', Georgia, serif",
+            fontWeight: 700,
+            fontSize: 'clamp(52px, 9.5vw, 140px)',
+            color: 'rgba(255, 255, 255, 0.88)',
+            letterSpacing: '-0.01em',
+            textShadow: '0 2px 30px rgba(180, 120, 255, 0.15)',
+            lineHeight: 1.05,
+            paddingLeft: '2%',
           }}
         >
           PURE.
-        </h1>
+        </div>
       </div>
     </div>
   );
 }
 
-export function HeroTextFront({ textFrontRef }) {
+/**
+ * HeroTextFront: Italic "Gentle" — floats in front of the ring at z-[25].
+ * Warm white with gold glow, script/italic style.
+ */
+export function HeroTextFront({ textRef }) {
   return (
     <div
-      ref={textFrontRef}
-      className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none select-none z-[25] overflow-hidden will-change-transform"
-      style={{ transform: 'translate3d(0, 0, 0)' }}
+      ref={textRef}
+      className="absolute inset-0 z-[25] pointer-events-none select-none will-change-transform overflow-hidden"
+      style={{ transform: 'translate3d(0,0,0)' }}
     >
-      <div className="flex flex-col items-center justify-center text-center mt-[92px] md:mt-[160px]">
-        <h2
-          className="text-[10vw] md:text-[7vw] font-light leading-none tracking-[0.05em] font-accent select-none italic text-amber-100/95"
+      {/* Positioned center-right, overlapping the ring — matches reference */}
+      <div
+        className="absolute"
+        style={{
+          top: '50%',
+          left: '58%',
+          transform: 'translate(0, -10%)',
+        }}
+      >
+        <div
           style={{
-            fontFamily: 'var(--font-accent)',
+            fontFamily: "'Cormorant Garamond', Georgia, serif",
+            fontWeight: 400,
+            fontStyle: 'italic',
+            fontSize: 'clamp(48px, 8.5vw, 128px)',
+            color: 'rgba(255, 248, 240, 0.95)',
+            letterSpacing: '0.02em',
             textShadow:
-              '0 4px 20px rgba(201, 168, 76, 0.35), 0 0 40px rgba(255, 255, 255, 0.18)',
+              '0 4px 24px rgba(220, 160, 90, 0.4), 0 0 60px rgba(255, 200, 150, 0.2)',
+            lineHeight: 1,
+            whiteSpace: 'nowrap',
           }}
         >
           Gentle
-        </h2>
+        </div>
       </div>
     </div>
   );
