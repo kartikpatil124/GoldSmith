@@ -15,7 +15,7 @@ export function HeroTextBack({ textBackRef }) {
             fontFamily: 'var(--font-display)',
           }}
         >
-          POWERFUL
+          POWERFUL.
         </h1>
 
         <h1
@@ -28,7 +28,7 @@ export function HeroTextBack({ textBackRef }) {
             fontFamily: 'var(--font-display)',
           }}
         >
-          PURE
+          PURE.
         </h1>
       </div>
     </div>

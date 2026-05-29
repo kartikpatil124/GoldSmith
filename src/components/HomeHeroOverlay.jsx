@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
-import { ArrowRight, ShieldCheck, Heart, Sparkles as SparklesIcon } from 'lucide-react';
+import { ArrowRight, ShieldCheck, Heart, Sparkles as SparklesIcon, Search, User, ShoppingCart } from 'lucide-react';
 import RingAnimation from './RingAnimation';
 import FloatingClouds from './FloatingClouds';
 import Sparkles from './Sparkles';
@@ -37,10 +37,10 @@ export default function HomeHeroOverlay() {
 
     gsap.set(ringRef.current, {
       opacity: 0,
-      y: 180,
-      scale: 0.82,
-      rotation: -10,
-      filter: 'blur(14px)',
+      y: 260,
+      scale: 0.78,
+      rotation: -12,
+      filter: 'blur(16px)',
       force3D: true,
     });
 
@@ -101,7 +101,7 @@ export default function HomeHeroOverlay() {
           ease: 'power2.inOut',
           onComplete: () => {
             gsap.to(ringRef.current, {
-              y: '+=10',
+              y: '+=8',
               duration: 3.2,
               repeat: -1,
               yoyo: true,
@@ -140,28 +140,28 @@ export default function HomeHeroOverlay() {
       const xPercent = e.clientX / window.innerWidth - 0.5;
       const yPercent = e.clientY / window.innerHeight - 0.5;
 
-      bgX(xPercent * 10);
-      bgY(yPercent * 8);
+      bgX(xPercent * 12);
+      bgY(yPercent * 12);
 
       cloudBackX(xPercent * 8);
-      cloudBackY(yPercent * 5);
+      cloudBackY(yPercent * 8);
 
       cloudMidX(xPercent * 14);
-      cloudMidY(yPercent * 8);
+      cloudMidY(yPercent * 14);
 
-      cloudFrontX(xPercent * 22);
-      cloudFrontY(yPercent * 12);
+      cloudFrontX(xPercent * 20);
+      cloudFrontY(yPercent * 20);
 
-      ringX(xPercent * 32);
-      ringY(yPercent * 22);
-      ringRotY(xPercent * 10);
-      ringRotX(-yPercent * 8);
+      ringX(xPercent * 24);
+      ringY(yPercent * 24);
+      ringRotY(xPercent * 6);
+      ringRotX(-yPercent * 6);
 
-      textX(xPercent * 18);
+      textX(xPercent * 12);
       textY(yPercent * 12);
 
-      raysX(xPercent * 18);
-      raysY(yPercent * 10);
+      raysX(xPercent * 12);
+      raysY(yPercent * 12);
     };
 
     window.addEventListener('mousemove', handleMouseMove);
@@ -244,7 +244,14 @@ export default function HomeHeroOverlay() {
       <Bubbles />
 
       <div className="absolute inset-0 z-[40] w-full h-full pointer-events-none flex flex-col justify-between p-6 sm:p-12 md:p-16 lg:p-20">
-        <div className="h-10 pointer-events-none" />
+        <div className="flex justify-between items-center w-full max-w-[1400px] mx-auto pointer-events-auto">
+          <div className="text-amber-100/90 font-display text-xl tracking-widest uppercase font-semibold">Goldsmith</div>
+          <div className="flex gap-6 items-center text-amber-100/80">
+            <Search size={18} className="cursor-pointer hover:text-amber-300 transition-colors" />
+            <User size={18} className="cursor-pointer hover:text-amber-300 transition-colors" />
+            <ShoppingCart size={18} className="cursor-pointer hover:text-amber-300 transition-colors" />
+          </div>
+        </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-end mt-auto w-full max-w-[1400px] mx-auto pb-4 sm:pb-8">
           <div
