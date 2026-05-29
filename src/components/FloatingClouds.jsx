@@ -1,52 +1,87 @@
 import React from 'react';
 
 /**
- * FloatingClouds renders one of three cloud layers.
- * Each layer has fixed opacity, height, and z-index matching the reference image.
- * Refs are passed up to HomeHeroOverlay for GSAP control.
+ * FloatingClouds — three layers that frame the ring.
+ *
+ * REFERENCE IMAGE analysis:
+ *  - Clouds fill the bottom ~45% of the hero
+ *  - They are pink/purple tinted, quite opaque and fluffy
+ *  - The ring sits IN the clouds — its lower half is hidden by front cloud
+ *  - Back/middle clouds are soft, front cloud is denser at the very bottom
  */
 export default function FloatingClouds({ layer, cloudRef }) {
-  // Layer-specific configuration
   const config = {
     back: {
       src: '/layers/cloud-back.png',
-      zIndex: 'z-[5]',
-      alt: 'Back clouds',
-      // Back cloud: fills lower 45% of hero, softer opacity
-      className: 'h-[45%] opacity-60',
+      zIndex: 5,
+      // Back cloud fills 50% from bottom — lightest layer
+      style: {
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        width: '100%',
+        height: '50%',
+        objectFit: 'cover',
+        objectPosition: 'top center',
+        transform: 'translate3d(0,0,0) scale(1.03)',
+        opacity: 0,           // GSAP controls final: 0.65
+        pointerEvents: 'none',
+        userSelect: 'none',
+        willChange: 'transform',
+      },
     },
     middle: {
       src: '/layers/cloud-middle.png',
-      zIndex: 'z-[10]',
-      alt: 'Middle clouds',
-      // Middle cloud: fills lower 60%, slightly denser
-      className: 'h-[60%] opacity-70',
+      zIndex: 10,
+      // Middle cloud fills 58% from bottom — medium density
+      style: {
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        width: '100%',
+        height: '58%',
+        objectFit: 'cover',
+        objectPosition: 'top center',
+        transform: 'translate3d(0,0,0) scale(1.03)',
+        opacity: 0,           // GSAP controls final: 0.78
+        pointerEvents: 'none',
+        userSelect: 'none',
+        willChange: 'transform',
+      },
     },
     front: {
       src: '/layers/cloud-front.png',
-      zIndex: 'z-[30]',
-      alt: 'Front clouds',
-      // Front cloud: CRITICAL — max 42% height so it only hides the ring base,
-      // never the ring center or diamond. Opacity 0 at start; GSAP fades it in.
-      className: 'h-[42%] opacity-0',
+      zIndex: 30,
+      // Front cloud: ONLY fills bottom 38% — hides ring's base/band, NOT the diamond.
+      // This is the critical layer that creates the "ring emerging from clouds" illusion.
+      style: {
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        width: '100%',
+        height: '38%',
+        objectFit: 'cover',
+        objectPosition: 'top center',
+        transform: 'translate3d(0,0,0) scale(1.03)',
+        opacity: 0,           // GSAP controls final: 0.72
+        pointerEvents: 'none',
+        userSelect: 'none',
+        willChange: 'transform',
+      },
     },
   }[layer] || {};
 
   return (
     <div
       ref={cloudRef}
-      className={`absolute inset-0 w-full h-full pointer-events-none select-none overflow-hidden ${config.zIndex} will-change-transform`}
-      style={{ transform: 'translate3d(0,0,0)' }}
+      className="absolute inset-0 overflow-hidden pointer-events-none"
+      style={{ zIndex: config.zIndex, transform: 'translate3d(0,0,0)', willChange: 'transform' }}
     >
       <img
         src={config.src}
-        alt={config.alt}
-        className={`absolute bottom-0 left-0 w-full object-cover object-bottom scale-[1.04] will-change-transform ${config.className}`}
-        style={{
-          transform: 'translate3d(0,0,0)',
-          // Very minimal filter — no fog/blur treatment
-          filter: 'none',
-        }}
+        alt={`${layer} cloud layer`}
+        style={config.style}
+        draggable={false}
       />
     </div>
   );

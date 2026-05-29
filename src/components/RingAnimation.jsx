@@ -1,57 +1,70 @@
 import React from 'react';
 
 /**
- * RingAnimation renders the luxury diamond ring PNG.
- * The outer div (ringRef) is controlled by GSAP for all entrance and float tweens.
- * The diamond flare highlight is purely CSS — no GSAP on it to keep perf clean.
+ * RingAnimation — the focal point of the hero.
+ *
+ * REFERENCE IMAGE analysis:
+ *  - Ring is centered horizontally, slightly below vertical center
+ *  - Ring is a gold halo diamond ring — its lower band is hidden by front cloud
+ *  - Ring size is approximately 28-30% of viewport width
+ *  - Subtle pink/gold glow behind it from the sky itself (no harsh artificial glow needed)
+ *  - Diamond flare: a bright white highlight at the stone center
+ *
+ * The outer wrapper div (ringRef) is the GSAP target for all animation.
  */
 export default function RingAnimation({ ringRef }) {
   return (
-    <div className="absolute inset-0 z-[20] pointer-events-none select-none flex items-center justify-center overflow-hidden">
-      {/* Soft glow behind the ring — pure CSS, no animation needed */}
-      <div
-        className="absolute rounded-full pointer-events-none"
-        style={{
-          width: '420px',
-          height: '420px',
-          background:
-            'radial-gradient(circle, rgba(255, 210, 230, 0.25) 0%, rgba(220, 180, 255, 0.12) 40%, transparent 70%)',
-          filter: 'blur(40px)',
-        }}
-      />
-
-      {/* GSAP target: all entrance animation runs on this wrapper */}
+    <div
+      className="absolute inset-0 pointer-events-none select-none"
+      style={{
+        zIndex: 20,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
+      {/* GSAP-animated wrapper — entrance, float, parallax all applied here */}
       <div
         ref={ringRef}
-        className="relative will-change-transform"
         style={{
+          position: 'relative',
+          width: 'clamp(240px, 30vw, 460px)',
+          height: 'clamp(240px, 30vw, 460px)',
+          willChange: 'transform',
           transform: 'translate3d(0,0,0)',
-          width: 'clamp(260px, 36vw, 520px)',
-          height: 'clamp(260px, 36vw, 520px)',
+          /* Shift ring slightly down so it sits at cloud level */
+          marginTop: '8vh',
         }}
       >
         <img
           src="/layers/ring.png"
           alt="Luxury Diamond Ring"
-          className="w-full h-full object-contain"
           style={{
+            width: '100%',
+            height: '100%',
+            objectFit: 'contain',
+            // Drop shadow for depth — warm gold + cool pink from sky
             filter:
-              'drop-shadow(0 8px 30px rgba(255, 200, 220, 0.35)) drop-shadow(0 2px 12px rgba(200, 160, 90, 0.4))',
+              'drop-shadow(0 6px 28px rgba(255, 190, 210, 0.45)) drop-shadow(0 2px 10px rgba(210, 160, 80, 0.50))',
           }}
+          draggable={false}
         />
 
-        {/* Diamond flare — sits at center-top of ring stone */}
+        {/* Diamond flare — bright specular highlight at stone center */}
         <div
-          className="absolute pointer-events-none rounded-full"
           style={{
-            top: '30%',
+            position: 'absolute',
+            /* ~32% from top, ~44% from left — center of the round diamond stone */
+            top: '32%',
             left: '44%',
-            width: '12%',
-            height: '12%',
-            background: 'radial-gradient(circle, rgba(255,255,255,0.95) 0%, transparent 70%)',
-            filter: 'blur(3px)',
+            width: '10%',
+            height: '10%',
+            borderRadius: '50%',
+            background: 'radial-gradient(circle, rgba(255,255,255,1) 0%, transparent 70%)',
+            filter: 'blur(2px)',
             boxShadow:
-              '0 0 20px 8px rgba(255,255,255,0.5), 0 0 50px 20px rgba(255, 220, 180, 0.25)',
+              '0 0 18px 6px rgba(255,255,255,0.70), 0 0 40px 16px rgba(255,240,200,0.30)',
+            pointerEvents: 'none',
           }}
         />
       </div>

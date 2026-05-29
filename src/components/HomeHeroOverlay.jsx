@@ -20,96 +20,76 @@ export default function HomeHeroOverlay() {
   const ctaRef         = useRef(null);
   const featuresRef    = useRef(null);
   const brandsRef      = useRef(null);
-  const glowRef        = useRef(null);
 
   useEffect(() => {
-    // ── Safety: grab feature children ──────────────────────────────────────
     const featureItems = featuresRef.current
       ? Array.from(featuresRef.current.children)
       : [];
 
-    // ── Initial hidden states (all GPU transform-based, no layout props) ───
-    gsap.set(bgRef.current,         { opacity: 0, scale: 1.08 });
-    gsap.set(cloudBackRef.current,  { opacity: 0 });
-    gsap.set(cloudMiddleRef.current,{ opacity: 0 });
-    gsap.set(cloudFrontRef.current, { opacity: 0 });
-    gsap.set(glowRef.current,       { opacity: 0 });
+    // ── Initial hidden states ──────────────────────────────────────────────
+    gsap.set(bgRef.current,          { opacity: 0, scale: 1.06 });
+    gsap.set(cloudBackRef.current,   { opacity: 0 });
+    gsap.set(cloudMiddleRef.current, { opacity: 0 });
+    gsap.set(cloudFrontRef.current,  { opacity: 0 });
 
-    // Ring: starts below cloud line with blur & slight tilt
     gsap.set(ringRef.current, {
       opacity: 0,
-      y: 260,
-      scale: 0.78,
-      rotation: -12,
-      filter: 'blur(16px)',
+      y: 280,
+      scale: 0.75,
+      rotation: -10,
+      filter: 'blur(20px)',
       force3D: true,
     });
 
-    gsap.set(textBackRef.current,  { opacity: 0, y: 16 });
-    gsap.set(textFrontRef.current, { opacity: 0, y: 16 });
-    gsap.set(ctaRef.current,       { opacity: 0, y: 24 });
-    gsap.set(featureItems,         { opacity: 0, x: 20 });
-    gsap.set(brandsRef.current,    { opacity: 0, y: 10 });
+    gsap.set(textBackRef.current,  { opacity: 0, y: 20 });
+    gsap.set(textFrontRef.current, { opacity: 0, y: 20 });
+    gsap.set(ctaRef.current,       { opacity: 0, y: 20 });
+    gsap.set(featureItems,         { opacity: 0, x: 16 });
+    gsap.set(brandsRef.current,    { opacity: 0, y: 8 });
 
-    // ── Master GSAP Timeline ────────────────────────────────────────────────
+    // ── Master Timeline ────────────────────────────────────────────────────
     const tl = gsap.timeline({ defaults: { ease: 'power2.out' } });
 
-    // 0.0s — Sky background fades in
-    tl.to(bgRef.current, { opacity: 1, scale: 1, duration: 0.8 }, 0);
+    // 0.0 – Sky
+    tl.to(bgRef.current, { opacity: 1, scale: 1, duration: 0.9 }, 0);
 
-    // 0.2s — Soft glow behind ring area
-    tl.to(glowRef.current, { opacity: 1, duration: 1.2 }, 0.2);
+    // 0.3 – Back cloud
+    tl.to(cloudBackRef.current,   { opacity: 0.65, duration: 0.9 }, 0.3);
 
-    // 0.3s — Back cloud appears
-    tl.to(cloudBackRef.current,   { opacity: 0.62, duration: 0.9 }, 0.3);
+    // 0.45 – Mid cloud
+    tl.to(cloudMiddleRef.current, { opacity: 0.78, duration: 0.9 }, 0.45);
 
-    // 0.45s — Middle cloud appears
-    tl.to(cloudMiddleRef.current, { opacity: 0.72, duration: 0.9 }, 0.45);
+    // 0.6 – Ring rises from cloud floor with luxury power4.out
+    tl.to(ringRef.current, {
+      opacity: 1,
+      y: -12,
+      scale: 1,
+      rotation: 0,
+      filter: 'blur(0px)',
+      duration: 1.7,
+      ease: 'power4.out',
+    }, 0.6);
 
-    // 0.6s — Ring rises from below clouds (3.5s journey, power4.out for luxury feel)
-    tl.to(
-      ringRef.current,
-      {
-        opacity: 1,
-        y: -14,          // slight overshoot
-        scale: 1,
-        rotation: 0,
-        filter: 'blur(0px)',
-        duration: 1.6,
-        ease: 'power4.out',
-      },
-      0.6
-    );
+    // 2.1 – Ring settles at y:0 (final resting position)
+    tl.to(ringRef.current, { y: 0, duration: 0.8, ease: 'power2.inOut' }, 2.1);
 
-    // 2.1s — Ring settles from overshoot to final y:0
-    tl.to(
-      ringRef.current,
-      { y: 0, duration: 0.9, ease: 'power2.inOut' },
-      2.1
-    );
+    // 1.3 – Typography fades in
+    tl.to(textBackRef.current,  { opacity: 1, y: 0, duration: 1.0 }, 1.3);
+    tl.to(textFrontRef.current, { opacity: 1, y: 0, duration: 1.0 }, 1.45);
 
-    // 2.2s — Typography fades in
-    tl.to([textBackRef.current, textFrontRef.current], {
-      opacity: 1, y: 0, duration: 1.0, stagger: 0.12,
-    }, 1.4);
+    // 1.7 – Front cloud closes over ring base
+    tl.to(cloudFrontRef.current, { opacity: 0.72, duration: 1.0 }, 1.7);
 
-    // 2.4s — Front cloud fades in (hides only base of ring)
-    tl.to(cloudFrontRef.current, { opacity: 0.68, duration: 1.0 }, 1.6);
+    // 2.0 – UI elements
+    tl.to(ctaRef.current,  { opacity: 1, y: 0, duration: 0.9 }, 2.0);
+    tl.to(featureItems,    { opacity: 1, x: 0, duration: 0.8, stagger: 0.1 }, 2.1);
+    tl.to(brandsRef.current, { opacity: 1, y: 0, duration: 0.8 }, 2.5);
 
-    // 2.6s — CTA fades in
-    tl.to(ctaRef.current, { opacity: 1, y: 0, duration: 0.9 }, 1.9);
-
-    // 2.8s — Feature cards slide in from right
-    tl.to(featureItems, { opacity: 1, x: 0, duration: 0.8, stagger: 0.12 }, 2.0);
-
-    // 3.2s — Brand logos
-    tl.to(brandsRef.current, { opacity: 1, y: 0, duration: 0.8 }, 2.4);
-
-    // 3.0s — Begin subtle ring float loop after settlement
+    // 3.0 – Continuous subtle float (ring breathes)
     tl.call(() => {
       gsap.to(ringRef.current, {
         y: '+=8',
-        duration: 3.5,
+        duration: 3.8,
         repeat: -1,
         yoyo: true,
         ease: 'sine.inOut',
@@ -117,46 +97,42 @@ export default function HomeHeroOverlay() {
       });
     }, [], 3.0);
 
-    // ── Parallax Mouse Interaction (gsap.quickTo — single tween per property) ─
-    const bgX    = gsap.quickTo(bgRef.current,          'x', { duration: 1.2, ease: 'power2.out' });
-    const bgY    = gsap.quickTo(bgRef.current,          'y', { duration: 1.2, ease: 'power2.out' });
-    const cbX    = gsap.quickTo(cloudBackRef.current,   'x', { duration: 1.4, ease: 'power2.out' });
-    const cbY    = gsap.quickTo(cloudBackRef.current,   'y', { duration: 1.4, ease: 'power2.out' });
-    const cmX    = gsap.quickTo(cloudMiddleRef.current, 'x', { duration: 1.0, ease: 'power2.out' });
-    const cmY    = gsap.quickTo(cloudMiddleRef.current, 'y', { duration: 1.0, ease: 'power2.out' });
-    const cfX    = gsap.quickTo(cloudFrontRef.current,  'x', { duration: 0.8, ease: 'power2.out' });
-    const cfY    = gsap.quickTo(cloudFrontRef.current,  'y', { duration: 0.8, ease: 'power2.out' });
-    const ringX  = gsap.quickTo(ringRef.current,        'x', { duration: 0.7, ease: 'power2.out' });
-    const ringRY = gsap.quickTo(ringRef.current,        'rotationY', { duration: 0.8, ease: 'power2.out' });
-    const ringRX = gsap.quickTo(ringRef.current,        'rotationX', { duration: 0.8, ease: 'power2.out' });
-    const txtX   = gsap.quickTo([textBackRef.current, textFrontRef.current], 'x', { duration: 1.0, ease: 'power2.out' });
-    const txtY   = gsap.quickTo([textBackRef.current, textFrontRef.current], 'y', { duration: 1.0, ease: 'power2.out' });
+    // ── Parallax (quickTo — single tween per property, no new tweens per frame) ─
+    const bgX  = gsap.quickTo(bgRef.current,          'x', { duration: 1.4, ease: 'power2.out' });
+    const bgY  = gsap.quickTo(bgRef.current,          'y', { duration: 1.4, ease: 'power2.out' });
+    const cbX  = gsap.quickTo(cloudBackRef.current,   'x', { duration: 1.6, ease: 'power2.out' });
+    const cbY  = gsap.quickTo(cloudBackRef.current,   'y', { duration: 1.6, ease: 'power2.out' });
+    const cmX  = gsap.quickTo(cloudMiddleRef.current, 'x', { duration: 1.1, ease: 'power2.out' });
+    const cmY  = gsap.quickTo(cloudMiddleRef.current, 'y', { duration: 1.1, ease: 'power2.out' });
+    const cfX  = gsap.quickTo(cloudFrontRef.current,  'x', { duration: 0.9, ease: 'power2.out' });
+    const cfY  = gsap.quickTo(cloudFrontRef.current,  'y', { duration: 0.9, ease: 'power2.out' });
+    const rkX  = gsap.quickTo(ringRef.current,        'x', { duration: 0.7, ease: 'power2.out' });
+    const rkRY = gsap.quickTo(ringRef.current,        'rotationY', { duration: 0.8, ease: 'power2.out' });
+    const rkRX = gsap.quickTo(ringRef.current,        'rotationX', { duration: 0.8, ease: 'power2.out' });
+    const txX  = gsap.quickTo([textBackRef.current, textFrontRef.current], 'x', { duration: 1.1, ease: 'power2.out' });
+    const txY  = gsap.quickTo([textBackRef.current, textFrontRef.current], 'y', { duration: 1.1, ease: 'power2.out' });
 
     const onMouseMove = (e) => {
-      const nx = e.clientX / window.innerWidth  - 0.5; // -0.5 → 0.5
-      const ny = e.clientY / window.innerHeight - 0.5;
-
-      bgX(nx * 6);   bgY(ny * 4);    // sky: very subtle — max 3px
-      cbX(nx * 8);   cbY(ny * 5);    // back cloud: max 4px
-      cmX(nx * 14);  cmY(ny * 8);    // mid cloud: max 7px
-      cfX(nx * 20);  cfY(ny * 10);   // front cloud: max 10px
-      ringX(nx * 24);                 // ring x: max 12px
-      ringRY(nx * 8);                 // subtle 3D tilt
-      ringRX(-ny * 6);
-      txtX(nx * 12); txtY(ny * 6);   // text: max 6px
+      const nx = (e.clientX / window.innerWidth)  - 0.5;
+      const ny = (e.clientY / window.innerHeight) - 0.5;
+      bgX(nx * 6);    bgY(ny * 4);
+      cbX(nx * 9);    cbY(ny * 5);
+      cmX(nx * 15);   cmY(ny * 8);
+      cfX(nx * 22);   cfY(ny * 10);
+      rkX(nx * 26);
+      rkRY(nx * 7);   rkRX(-ny * 5);
+      txX(nx * 14);   txY(ny * 7);
     };
 
     window.addEventListener('mousemove', onMouseMove, { passive: true });
 
-    // ── Cleanup ─────────────────────────────────────────────────────────────
     return () => {
       window.removeEventListener('mousemove', onMouseMove);
       tl.kill();
       gsap.killTweensOf([
         bgRef.current, cloudBackRef.current, cloudMiddleRef.current,
         cloudFrontRef.current, ringRef.current, textBackRef.current,
-        textFrontRef.current, ctaRef.current, glowRef.current,
-        brandsRef.current, ...featureItems,
+        textFrontRef.current, ctaRef.current, brandsRef.current, ...featureItems,
       ]);
     };
   }, []);
@@ -164,16 +140,10 @@ export default function HomeHeroOverlay() {
   return (
     <section
       ref={sectionRef}
-      className="relative w-full overflow-hidden select-none bg-[#3a1a5e]"
-      style={{
-        height: '100vh',
-        minHeight: 650,
-        isolation: 'isolate',
-      }}
+      className="relative w-full overflow-hidden select-none"
+      style={{ height: '100vh', minHeight: 640, background: '#2a0a4e' }}
     >
-      {/* ─────────────────────────────────────────────────────────────────
-          LAYER 0 — Sky Background
-      ───────────────────────────────────────────────────────────────── */}
+      {/* ── LAYER 0 – Sky Background (NO dark vignette — let the vivid sky show) ── */}
       <div
         ref={bgRef}
         className="absolute inset-0 z-[0] pointer-events-none will-change-transform"
@@ -185,203 +155,234 @@ export default function HomeHeroOverlay() {
           className="w-full h-full object-cover object-center"
           draggable={false}
         />
-        {/* Very gentle vignette — darkens edges, not center */}
+        {/* Extremely subtle edge darkening — keeps corners from blowing out */}
         <div
-          className="absolute inset-0 pointer-events-none"
+          className="absolute inset-0"
           style={{
             background:
-              'radial-gradient(ellipse 80% 70% at 50% 50%, transparent 40%, rgba(20, 0, 40, 0.45) 100%)',
+              'radial-gradient(ellipse 90% 80% at 50% 50%, transparent 55%, rgba(10,0,25,0.30) 100%)',
           }}
         />
       </div>
 
-      {/* ─────────────────────────────────────────────────────────────────
-          LAYER 1 — Atmospheric Light Rays (subtle, no harsh bloom)
-      ───────────────────────────────────────────────────────────────── */}
-      <div
-        className="absolute inset-0 z-[2] pointer-events-none"
-        style={{
-          background:
-            'linear-gradient(160deg, rgba(255,200,150,0.06) 0%, transparent 50%)',
-        }}
-      />
-
-      {/* ─────────────────────────────────────────────────────────────────
-          LAYER 2 — Radial glow behind the ring
-      ───────────────────────────────────────────────────────────────── */}
-      <div
-        ref={glowRef}
-        className="absolute pointer-events-none z-[3]"
-        style={{
-          width: '50vw',
-          height: '50vw',
-          maxWidth: 600,
-          maxHeight: 600,
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -52%)',
-          background:
-            'radial-gradient(circle, rgba(255, 200, 220, 0.2) 0%, rgba(200, 150, 255, 0.08) 50%, transparent 75%)',
-          filter: 'blur(50px)',
-          borderRadius: '50%',
-        }}
-      />
-
-      {/* ─────────────────────────────────────────────────────────────────
-          LAYER 5 — Back Clouds
-      ───────────────────────────────────────────────────────────────── */}
+      {/* ── LAYER 5 – Back Clouds ── */}
       <FloatingClouds layer="back" cloudRef={cloudBackRef} />
 
-      {/* ─────────────────────────────────────────────────────────────────
-          LAYER 10 — Middle Clouds
-      ───────────────────────────────────────────────────────────────── */}
+      {/* ── LAYER 10 – Middle Clouds ── */}
       <FloatingClouds layer="middle" cloudRef={cloudMiddleRef} />
 
-      {/* ─────────────────────────────────────────────────────────────────
-          LAYER 15 — Typography BEHIND ring (POWERFUL. PURE.)
-      ───────────────────────────────────────────────────────────────── */}
+      {/* ── LAYER 15 – POWERFUL. / PURE. (behind ring) ── */}
       <HeroTextBack textRef={textBackRef} />
 
-      {/* ─────────────────────────────────────────────────────────────────
-          LAYER 20 — Ring (focal point)
-      ───────────────────────────────────────────────────────────────── */}
+      {/* ── LAYER 20 – Ring ── */}
       <RingAnimation ringRef={ringRef} />
 
-      {/* ─────────────────────────────────────────────────────────────────
-          LAYER 25 — Typography IN FRONT of ring (Gentle)
-      ───────────────────────────────────────────────────────────────── */}
+      {/* ── LAYER 25 – Gentle (in front of ring) ── */}
       <HeroTextFront textRef={textFrontRef} />
 
-      {/* ─────────────────────────────────────────────────────────────────
-          LAYER 30 — Front Cloud (hides only base of ring)
-      ───────────────────────────────────────────────────────────────── */}
+      {/* ── LAYER 30 – Front Cloud (hides ring base) ── */}
       <FloatingClouds layer="front" cloudRef={cloudFrontRef} />
 
-      {/* ─────────────────────────────────────────────────────────────────
-          LAYER 33 — Sparkles (around ring center)
-      ───────────────────────────────────────────────────────────────── */}
+      {/* ── LAYER 33 – Sparkles ── */}
       <Sparkles />
 
-      {/* ─────────────────────────────────────────────────────────────────
-          LAYER 35 — Floating Bubbles
-      ───────────────────────────────────────────────────────────────── */}
+      {/* ── LAYER 35 – Bubbles ── */}
       <Bubbles />
 
-      {/* ─────────────────────────────────────────────────────────────────
-          LAYER 40 — UI Overlay: CTA left, Features right
-      ───────────────────────────────────────────────────────────────── */}
-      <div className="absolute inset-0 z-[40] pointer-events-none flex flex-col justify-between">
-        {/* Spacer for nav height */}
-        <div className="h-16 shrink-0" />
+      {/* ──────────────────────────────────────────────────────────────────────
+          LAYER 40 – UI: CTA (bottom-left) + Features (bottom-right) + Brands
+      ────────────────────────────────────────────────────────────────────── */}
+      <div className="absolute inset-0 z-[40] pointer-events-none flex flex-col">
 
-        {/* Main content row */}
-        <div className="flex items-end justify-between w-full px-8 md:px-14 lg:px-20 pb-8 md:pb-12">
+        {/* Spacer for header */}
+        <div className="shrink-0" style={{ height: 'var(--header-height, 72px)' }} />
 
-          {/* LEFT — CTA */}
-          <div ref={ctaRef} className="pointer-events-auto max-w-[280px]">
-            <p
-              className="text-white/85 text-sm md:text-base font-light leading-relaxed mb-6"
-              style={{ fontFamily: "'Inter', sans-serif" }}
-            >
-              Timeless jewelry that empowers<br />
-              your every day and celebrates<br />
-              your every moment.
-            </p>
+        {/* Main body — fills remaining space */}
+        <div className="flex-1 flex flex-col justify-end">
 
-            <a
-              href="/shop"
-              className="group inline-flex items-center gap-3 px-7 py-3 rounded-full border border-white/40 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white text-xs font-semibold tracking-[0.15em] uppercase transition-all duration-300 hover:border-white/70 hover:shadow-[0_0_24px_rgba(255,255,255,0.15)]"
-              style={{ fontFamily: "'Inter', sans-serif" }}
-            >
-              <span>SHOP NOW</span>
-              <ArrowRight
-                size={14}
-                className="transition-transform duration-300 group-hover:translate-x-1"
-              />
-            </a>
-          </div>
+          {/* CTA + Features row — pinned to bottom */}
+          <div className="flex items-end justify-between w-full px-8 md:px-12 lg:px-16 pb-6">
 
-          {/* RIGHT — Feature Cards */}
-          <div
-            ref={featuresRef}
-            className="pointer-events-auto flex flex-col gap-3 items-end"
-          >
-            {[
-              {
-                icon: <LucideSparkles size={16} />,
-                label: 'Premium Quality',
-                desc: 'Crafted to last, made to shine.',
-              },
-              {
-                icon: <Leaf size={16} />,
-                label: 'Hypoallergenic',
-                desc: 'Gentle on skin, perfect for all day wear.',
-              },
-              {
-                icon: <Diamond size={16} />,
-                label: 'Timeless Design',
-                desc: 'Elegant pieces for every occasion.',
-              },
-            ].map((f, i) => (
-              <div
-                key={i}
-                className="flex items-center gap-3 px-4 py-3 rounded-xl backdrop-blur-md border border-white/10 bg-black/20 hover:bg-black/30 hover:border-white/20 transition-all duration-400 max-w-[240px] w-full"
-              >
-                <div className="shrink-0 w-8 h-8 rounded-full border border-white/20 bg-white/10 flex items-center justify-center text-white/80">
-                  {f.icon}
-                </div>
-                <div>
-                  <div
-                    className="text-white text-[11px] font-semibold leading-tight"
-                    style={{ fontFamily: "'Inter', sans-serif" }}
-                  >
-                    {f.label}
-                  </div>
-                  <div
-                    className="text-white/55 text-[10px] leading-snug mt-0.5"
-                    style={{ fontFamily: "'Inter', sans-serif" }}
-                  >
-                    {f.desc}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* BOTTOM — "TRUSTED BY" brand logos bar */}
-        <div
-          ref={brandsRef}
-          className="pointer-events-none w-full py-4 px-8 md:px-14 lg:px-20 flex flex-col items-center gap-3 border-t border-white/8"
-          style={{ background: 'rgba(0,0,0,0.18)', backdropFilter: 'blur(6px)' }}
-        >
-          <span
-            className="text-white/40 text-[9px] font-semibold uppercase tracking-[0.25em]"
-            style={{ fontFamily: "'Inter', sans-serif" }}
-          >
-            Trusted By
-          </span>
-          <div className="flex items-center gap-8 md:gap-14 flex-wrap justify-center">
-            {['VOGUE', 'allure', 'GLAMOUR', 'BYRDIE', 'InStyle'].map((brand) => (
-              <span
-                key={brand}
-                className="text-white/45 font-semibold tracking-wide select-none"
+            {/* ── BOTTOM LEFT: Tagline + Shop Now button ── */}
+            <div ref={ctaRef} className="pointer-events-auto max-w-[260px]">
+              <p
+                className="mb-5 leading-relaxed"
                 style={{
-                  fontFamily:
-                    brand === 'allure'
-                      ? "'Cormorant Garamond', serif"
-                      : "'Playfair Display', Georgia, serif",
-                  fontSize:
-                    brand === 'GLAMOUR'
-                      ? 'clamp(13px, 1.6vw, 20px)'
-                      : 'clamp(11px, 1.3vw, 17px)',
-                  fontStyle: brand === 'allure' ? 'italic' : 'normal',
-                  fontWeight: brand === 'allure' ? 400 : 700,
+                  fontFamily: "'Inter', sans-serif",
+                  fontSize: 'clamp(12px, 1.1vw, 15px)',
+                  color: 'rgba(255,255,255,0.82)',
+                  fontWeight: 300,
                 }}
               >
-                {brand}
-              </span>
-            ))}
+                Timeless jewelry that empowers<br />
+                your every day and celebrates<br />
+                your every moment.
+              </p>
+
+              <a
+                href="/shop"
+                className="group inline-flex items-center gap-3 pointer-events-auto"
+                style={{
+                  padding: '10px 26px',
+                  border: '1.5px solid rgba(255,255,255,0.6)',
+                  borderRadius: '9999px',
+                  background: 'transparent',
+                  color: 'rgba(255,255,255,0.95)',
+                  fontFamily: "'Inter', sans-serif",
+                  fontSize: '11px',
+                  fontWeight: 600,
+                  letterSpacing: '0.12em',
+                  textDecoration: 'none',
+                  transition: 'all 0.3s',
+                  backdropFilter: 'blur(4px)',
+                }}
+                onMouseEnter={e => {
+                  e.currentTarget.style.background = 'rgba(255,255,255,0.12)';
+                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.9)';
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.style.background = 'transparent';
+                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.6)';
+                }}
+              >
+                <span>SHOP NOW</span>
+                <ArrowRight size={13} style={{ transition: 'transform 0.3s' }} />
+              </a>
+            </div>
+
+            {/* ── BOTTOM RIGHT: Three feature items (icon + text, no card bg) ── */}
+            <div
+              ref={featuresRef}
+              className="pointer-events-auto flex flex-col gap-4 items-start"
+              style={{ maxWidth: 220 }}
+            >
+              {[
+                {
+                  icon: (
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.8">
+                      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                    </svg>
+                  ),
+                  title: 'Premium Quality',
+                  desc: 'Crafted to last, made to shine.',
+                },
+                {
+                  icon: (
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.8">
+                      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                    </svg>
+                  ),
+                  title: 'Hypoallergenic',
+                  desc: 'Gentle on skin, perfect for all day wear.',
+                },
+                {
+                  icon: (
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.8">
+                      <circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/>
+                    </svg>
+                  ),
+                  title: 'Timeless Design',
+                  desc: 'Elegant pieces for every occasion.',
+                },
+              ].map((f, i) => (
+                <div key={i} className="flex items-start gap-3">
+                  {/* Small circle icon — matching the reference */}
+                  <div
+                    className="shrink-0 flex items-center justify-center rounded-full"
+                    style={{
+                      width: 32,
+                      height: 32,
+                      border: '1.5px solid rgba(255,255,255,0.35)',
+                      background: 'rgba(255,255,255,0.08)',
+                      color: 'rgba(255,255,255,0.85)',
+                      backdropFilter: 'blur(4px)',
+                    }}
+                  >
+                    {f.icon}
+                  </div>
+                  <div>
+                    <div
+                      style={{
+                        fontFamily: "'Inter', sans-serif",
+                        fontWeight: 600,
+                        fontSize: '12px',
+                        color: 'rgba(255,255,255,0.95)',
+                        marginBottom: 2,
+                      }}
+                    >
+                      {f.title}
+                    </div>
+                    <div
+                      style={{
+                        fontFamily: "'Inter', sans-serif",
+                        fontWeight: 300,
+                        fontSize: '11px',
+                        color: 'rgba(255,255,255,0.62)',
+                        lineHeight: 1.45,
+                      }}
+                    >
+                      {f.desc}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* ── BOTTOM BAR: "TRUSTED BY" brands ── */}
+          <div
+            ref={brandsRef}
+            className="pointer-events-none w-full"
+            style={{
+              padding: '14px 0 16px',
+              borderTop: '1px solid rgba(255,255,255,0.10)',
+              background: 'rgba(0,0,0,0.16)',
+              backdropFilter: 'blur(8px)',
+            }}
+          >
+            {/* TRUSTED BY label */}
+            <p
+              className="text-center mb-3"
+              style={{
+                fontFamily: "'Inter', sans-serif",
+                fontSize: '9px',
+                fontWeight: 600,
+                letterSpacing: '0.28em',
+                color: 'rgba(255,255,255,0.38)',
+                textTransform: 'uppercase',
+              }}
+            >
+              TRUSTED BY
+            </p>
+
+            {/* Brand logos — styled to match the reference */}
+            <div
+              className="flex items-center justify-center flex-wrap"
+              style={{ gap: '32px' }}
+            >
+              {[
+                { name: 'VOGUE',   font: "'Playfair Display', serif", size: 'clamp(14px, 1.5vw, 19px)', weight: 700, style: 'normal' },
+                { name: 'allure',  font: "'Cormorant Garamond', serif", size: 'clamp(14px, 1.5vw, 20px)', weight: 400, style: 'italic' },
+                { name: 'GLAMOUR', font: "'Playfair Display', serif", size: 'clamp(15px, 1.7vw, 22px)', weight: 700, style: 'normal' },
+                { name: 'BYRDIE',  font: "'Inter', sans-serif",        size: 'clamp(12px, 1.3vw, 17px)', weight: 700, style: 'normal', spacing: '0.18em' },
+                { name: 'InStyle', font: "'Playfair Display', serif", size: 'clamp(14px, 1.5vw, 19px)', weight: 400, style: 'italic' },
+              ].map((b) => (
+                <span
+                  key={b.name}
+                  style={{
+                    fontFamily: b.font,
+                    fontSize: b.size,
+                    fontWeight: b.weight,
+                    fontStyle: b.style,
+                    letterSpacing: b.spacing || '0.04em',
+                    color: 'rgba(255,255,255,0.45)',
+                    userSelect: 'none',
+                  }}
+                >
+                  {b.name}
+                </span>
+              ))}
+            </div>
           </div>
         </div>
       </div>
