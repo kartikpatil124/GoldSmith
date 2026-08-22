@@ -9,3 +9,6 @@ backend/uploads/
 backend/.env
 powershell.exe
 **/powershell.exe
+git.cmd
+git.ps1
+push.bat
