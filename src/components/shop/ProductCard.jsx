@@ -552,16 +552,19 @@ export default function ProductCard({ product, gridMode = '2-col' }) {
         }
 
         /* 3-COLUMN DENSE OVERRIDES */
+        .product-card-3-col,
         .product-card-3col {
           padding: 6px !important;
           border-radius: 12px !important;
         }
 
+        .product-card-3-col .product-card-img-box,
         .product-card-3col .product-card-img-box {
           border-radius: 8px !important;
           margin-bottom: 4px !important;
         }
 
+        .product-card-3-col .product-card-title,
         .product-card-3col .product-card-title {
           font-size: 10.5px !important;
           height: 15px !important;
@@ -571,10 +574,12 @@ export default function ProductCard({ product, gridMode = '2-col' }) {
           white-space: nowrap !important;
         }
 
+        .product-card-3-col .product-card-current-price,
         .product-card-3col .product-card-current-price {
           font-size: 11.5px !important;
         }
 
+        .product-card-3-col .product-card-badge,
         .product-card-3col .product-card-badge {
           top: 3px !important;
           left: 3px !important;
@@ -583,6 +588,7 @@ export default function ProductCard({ product, gridMode = '2-col' }) {
           border-radius: 6px !important;
         }
 
+        .product-card-3-col .product-card-heart-action,
         .product-card-3col .product-card-heart-action {
           top: 3px !important;
           right: 3px !important;
@@ -590,26 +596,31 @@ export default function ProductCard({ product, gridMode = '2-col' }) {
           height: 22px !important;
         }
 
+        .product-card-3-col .product-card-heart-action svg,
         .product-card-3col .product-card-heart-action svg {
           width: 10px !important;
           height: 10px !important;
         }
 
+        .product-card-3-col .product-card-cta-tag,
         .product-card-3col .product-card-cta-tag {
           display: none !important;
         }
 
         /* 1-COLUMN SHOWCASE OVERRIDES */
+        .product-card-1-col,
         .product-card-1col {
           padding: 16px !important;
           border-radius: 24px !important;
         }
 
+        .product-card-1-col .product-card-img-box,
         .product-card-1col .product-card-img-box {
           border-radius: 18px !important;
           margin-bottom: 12px !important;
         }
 
+        .product-card-1-col .product-card-title,
         .product-card-1col .product-card-title {
           font-size: 17px !important;
           height: auto !important;
@@ -617,6 +628,7 @@ export default function ProductCard({ product, gridMode = '2-col' }) {
           -webkit-line-clamp: 2 !important;
         }
 
+        .product-card-1-col .product-card-current-price,
         .product-card-1col .product-card-current-price {
           font-size: 19px !important;
         }

@@ -1456,7 +1456,7 @@ div[style*="width: 120px"][style*="height: 120px"] {
 @supports (padding: env(safe-area-inset-bottom)) {
   footer { padding-bottom: calc(var(--space-8) + env(safe-area-inset-bottom)); }
   .toast { bottom: calc(var(--space-4) + env(safe-area-inset-bottom) + 60px); }
-  a[aria-label="WhatsApp Support"], .whatsapp-floating-btn { bottom: calc(200px + env(safe-area-inset-bottom, 0px)) !important; }
+  a[aria-label="WhatsApp Support"], .whatsapp-floating-btn { bottom: calc(130px + env(safe-area-inset-bottom, 0px)) !important; }
 }
 
 /* ============================================
@@ -2656,12 +2656,14 @@ div[style*="width: 120px"][style*="height: 120px"] {
   }
 
   /* Mobile Dynamic Product Grid Switcher Modes */
+  .shop-product-grid.shop-grid-1-col,
   .shop-product-grid.shop-grid-1col {
     grid-template-columns: 1fr !important;
     gap: 14px !important;
     padding-bottom: 24px !important;
   }
 
+  .shop-product-grid.shop-grid-2-col,
   .shop-product-grid.shop-grid-2col,
   .shop-product-grid:not([class*="shop-grid-"]),
   .wishlist-product-grid,
@@ -2671,6 +2673,7 @@ div[style*="width: 120px"][style*="height: 120px"] {
     padding-bottom: 24px !important;
   }
 
+  .shop-product-grid.shop-grid-3-col,
   .shop-product-grid.shop-grid-3col {
     grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
     gap: 6px !important;

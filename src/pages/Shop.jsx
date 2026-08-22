@@ -740,39 +740,48 @@ export default function Shop() {
         .shop-product-grid {
           display: grid;
           transition: all 0.3s ease;
+          width: 100%;
         }
 
-        /* Option 1: 2-Column Grid (desktop: 4 columns) */
-        .shop-product-grid.shop-grid-2col {
+        /* Option 1: 2-Column Grid (desktop: 4 columns / standard grid) */
+        .shop-product-grid.shop-grid-2-col,
+        .shop-product-grid.shop-grid-2col,
+        .shop-product-grid:not([class*="shop-grid-"]) {
           grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
           gap: 24px;
         }
 
-        /* Option 2: 3-Column Dense Grid (desktop: 5 columns) */
+        /* Option 2: 3-Column Dense Grid (desktop: 5-6 columns) */
+        .shop-product-grid.shop-grid-3-col,
         .shop-product-grid.shop-grid-3col {
           grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
-          gap: 18px;
+          gap: 16px;
         }
 
-        /* Option 3: 1-Column Showcase */
+        /* Option 3: 1-Column Showcase (desktop: large luxury cards) */
+        .shop-product-grid.shop-grid-1-col,
         .shop-product-grid.shop-grid-1col {
           grid-template-columns: 1fr;
           gap: 28px;
-          max-width: 720px;
+          max-width: 680px;
           margin: 0 auto;
         }
 
         @media (max-width: 768px) {
-          .shop-product-grid.shop-grid-2col {
+          .shop-product-grid.shop-grid-2-col,
+          .shop-product-grid.shop-grid-2col,
+          .shop-product-grid:not([class*="shop-grid-"]) {
             grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
             gap: 10px !important;
           }
 
+          .shop-product-grid.shop-grid-3-col,
           .shop-product-grid.shop-grid-3col {
             grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
             gap: 6px !important;
           }
 
+          .shop-product-grid.shop-grid-1-col,
           .shop-product-grid.shop-grid-1col {
             grid-template-columns: 1fr !important;
             gap: 14px !important;
