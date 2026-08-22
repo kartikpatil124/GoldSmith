@@ -1,0 +1,35 @@
+{
+  "name": "goldsmiths-jewels",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@react-three/fiber": "^8.18.0",
+    "@tailwindcss/vite": "^4.3.0",
+    "@types/three": "^0.185.1",
+    "@use-gesture/react": "^10.3.1",
+    "axios": "^1.16.0",
+    "framer-motion": "^11.11.0",
+    "gsap": "^3.15.0",
+    "lucide-react": "^0.460.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.26.2",
+    "socket.io-client": "^4.8.3",
+    "three": "^0.185.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.4",
+    "autoprefixer": "^10.5.0",
+    "postcss": "^8.5.15",
+    "tailwindcss": "^4.3.0",
+    "vite": "^6.0.1"
+  }
+}

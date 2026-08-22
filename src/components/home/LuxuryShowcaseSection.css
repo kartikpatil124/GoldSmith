@@ -1,0 +1,322 @@
+/* ============================================================
+   Anti-Gravity Scroll Section
+   Chapter 1: Pinned Hero Card
+   Chapter 2: Breakdown & Scatter → Settle into Mosaic
+   Chapter 3: Crossfade to Dark Product Demo
+   ============================================================ */
+
+/* Scroll Runway — provides the scroll distance */
+.antigravity-outer {
+  position: relative;
+  width: 100%;
+  height: 350vh;
+  background: #0A0806;
+}
+
+/* Sticky Viewport — stays locked while user scrolls the runway */
+.antigravity-sticky {
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #0e0c0a;
+}
+
+/* Full-screen React Bits Silk Shader Background */
+.ag-silk-bg-container {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.ag-silk-bg-container canvas {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+}
+
+/* ============================================================
+   CHAPTER 1: THE HERO CARD — Central Composition
+   ============================================================ */
+.ag-hero-card {
+  position: absolute;
+  width: 60vw;
+  max-width: 750px;
+  height: 55vh;
+  max-height: 550px;
+  border-radius: 24px;
+  overflow: hidden;
+  z-index: 5;
+  will-change: transform, opacity;
+  box-shadow:
+    0 30px 80px rgba(0, 0, 0, 0.7),
+    0 0 60px rgba(188, 156, 108, 0.15);
+}
+
+.ag-hero-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.ag-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(10, 8, 6, 0.15) 0%, rgba(10, 8, 6, 0.7) 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 32px;
+}
+
+.ag-hero-badge {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  color: #F4D099;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.ag-hero-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(32px, 5vw, 64px);
+  font-weight: 300;
+  color: #FFFFFF;
+  letter-spacing: 0.04em;
+  line-height: 1.1;
+  text-shadow: 0 4px 30px rgba(0, 0, 0, 0.8);
+}
+
+/* ============================================================
+   SCATTER PIECES: The surrounding blocks that break apart
+   ============================================================ */
+.ag-scatter-piece {
+  position: absolute;
+  border-radius: 16px;
+  will-change: transform, opacity;
+  overflow: hidden;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+}
+
+.ag-piece-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Individual piece starting positions (Chapter 1 composed state) */
+.ag-piece-1 {
+  width: 180px;
+  height: 130px;
+  top: 8%;
+  left: 5%;
+  z-index: 3;
+}
+
+.ag-piece-2 {
+  width: 200px;
+  height: 140px;
+  top: 5%;
+  right: 6%;
+  z-index: 4;
+}
+
+.ag-piece-3 {
+  width: 160px;
+  height: 120px;
+  bottom: 12%;
+  left: 8%;
+  z-index: 3;
+}
+
+.ag-piece-4 {
+  width: 190px;
+  height: 135px;
+  bottom: 8%;
+  right: 5%;
+  z-index: 4;
+}
+
+.ag-piece-5 {
+  width: 140px;
+  height: 100px;
+  top: 40%;
+  left: 2%;
+  z-index: 2;
+}
+
+.ag-piece-6 {
+  width: 150px;
+  height: 110px;
+  top: 38%;
+  right: 3%;
+  z-index: 2;
+}
+
+/* ============================================================
+   CHAPTER 2: SETTLED MOSAIC GRID
+   ============================================================ */
+.ag-mosaic-layer {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 20px;
+  padding: 40px;
+  will-change: opacity;
+  z-index: 6;
+}
+
+.ag-mosaic-tile {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+  width: 100%;
+  height: 100%;
+}
+
+/* Explicit grid area locking prevents grid reflow when tile 5 detaches */
+.ag-mosaic-tile:nth-child(1) { grid-area: 1 / 1; }
+.ag-mosaic-tile:nth-child(2) { grid-area: 1 / 2; }
+.ag-mosaic-tile:nth-child(3) { grid-area: 1 / 3; }
+.ag-mosaic-tile:nth-child(4) { grid-area: 2 / 1; }
+.ag-mosaic-tile:nth-child(5) { grid-area: 2 / 2; }
+.ag-mosaic-tile:nth-child(6) { grid-area: 2 / 3; }
+
+.ag-mosaic-tile-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ============================================================
+   CHAPTER 3: EQUAL 50/50 SPLIT CONTAINER WITH PERFECT ALIGNMENT
+   ============================================================ */
+.ag-split-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  max-width: 1360px;
+  width: calc(100% - 120px);
+  height: 480px;
+  align-items: center;
+  pointer-events: none;
+  z-index: 15;
+  will-change: transform, opacity;
+}
+
+.ag-split-left {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  pointer-events: auto;
+  height: 100%;
+  padding-right: 20px;
+}
+
+.ag-mosaic-tile--picked {
+  will-change: transform, width, height, left, top;
+  z-index: 35 !important;
+}
+
+.ag-split-right-target {
+  width: 100%;
+  height: 480px;
+  border-radius: 24px;
+  visibility: hidden; /* Target measurement box */
+}
+
+.ag-product-tag {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  color: #F4D099;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.ag-product-headline {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(36px, 4.8vw, 62px);
+  font-weight: 300;
+  color: #FFFFFF;
+  line-height: 1.1;
+  margin-bottom: 22px;
+  letter-spacing: 0.02em;
+  text-shadow: 0 4px 30px rgba(0, 0, 0, 0.6);
+}
+
+.ag-product-desc {
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  font-weight: 300;
+  color: rgba(248, 245, 240, 0.8);
+  line-height: 1.8;
+  margin-bottom: 32px;
+  max-width: 540px;
+}
+
+.ag-product-btn {
+  margin-top: 0;
+  box-shadow: 0 4px 20px rgba(201, 168, 76, 0.25);
+}
+
+/* ============================================================
+   Responsive tweaks
+   ============================================================ */
+@media (max-width: 992px) {
+  .ag-split-container {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    padding: 24px;
+  }
+
+  .ag-split-right {
+    height: 320px;
+  }
+}
+
+@media (max-width: 768px) {
+  .antigravity-outer {
+    height: 100vh;
+    height: 100dvh;
+  }
+
+  .antigravity-sticky {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: 100vh;
+    min-height: 100dvh;
+  }
+
+  /* Remove showcase card & scroll interaction from small devices, preserving the Silk shader background */
+  .ag-hero-card,
+  .ag-scatter-piece,
+  .ag-mosaic-layer,
+  .ag-split-container {
+    display: none !important;
+  }
+}

@@ -1,0 +1,82 @@
+/* ============================================================
+   ImageTrail Full-Bleed Section (No Boxes Edition)
+   ============================================================ */
+.image-trail-section {
+  position: relative;
+  width: 100%;
+  min-height: 80vh;
+  height: 700px;
+  background: linear-gradient(180deg, #0e0c0a 0%, #171410 50%, #0a0806 100%);
+  color: #F8F5F0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-top: 1px solid rgba(201, 168, 76, 0.15);
+  cursor: crosshair;
+}
+
+/* Full-bleed interactive canvas spanning the entire section */
+.image-trail-full-wrapper {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+}
+
+/* Centered Header floating in the exact middle of the section */
+.image-trail-header {
+  position: relative;
+  z-index: 10;
+  pointer-events: none;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 24px;
+}
+
+.image-trail-tag {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  color: #BC9C6C;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 16px;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.8);
+}
+
+.image-trail-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(40px, 6.5vw, 84px);
+  font-weight: 300;
+  color: #FFFFFF;
+  letter-spacing: 0.04em;
+  line-height: 1.05;
+  margin: 0;
+  text-shadow: 0 4px 40px rgba(0, 0, 0, 0.9), 0 0 20px rgba(201, 168, 76, 0.2);
+}
+
+@media (max-width: 768px) {
+  .image-trail-section {
+    height: 440px;
+    min-height: 50vh;
+    padding: 20px 16px;
+  }
+
+  .image-trail-tag {
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    margin-bottom: 10px;
+  }
+
+  .image-trail-title {
+    font-size: clamp(28px, 7.5vw, 42px);
+    line-height: 1.15;
+  }
+}
