@@ -309,6 +309,9 @@ export default function DomeGallery({
       onDrag: ({ event, last, velocity = [0, 0], direction = [0, 0], movement }) => {
         if (focusedElRef.current || !draggingRef.current || !startPosRef.current) return;
         const evt = event;
+        if (evt && evt.cancelable) {
+          evt.preventDefault();
+        }
         const dxTotal = evt.clientX - startPosRef.current.x;
         const dyTotal = evt.clientY - startPosRef.current.y;
         if (!movedRef.current) {
@@ -342,8 +345,29 @@ export default function DomeGallery({
         }
       }
     },
-    { target: mainRef, eventOptions: { passive: true } }
+    { 
+      target: mainRef, 
+      eventOptions: { passive: false },
+      drag: {
+        filterTaps: true,
+        preventScroll: true
+      }
+    }
   );
+
+  useEffect(() => {
+    const mainEl = mainRef.current;
+    if (!mainEl) return;
+
+    const handleTouchMove = (e) => {
+      if (draggingRef.current && e.cancelable) {
+        e.preventDefault();
+      }
+    };
+
+    mainEl.addEventListener('touchmove', handleTouchMove, { passive: false });
+    return () => mainEl.removeEventListener('touchmove', handleTouchMove);
+  }, []);
 
   useEffect(() => {
     const scrim = scrimRef.current;

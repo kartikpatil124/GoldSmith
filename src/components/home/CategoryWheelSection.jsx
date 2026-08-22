@@ -210,6 +210,9 @@ export default function CategoryWheelSection() {
 
     const handleTouchMove = (e) => {
       if (!isDraggingRef.current || e.touches.length !== 1) return;
+      if (e.cancelable) {
+        e.preventDefault();
+      }
       const currentY = e.touches[0].clientY;
       const deltaY = lastPointerYRef.current - currentY;
       lastPointerYRef.current = currentY;
@@ -231,10 +234,8 @@ export default function CategoryWheelSection() {
     const handleKeyDown = (e) => {
       if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
         e.preventDefault();
-        targetIndexRef.current = Math.min(CATEGORIES.length - 1, targetIndexRef.current + 1);
       } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
         e.preventDefault();
-        targetIndexRef.current = Math.max(0, targetIndexRef.current - 1);
       }
     };
 
@@ -244,7 +245,7 @@ export default function CategoryWheelSection() {
     window.addEventListener('pointercancel', handlePointerUp);
 
     container.addEventListener('touchstart', handleTouchStart, { passive: true });
-    window.addEventListener('touchmove', handleTouchMove, { passive: true });
+    window.addEventListener('touchmove', handleTouchMove, { passive: false });
     window.addEventListener('touchend', handleTouchEnd);
     window.addEventListener('touchcancel', handleTouchEnd);
 
