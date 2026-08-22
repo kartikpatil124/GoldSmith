@@ -225,20 +225,7 @@ export default function Shop() {
           </div>
 
           {/* Scrollable Liquid Glass Product Grid */}
-          <div 
-            className={`shop-product-grid shop-grid-${gridMode}`}
-            style={{
-              display: 'grid',
-              gridTemplateColumns: gridMode === '3-col' 
-                ? 'repeat(3, minmax(0, 1fr))' 
-                : gridMode === '1-col' 
-                  ? '1fr' 
-                  : 'repeat(2, minmax(0, 1fr))',
-              gap: gridMode === '3-col' ? '6px' : gridMode === '1-col' ? '16px' : '10px',
-              width: '100%',
-              boxSizing: 'border-box'
-            }}
-          >
+          <div className={`shop-product-grid shop-grid-${gridMode}`}>
             {visibleProducts.map((product) => (
               <ProductCard key={product._id || product.id} product={product} gridMode={gridMode} />
             ))}

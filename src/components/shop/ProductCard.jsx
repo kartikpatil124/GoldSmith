@@ -55,30 +55,40 @@ export default function ProductCard({ product, gridMode = '2-col' }) {
   const rawSecondary = product.images?.[1] ? (product.images[1].url || product.images[1]) : null;
   const secondaryImageUrl = rawSecondary && !secondaryImgError ? getMediaUrl(rawSecondary) : null;
 
-  // GSAP ScrollTrigger stagger entrance (desktop only)
+  // GSAP entrance animation using IntersectionObserver (works perfectly inside internal scroll container)
   useEffect(() => {
     if (!isDesktop || !cardRef.current) return;
 
     const el = cardRef.current;
-    gsap.set(el, { opacity: 0, y: 60, scale: 0.95 });
+    
+    // Ensure element is visible by default
+    el.style.opacity = '1';
 
-    const st = ScrollTrigger.create({
-      trigger: el,
-      start: 'top 92%',
-      onEnter: () => {
-        gsap.to(el, {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          duration: 0.7,
-          ease: 'power3.out',
-          clearProps: 'transform',
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            gsap.fromTo(
+              el,
+              { opacity: 0.3, y: 30, scale: 0.97 },
+              {
+                opacity: 1,
+                y: 0,
+                scale: 1,
+                duration: 0.45,
+                ease: 'power2.out',
+                clearProps: 'transform,opacity',
+              }
+            );
+            observer.unobserve(el);
+          }
         });
       },
-      once: true,
-    });
+      { threshold: 0.05 }
+    );
 
-    return () => st.kill();
+    observer.observe(el);
+    return () => observer.disconnect();
   }, [isDesktop]);
 
   // Desktop mouse handlers for magnetic tilt + glow + parallax
