@@ -1456,7 +1456,7 @@ div[style*="width: 120px"][style*="height: 120px"] {
 @supports (padding: env(safe-area-inset-bottom)) {
   footer { padding-bottom: calc(var(--space-8) + env(safe-area-inset-bottom)); }
   .toast { bottom: calc(var(--space-4) + env(safe-area-inset-bottom) + 60px); }
-  a[aria-label="WhatsApp Support"] { bottom: calc(80px + env(safe-area-inset-bottom)) !important; }
+  a[aria-label="WhatsApp Support"], .whatsapp-floating-btn { bottom: calc(200px + env(safe-area-inset-bottom, 0px)) !important; }
 }
 
 /* ============================================
@@ -2552,8 +2552,9 @@ div[style*="width: 120px"][style*="height: 120px"] {
 
 @media (max-width: 768px) {
   /* Safe WhatsApp positioning well above floating control pills */
+  a[aria-label="WhatsApp Support"],
   .whatsapp-floating-btn {
-    bottom: calc(180px + env(safe-area-inset-bottom, 0px)) !important;
+    bottom: calc(200px + env(safe-area-inset-bottom, 0px)) !important;
     left: auto !important;
     right: 14px !important;
     width: 48px !important;
