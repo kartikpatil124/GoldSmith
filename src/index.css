@@ -2551,19 +2551,19 @@ div[style*="width: 120px"][style*="height: 120px"] {
 }
 
 @media (max-width: 768px) {
-  /* Safe WhatsApp positioning above bottom navigation on right side */
+  /* Safe WhatsApp positioning cleanly above bottom navigation on right side */
   .whatsapp-floating-btn {
-    bottom: calc(82px + env(safe-area-inset-bottom, 0px)) !important;
+    bottom: calc(76px + env(safe-area-inset-bottom, 0px)) !important;
     left: auto !important;
     right: 14px !important;
-    width: 46px !important;
-    height: 46px !important;
-    font-size: 22px !important;
-    box-shadow: 0 6px 18px rgba(37, 211, 102, 0.45) !important;
+    width: 44px !important;
+    height: 44px !important;
+    font-size: 20px !important;
+    box-shadow: 0 6px 18px rgba(37, 211, 102, 0.4) !important;
     z-index: 990 !important;
   }
 
-  /* Hide individual top pills on mobile so they don't collide with the mobile header */
+  /* Hide individual floating pills on mobile to prevent overlapping with bottom nav and mobile headers */
   .glass-floating-shop-pill,
   .glass-floating-collections-pill,
   .glass-floating-bridal-pill,
@@ -2573,7 +2573,9 @@ div[style*="width: 120px"][style*="height: 120px"] {
   .glass-floating-wishlist-pill,
   .glass-floating-cart-pill,
   .glass-floating-product-pill,
-  .glass-floating-account-pill {
+  .glass-floating-account-pill,
+  .glass-floating-category-trigger,
+  .glass-floating-controls-pill {
     display: none !important;
   }
 
@@ -2585,33 +2587,9 @@ div[style*="width: 120px"][style*="height: 120px"] {
   }
 
   .glass-big-center-box {
-    padding: 16px 10px calc(80px + env(safe-area-inset-bottom, 0px)) !important;
+    padding: 16px 10px calc(100px + env(safe-area-inset-bottom, 0px)) !important;
     border-radius: 24px 24px 0 0 !important;
     -webkit-overflow-scrolling: touch !important;
-  }
-
-  /* Mobile Category Trigger Button */
-  .glass-floating-category-trigger {
-    bottom: calc(72px + env(safe-area-inset-bottom, 0px)) !important;
-    left: 12px !important;
-    padding: 8px 14px !important;
-    font-size: 10px !important;
-    height: 38px !important;
-    z-index: 990 !important;
-  }
-
-  /* Mobile Filter & Sort Pill Controls */
-  .glass-floating-controls-pill {
-    bottom: calc(72px + env(safe-area-inset-bottom, 0px)) !important;
-    right: 12px !important;
-    padding: 4px 10px !important;
-    height: 38px !important;
-    z-index: 990 !important;
-  }
-
-  .glass-control-btn {
-    font-size: 10px !important;
-    padding: 4px 6px !important;
   }
 
   /* Mobile Filter Drawer Body */

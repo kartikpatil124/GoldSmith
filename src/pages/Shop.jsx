@@ -199,11 +199,17 @@ export default function Shop() {
               </button>
             </div>
 
-            {/* Right: Quick Filter Trigger & Count */}
+            {/* Right: Quick Category Wheel + Filter Trigger & Count */}
             <div className="shop-grid-actions">
-              <span className="shop-count-label">
-                {processedProducts.length} Designs
-              </span>
+              <button 
+                onClick={() => setIsCategoryWheelOpen(true)}
+                className="shop-quick-wheel-btn"
+                aria-label="Open 3D Category Wheel"
+                title="3D Category Wheel"
+              >
+                <span>🌐</span>
+                <span className="shop-wheel-btn-text">{filters.category ? filters.category.toUpperCase() : 'WHEEL'}</span>
+              </button>
 
               <button 
                 onClick={() => setIsFilterOpen(true)}
@@ -221,6 +227,10 @@ export default function Shop() {
                 </svg>
                 {activeFilterCount > 0 && <span className="shop-filter-badge">{activeFilterCount}</span>}
               </button>
+
+              <span className="shop-count-label">
+                {processedProducts.length} Designs
+              </span>
             </div>
           </div>
 
@@ -709,6 +719,29 @@ export default function Shop() {
           color: var(--color-gold-dark);
           letter-spacing: 0.06em;
           text-transform: uppercase;
+        }
+
+        .shop-quick-wheel-btn {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          height: 36px;
+          padding: 0 12px;
+          border-radius: 20px;
+          background: rgba(255, 255, 255, 0.85);
+          border: 1px solid rgba(188, 156, 108, 0.3);
+          color: #1A1A1A;
+          font-size: 11px;
+          font-weight: 700;
+          letter-spacing: 0.05em;
+          cursor: pointer;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+          transition: all 0.2s ease;
+          -webkit-tap-highlight-color: transparent;
+        }
+
+        .shop-quick-wheel-btn:active {
+          transform: scale(0.94);
         }
 
         .shop-quick-filter-btn {
