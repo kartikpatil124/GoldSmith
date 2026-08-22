@@ -199,17 +199,11 @@ export default function Shop() {
               </button>
             </div>
 
-            {/* Right: Quick Category Wheel + Filter Trigger & Count */}
+            {/* Right: Quick Filter Trigger & Count */}
             <div className="shop-grid-actions">
-              <button 
-                onClick={() => setIsCategoryWheelOpen(true)}
-                className="shop-quick-wheel-btn"
-                aria-label="Open 3D Category Wheel"
-                title="3D Category Wheel"
-              >
-                <span>🌐</span>
-                <span className="shop-wheel-btn-text">{filters.category ? filters.category.toUpperCase() : 'WHEEL'}</span>
-              </button>
+              <span className="shop-count-label">
+                {processedProducts.length} Designs
+              </span>
 
               <button 
                 onClick={() => setIsFilterOpen(true)}
@@ -227,10 +221,6 @@ export default function Shop() {
                 </svg>
                 {activeFilterCount > 0 && <span className="shop-filter-badge">{activeFilterCount}</span>}
               </button>
-
-              <span className="shop-count-label">
-                {processedProducts.length} Designs
-              </span>
             </div>
           </div>
 
@@ -721,29 +711,6 @@ export default function Shop() {
           text-transform: uppercase;
         }
 
-        .shop-quick-wheel-btn {
-          display: inline-flex;
-          align-items: center;
-          gap: 6px;
-          height: 36px;
-          padding: 0 12px;
-          border-radius: 20px;
-          background: rgba(255, 255, 255, 0.85);
-          border: 1px solid rgba(188, 156, 108, 0.3);
-          color: #1A1A1A;
-          font-size: 11px;
-          font-weight: 700;
-          letter-spacing: 0.05em;
-          cursor: pointer;
-          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-          transition: all 0.2s ease;
-          -webkit-tap-highlight-color: transparent;
-        }
-
-        .shop-quick-wheel-btn:active {
-          transform: scale(0.94);
-        }
-
         .shop-quick-filter-btn {
           width: 36px;
           height: 36px;
@@ -788,23 +755,23 @@ export default function Shop() {
           transition: all 0.3s ease;
         }
 
-        /* Option 1: 2-Column Grid */
+        /* Option 1: 2-Column Grid (desktop: 4 columns) */
         .shop-product-grid.shop-grid-2col {
-          grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-          gap: 28px;
+          grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+          gap: 24px;
         }
 
-        /* Option 2: 3-Column Dense Grid */
+        /* Option 2: 3-Column Dense Grid (desktop: 5 columns) */
         .shop-product-grid.shop-grid-3col {
-          grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-          gap: 16px;
+          grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+          gap: 18px;
         }
 
         /* Option 3: 1-Column Showcase */
         .shop-product-grid.shop-grid-1col {
           grid-template-columns: 1fr;
-          gap: 20px;
-          max-width: 680px;
+          gap: 28px;
+          max-width: 720px;
           margin: 0 auto;
         }
 
