@@ -2551,19 +2551,20 @@ div[style*="width: 120px"][style*="height: 120px"] {
 }
 
 @media (max-width: 768px) {
-  /* Safe WhatsApp positioning cleanly above bottom navigation on right side */
+  /* Safe WhatsApp positioning cleanly above floating control pills */
   .whatsapp-floating-btn {
-    bottom: calc(76px + env(safe-area-inset-bottom, 0px)) !important;
+    bottom: calc(128px + env(safe-area-inset-bottom, 0px)) !important;
     left: auto !important;
     right: 14px !important;
-    width: 44px !important;
-    height: 44px !important;
-    font-size: 20px !important;
-    box-shadow: 0 6px 18px rgba(37, 211, 102, 0.4) !important;
-    z-index: 990 !important;
+    width: 46px !important;
+    height: 46px !important;
+    font-size: 22px !important;
+    border-radius: 50% !important;
+    box-shadow: 0 6px 20px rgba(37, 211, 102, 0.45), 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+    z-index: 992 !important;
   }
 
-  /* Hide individual floating pills on mobile to prevent overlapping with bottom nav and mobile headers */
+  /* Hide individual top pills on mobile so they don't collide with the mobile header */
   .glass-floating-shop-pill,
   .glass-floating-collections-pill,
   .glass-floating-bridal-pill,
@@ -2573,9 +2574,7 @@ div[style*="width: 120px"][style*="height: 120px"] {
   .glass-floating-wishlist-pill,
   .glass-floating-cart-pill,
   .glass-floating-product-pill,
-  .glass-floating-account-pill,
-  .glass-floating-category-trigger,
-  .glass-floating-controls-pill {
+  .glass-floating-account-pill {
     display: none !important;
   }
 
@@ -2587,9 +2586,66 @@ div[style*="width: 120px"][style*="height: 120px"] {
   }
 
   .glass-big-center-box {
-    padding: 16px 10px calc(100px + env(safe-area-inset-bottom, 0px)) !important;
+    padding: 16px 10px calc(140px + env(safe-area-inset-bottom, 0px)) !important;
     border-radius: 24px 24px 0 0 !important;
     -webkit-overflow-scrolling: touch !important;
+  }
+
+  /* Mobile Floating Action Controls Tier (Category Wheel & Filter/Sort) */
+  .glass-floating-category-trigger {
+    bottom: calc(80px + env(safe-area-inset-bottom, 0px)) !important;
+    left: 14px !important;
+    padding: 0 14px !important;
+    font-size: 10.5px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.06em !important;
+    height: 36px !important;
+    line-height: 36px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 6px !important;
+    border-radius: 9999px !important;
+    background: rgba(255, 255, 255, 0.88) !important;
+    backdrop-filter: blur(28px) saturate(200%) !important;
+    -webkit-backdrop-filter: blur(28px) saturate(200%) !important;
+    border: 1.2px solid rgba(255, 255, 255, 0.95) !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(201, 168, 76, 0.16) !important;
+    z-index: 990 !important;
+    box-sizing: border-box !important;
+  }
+
+  .glass-floating-controls-pill {
+    bottom: calc(80px + env(safe-area-inset-bottom, 0px)) !important;
+    right: 14px !important;
+    padding: 0 10px !important;
+    height: 36px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 6px !important;
+    border-radius: 9999px !important;
+    background: rgba(255, 255, 255, 0.88) !important;
+    backdrop-filter: blur(28px) saturate(200%) !important;
+    -webkit-backdrop-filter: blur(28px) saturate(200%) !important;
+    border: 1.2px solid rgba(255, 255, 255, 0.95) !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(201, 168, 76, 0.16) !important;
+    z-index: 990 !important;
+    box-sizing: border-box !important;
+  }
+
+  .glass-control-btn {
+    font-size: 10px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.05em !important;
+    padding: 0 6px !important;
+    height: 100% !important;
+  }
+
+  .glass-control-divider {
+    height: 16px !important;
+    width: 1px !important;
+    background: rgba(0, 0, 0, 0.15) !important;
   }
 
   /* Mobile Filter Drawer Body */
@@ -2602,6 +2658,7 @@ div[style*="width: 120px"][style*="height: 120px"] {
   .shop-product-grid.shop-grid-1col {
     grid-template-columns: 1fr !important;
     gap: 14px !important;
+    padding-bottom: 24px !important;
   }
 
   .shop-product-grid.shop-grid-2col,
@@ -2610,17 +2667,22 @@ div[style*="width: 120px"][style*="height: 120px"] {
   .collections-product-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
     gap: 10px !important;
+    padding-bottom: 24px !important;
   }
 
   .shop-product-grid.shop-grid-3col {
     grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
     gap: 6px !important;
+    padding-bottom: 24px !important;
   }
 
   /* Bottom Navigation */
   .bottom-nav-container {
     display: block !important;
-    z-index: 995 !important;
+    z-index: 1050 !important;
+    bottom: calc(12px + env(safe-area-inset-bottom, 0px)) !important;
+    left: 12px !important;
+    right: 12px !important;
   }
 
   /* Container Padding on Mobile */
