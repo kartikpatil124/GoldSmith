@@ -543,12 +543,15 @@ export default function ProductCard({ product, gridMode = '2-col' }) {
         .product-card-cta-tag {
           font-size: 10px;
           font-weight: 700;
-          color: var(--color-gold-dark);
-          background: rgba(188, 156, 108, 0.12);
-          padding: 3px 8px;
-          border-radius: 10px;
+          color: #1a1a1a;
+          background: linear-gradient(135deg, #e6c875 0%, #d4af37 50%, #aa7c11 100%);
+          padding: 4px 10px;
+          border-radius: 9999px;
           white-space: nowrap;
           flex-shrink: 0;
+          box-shadow: 0 2px 8px rgba(212, 175, 55, 0.35);
+          border: 1px solid rgba(255, 255, 255, 0.4);
+          letter-spacing: 0.04em;
         }
 
         /* 3-COLUMN DENSE OVERRIDES */
@@ -634,8 +637,13 @@ export default function ProductCard({ product, gridMode = '2-col' }) {
         }
 
         .product-card-cta-full {
-          padding: 7px 16px !important;
-          font-size: 11px !important;
+          padding: 8px 18px !important;
+          font-size: 11.5px !important;
+          font-weight: 700 !important;
+          letter-spacing: 0.06em !important;
+          text-transform: uppercase !important;
+          border-radius: 9999px !important;
+          box-shadow: 0 4px 14px rgba(212, 175, 55, 0.4) !important;
         }
 
         /* =============================================

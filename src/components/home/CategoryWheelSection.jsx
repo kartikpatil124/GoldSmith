@@ -318,8 +318,8 @@ export default function CategoryWheelSection() {
           Current selected category: {activeCategory.name}
         </div>
 
-        {/* Dual Wheel Stage Container */}
-        <div className="category-wheel-stage">
+        {/* DESKTOP Dual Wheel Stage Container (≥769px) */}
+        <div className="category-wheel-stage cat-wheel-desktop-only">
           {/* LEFT WHEEL: Text Categories */}
           <div className="category-wheel-viewport">
             <div className="category-wheel-track">
@@ -354,8 +354,57 @@ export default function CategoryWheelSection() {
           </div>
         </div>
 
-        {/* Mobile Swipe Guidance Micro-Indicator */}
-        <div className="cat-wheel-mobile-guidance">
+        {/* MOBILE Dedicated Category Showcase Card (≤768px - Exact match to reference) */}
+        <div className="cat-wheel-mobile-view">
+          {/* Horizontal Category Pill Selector Tabs */}
+          <div className="cat-wheel-mobile-pills">
+            {CATEGORIES.map((catObj, idx) => (
+              <button
+                key={catObj.slug}
+                type="button"
+                className={`cat-wheel-pill ${idx === selectedIndex ? 'active' : ''}`}
+                onClick={() => {
+                  setSelectedIndex(idx);
+                  currentIndexRef.current = idx;
+                  targetIndexRef.current = idx;
+                }}
+              >
+                {catObj.name}
+              </button>
+            ))}
+          </div>
+
+          {/* Centerpiece Luxury Showcase Card */}
+          <div className="cat-wheel-mobile-card">
+            <div className="cat-wheel-mobile-card-img-wrap">
+              <img
+                src={activeCategory.image}
+                alt={activeCategory.name}
+                className="cat-wheel-mobile-card-img"
+              />
+              <div className="cat-wheel-mobile-card-gradient" />
+            </div>
+
+            <div className="cat-wheel-mobile-card-content">
+              <h3 className="cat-wheel-mobile-card-title">
+                {activeCategory.name}
+              </h3>
+              <p className="cat-wheel-mobile-card-sub">
+                {activeCategory.subtitle}
+              </p>
+              <button
+                type="button"
+                onClick={() => navigate(`/shop?category=${activeCategory.slug}`)}
+                className="cat-wheel-mobile-card-btn"
+              >
+                EXPLORE {activeCategory.name.toUpperCase()} COLLECTION →
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Mobile Swipe Guidance Micro-Indicator (Desktop/Tablet scroll hint) */}
+        <div className="cat-wheel-mobile-guidance cat-wheel-desktop-only">
           <div className="cat-wheel-scroll-pill">
             <span className="cat-wheel-drag-dot" />
             <span>Swipe or scroll to rotate</span>
