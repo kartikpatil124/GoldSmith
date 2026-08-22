@@ -772,13 +772,13 @@ export default function Shop() {
           .shop-product-grid.shop-grid-2col,
           .shop-product-grid:not([class*="shop-grid-"]) {
             grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-            gap: 10px !important;
+            gap: 16px 8px !important;
           }
 
           .shop-product-grid.shop-grid-3-col,
           .shop-product-grid.shop-grid-3col {
             grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-            gap: 6px !important;
+            gap: 12px 6px !important;
           }
 
           .shop-product-grid.shop-grid-1-col,
