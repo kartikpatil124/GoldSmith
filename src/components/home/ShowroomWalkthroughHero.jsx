@@ -195,7 +195,7 @@ export default function ShowroomWalkthroughHero() {
   const dashOffset = circumference - (circumference * loadPercent) / 100;
 
   return (
-    <>
+    <div className="showroom-hero-wrapper">
       {/* ─── Luxury Preloader ─── */}
       <div className={`showroom-preloader ${preloaderHidden ? 'hidden' : ''}`}>
         <div className="preloader-brand">GOLDSMITHS</div>
@@ -284,6 +284,6 @@ export default function ShowroomWalkthroughHero() {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
