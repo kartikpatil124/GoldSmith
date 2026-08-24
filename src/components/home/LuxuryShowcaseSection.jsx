@@ -1,4 +1,5 @@
 import React, { useRef, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Silk from '../ui/Silk';
@@ -22,11 +23,15 @@ gsap.registerPlugin(ScrollTrigger);
 /*
   Anti-Gravity Scroll Section — With React Bits Silk Background
   ─────────────────────────────────────────────────────────────
-  Chapter 1 (0%–25%):   Hero card pinned, scatter pieces visible around it over Silk shader.
-  Chapter 2 (25%–55%):  Breakdown → scatter pieces fly outward with parallax depth
-                        → settle into 6-tile mosaic grid over Silk shader.
-  Chapter 3 (55%–100%): Emerald necklace mosaic tile detaches & slides gracefully
-                        into equal 50/50 split layout.
+  Desktop:
+    Chapter 1 (0%–25%):   Hero card pinned, scatter pieces visible around it over Silk shader.
+    Chapter 2 (25%–55%):  Breakdown → scatter pieces fly outward with parallax depth
+                          → settle into 6-tile mosaic grid over Silk shader.
+    Chapter 3 (55%–100%): Emerald necklace mosaic tile detaches & slides gracefully
+                          into equal 50/50 split layout.
+
+  Mobile:
+    Scroll-driven 3D Card Ring Orbiting in real 3D space around the user.
 */
 
 const SCATTER_IMAGES = [img2, img3, img4, img5, img6, img7];
@@ -43,6 +48,69 @@ const SCATTER_TARGETS = [
   { x: 400, y: -20, rotate: 12, scale: 0.78 },
 ];
 
+const MOBILE_RING_CARDS = [
+  {
+    id: 1,
+    title: 'Imperial Halo Solitaire',
+    category: 'Rings',
+    metal: '18K Yellow Gold',
+    price: '₹2,85,000',
+    badge: '01 · HALO RING',
+    image: main1Img,
+    slug: 'celestial-diamond-solitaire-ring',
+  },
+  {
+    id: 2,
+    title: 'Royal Emerald Heritage',
+    category: 'Necklaces',
+    metal: '22K Gold & Emerald',
+    price: '₹8,50,000',
+    badge: '02 · ROYAL SUITE',
+    image: img5,
+    slug: 'maharani-bridal-necklace-set',
+  },
+  {
+    id: 3,
+    title: 'Starlight Diamond Line',
+    category: 'Bracelets',
+    metal: '18K White Gold',
+    price: '₹4,25,000',
+    badge: '03 · BRACELET',
+    image: img8,
+    slug: 'infinity-diamond-tennis-bracelet',
+  },
+  {
+    id: 4,
+    title: 'Celestial Drop Solitaire',
+    category: 'Earrings',
+    metal: '18K Rose Gold',
+    price: '₹1,65,000',
+    badge: '04 · EARRINGS',
+    image: img10,
+    slug: 'royal-emerald-drop-earrings',
+  },
+  {
+    id: 5,
+    title: 'Aura Diamond Pendant',
+    category: 'Pendants',
+    metal: 'Platinum & Gold',
+    price: '₹1,95,000',
+    badge: '05 · PENDANT',
+    image: img9,
+    slug: 'celestial-diamond-solitaire-ring',
+  },
+  {
+    id: 6,
+    title: 'Elysian Bridal Choker',
+    category: 'Bridal',
+    metal: '22K Temple Gold',
+    price: '₹6,40,000',
+    badge: '06 · BRIDAL',
+    image: img13,
+    slug: 'maharani-bridal-necklace-set',
+  },
+];
+
 export default function LuxuryShowcaseSection() {
   const outerRef = useRef(null);
   const stickyRef = useRef(null);
@@ -52,9 +120,13 @@ export default function LuxuryShowcaseSection() {
   const mosaicTilesRef = useRef([]);
   const productTextRef = useRef(null);
   const imageTargetRef = useRef(null);
+  const ringCardsRef = useRef([]);
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
+    const mm = gsap.matchMedia(outerRef);
+
+    // ── DESKTOP VIEW (>= 769px) — Preserved 100% untouched ──
+    mm.add('(min-width: 769px)', () => {
       const pickedTile = mosaicTilesRef.current[PICKED_TILE_INDEX];
       const imageTarget = imageTargetRef.current;
       const stickyEl = stickyRef.current;
@@ -114,7 +186,6 @@ export default function LuxuryShowcaseSection() {
 
       // ── CHAPTER 3: Absolute Pixel-Perfect Tile Detach & Morph ──
       if (pickedTile && imageTarget && stickyEl) {
-        // Measure pixel coordinates relative to the sticky viewport container
         const stickyBox = stickyEl.getBoundingClientRect();
         const tileBox = pickedTile.getBoundingClientRect();
         const targetBox = imageTarget.getBoundingClientRect();
@@ -129,10 +200,9 @@ export default function LuxuryShowcaseSection() {
         const targetW = targetBox.width;
         const targetH = targetBox.height;
 
-        // Convert picked tile to absolute positioning in the sticky container at keyframe 55
         tl.to(pickedTile, {
           position: 'absolute',
-          gridArea: 'auto', // Reset grid area layout origin to top-left of container
+          gridArea: 'auto',
           left: initialLeft,
           top: initialTop,
           width: initialW,
@@ -141,7 +211,6 @@ export default function LuxuryShowcaseSection() {
           duration: 0.1,
         }, 55);
 
-        // Animate picked tile cleanly into target box coordinates
         tl.to(pickedTile, {
           left: targetLeft,
           top: targetTop,
@@ -162,10 +231,71 @@ export default function LuxuryShowcaseSection() {
         { opacity: 1, x: 0, duration: 20, ease: 'power2.out' },
         62
       );
+    });
 
-    }, outerRef);
+    // ── MOBILE VIEW (<= 768px) — 3D Scroll Card Ring ──
+    mm.add('(max-width: 768px)', () => {
+      const numCards = MOBILE_RING_CARDS.length;
+      const angleStep = (2 * Math.PI) / numCards;
+      const totalRotationAngle = Math.PI * 2 * 1.8; // 648 degrees rotation journey
 
-    return () => ctx.revert();
+      const updateCardPositions = (currentRotation) => {
+        // Horizontal radius dynamically tuned to mobile viewport
+        const Rx = Math.min(window.innerWidth * 0.36, 140);
+        const Rz = 185; // Depth radius
+
+        ringCardsRef.current.forEach((cardEl, idx) => {
+          if (!cardEl) return;
+          const angle = idx * angleStep + currentRotation;
+          
+          const x = Math.sin(angle) * Rx;
+          const z = Math.cos(angle) * Rz;
+          
+          // Normalized depth: 1 = closest (front), 0 = farthest (back)
+          const depthFactor = (z + Rz) / (2 * Rz);
+          
+          // Smooth scale based on depth (0.72 at back -> 1.08 at front)
+          const scale = 0.72 + 0.36 * Math.pow(depthFactor, 1.15);
+          
+          // Opacity based on depth (0.32 at back -> 1.0 at front)
+          const opacity = 0.32 + 0.68 * Math.pow(depthFactor, 1.3);
+          
+          // Depth blur (3.5px at back -> 0px at front)
+          const blur = Math.max(0, (1 - depthFactor) * 3.5);
+          
+          // Natural tangential Y-rotation around the 3D ring
+          const rotateY = -Math.sin(angle) * 32;
+          
+          // Dynamic z-index
+          const zIndex = Math.round(depthFactor * 100);
+
+          cardEl.style.transform = `translate3d(${x.toFixed(1)}px, 0px, ${z.toFixed(1)}px) rotateY(${rotateY.toFixed(1)}deg) scale(${scale.toFixed(3)})`;
+          cardEl.style.opacity = opacity.toFixed(3);
+          cardEl.style.filter = blur > 0.1 ? `blur(${blur.toFixed(1)}px)` : 'none';
+          cardEl.style.zIndex = zIndex;
+        });
+      };
+
+      // Initial card layout at rotation 0
+      updateCardPositions(0);
+
+      // Continuous scroll-driven rotation timeline
+      gsap.timeline({
+        scrollTrigger: {
+          trigger: outerRef.current,
+          start: 'top top',
+          end: 'bottom bottom',
+          scrub: 0.8,
+          pin: false,
+          onUpdate: (self) => {
+            const rot = self.progress * totalRotationAngle;
+            updateCardPositions(rot);
+          },
+        },
+      });
+    });
+
+    return () => mm.revert();
   }, []);
 
   return (
@@ -176,6 +306,57 @@ export default function LuxuryShowcaseSection() {
         <div className="ag-silk-bg-container">
           <Silk speed={5} scale={1} color="#7B7481" noiseIntensity={1.5} rotation={0} />
         </div>
+
+        {/* ════════════════════════════════════════════════════════════
+            MOBILE 3D SCROLL CARD RING (Visible on <= 768px)
+            ════════════════════════════════════════════════════════════ */}
+        <div className="ag-mobile-3d-ring-stage">
+          {/* Header HUD */}
+          <div className="ag-mobile-ring-hud">
+            <span className="ag-mobile-ring-tag">00 HALO • GOLDSMITHS</span>
+            <h3 className="ag-mobile-ring-title">3D Atelier Ring</h3>
+            <span className="ag-mobile-ring-subtitle">Scroll to Rotate Orbit</span>
+          </div>
+
+          {/* 3D Viewport Track */}
+          <div className="ag-mobile-3d-ring-track">
+            {MOBILE_RING_CARDS.map((card, i) => (
+              <div
+                key={card.id}
+                ref={el => (ringCardsRef.current[i] = el)}
+                className="ag-3d-ring-card"
+              >
+                <Link to={`/product/${card.slug}`} className="ag-3d-ring-card-inner">
+                  {/* Image Box */}
+                  <div className="ag-3d-ring-img-box">
+                    <img src={card.image} alt={card.title} className="ag-3d-ring-img" />
+                    <span className="ag-3d-ring-badge">{card.badge}</span>
+                  </div>
+
+                  {/* Card Content */}
+                  <div className="ag-3d-ring-card-body">
+                    <span className="ag-3d-ring-meta">{card.category} · {card.metal}</span>
+                    <h4 className="ag-3d-ring-name">{card.title}</h4>
+                    <div className="ag-3d-ring-price-row">
+                      <span className="ag-3d-ring-price">{card.price}</span>
+                      <span className="ag-3d-ring-cta">Explore →</span>
+                    </div>
+                  </div>
+                </Link>
+              </div>
+            ))}
+          </div>
+
+          {/* Bottom HUD Indicator */}
+          <div className="ag-mobile-ring-indicator">
+            <span className="ag-ring-indicator-dot" />
+            <span className="ag-ring-indicator-text">Continuous 3D Orbit</span>
+          </div>
+        </div>
+
+        {/* ════════════════════════════════════════════════════════════
+            DESKTOP SHOWCASE (Visible on >= 769px)
+            ════════════════════════════════════════════════════════════ */}
 
         {/* ── HERO CARD (Chapter 1) ── */}
         <div ref={heroCardRef} className="ag-hero-card">

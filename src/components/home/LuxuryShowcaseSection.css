@@ -283,8 +283,13 @@
   box-shadow: 0 4px 20px rgba(201, 168, 76, 0.25);
 }
 
+/* Desktop default: Hide mobile 3D ring */
+.ag-mobile-3d-ring-stage {
+  display: none;
+}
+
 /* ============================================================
-   Responsive tweaks
+   Responsive tweaks & Mobile 3D Scroll Card Ring
    ============================================================ */
 @media (max-width: 992px) {
   .ag-split-container {
@@ -299,24 +304,276 @@
 }
 
 @media (max-width: 768px) {
+  /* Scroll Runway for Mobile 3D Ring */
   .antigravity-outer {
-    height: 100vh;
-    height: 100dvh;
-  }
-
-  .antigravity-sticky {
+    height: 380vh !important;
     position: relative;
     width: 100%;
-    height: 100%;
-    min-height: 100vh;
-    min-height: 100dvh;
+    background: #0A0806;
   }
 
-  /* Remove showcase card & scroll interaction from small devices, preserving the Silk shader background */
+  /* Pinned Sticky Viewport during 3D Card Orbit */
+  .antigravity-sticky {
+    position: sticky !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    height: 100dvh !important;
+    overflow: hidden !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  /* Hide Desktop showcase elements on mobile */
   .ag-hero-card,
   .ag-scatter-piece,
   .ag-mosaic-layer,
   .ag-split-container {
     display: none !important;
+  }
+
+  /* ── 3D SCROLL CARD RING STAGE ── */
+  .ag-mobile-3d-ring-stage {
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    position: absolute;
+    inset: 0;
+    padding: calc(68px + env(safe-area-inset-top, 0px)) 16px calc(76px + env(safe-area-inset-bottom, 0px));
+    z-index: 10;
+    pointer-events: none;
+    box-sizing: border-box;
+  }
+
+  /* Header HUD */
+  .ag-mobile-ring-hud {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    pointer-events: auto;
+    z-index: 20;
+  }
+
+  .ag-mobile-ring-tag {
+    font-family: 'Inter', sans-serif;
+    font-size: 8.5px;
+    font-weight: 700;
+    color: #F4D099;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+  }
+
+  .ag-mobile-ring-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(26px, 6.5vw, 32px);
+    font-weight: 400;
+    color: #FFFFFF;
+    letter-spacing: 0.04em;
+    margin: 0;
+    line-height: 1.1;
+    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
+  }
+
+  .ag-mobile-ring-subtitle {
+    font-family: 'Inter', sans-serif;
+    font-size: 9.5px;
+    font-weight: 600;
+    color: rgba(244, 208, 153, 0.7);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-top: 3px;
+  }
+
+  /* 3D Track Container with Real Perspective */
+  .ag-mobile-3d-ring-track {
+    position: relative;
+    width: 100%;
+    height: 360px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    perspective: 1100px;
+    -webkit-perspective: 1100px;
+    transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d;
+    pointer-events: none;
+  }
+
+  /* Individual 3D Orbit Card */
+  .ag-3d-ring-card {
+    position: absolute;
+    width: 220px;
+    height: 315px;
+    will-change: transform, opacity, filter;
+    transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d;
+    pointer-events: auto;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    cursor: pointer;
+  }
+
+  .ag-3d-ring-card-inner {
+    text-decoration: none;
+    width: 100%;
+    height: 100%;
+    background: rgba(18, 16, 14, 0.78);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: 1.5px solid rgba(201, 168, 76, 0.45);
+    border-radius: 20px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.8), 0 0 30px rgba(201, 168, 76, 0.18);
+    box-sizing: border-box;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  }
+
+  .ag-3d-ring-card-inner:active {
+    border-color: #F4D099;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.8), 0 0 45px rgba(201, 168, 76, 0.4);
+  }
+
+  /* Image Box inside 3D Card */
+  .ag-3d-ring-img-box {
+    position: relative;
+    width: 100%;
+    height: 180px;
+    border-radius: 14px;
+    overflow: hidden;
+    background: #0A0806;
+  }
+
+  .ag-3d-ring-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .ag-3d-ring-badge {
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    font-family: 'Inter', sans-serif;
+    font-size: 7.5px;
+    font-weight: 700;
+    color: #F4D099;
+    background: rgba(10, 8, 6, 0.88);
+    backdrop-filter: blur(8px);
+    padding: 3px 7px;
+    border-radius: 6px;
+    border: 1px solid rgba(201, 168, 76, 0.35);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  /* Body Content */
+  .ag-3d-ring-card-body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    justify-content: space-between;
+    padding: 8px 2px 2px;
+  }
+
+  .ag-3d-ring-meta {
+    font-family: 'Inter', sans-serif;
+    font-size: 8.5px;
+    font-weight: 600;
+    color: #C9A84C;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+
+  .ag-3d-ring-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16.5px;
+    font-weight: 600;
+    color: #FFFFFF;
+    line-height: 1.2;
+    margin: 2px 0 6px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .ag-3d-ring-price-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid rgba(201, 168, 76, 0.15);
+    padding-top: 6px;
+  }
+
+  .ag-3d-ring-price {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 15.5px;
+    font-weight: 700;
+    color: #F4D099;
+  }
+
+  .ag-3d-ring-cta {
+    font-family: 'Inter', sans-serif;
+    font-size: 9.5px;
+    font-weight: 700;
+    color: #FFFFFF;
+    background: rgba(201, 168, 76, 0.22);
+    border: 1px solid rgba(201, 168, 76, 0.4);
+    padding: 3px 8px;
+    border-radius: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* Bottom Progress Indicator */
+  .ag-mobile-ring-indicator {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(201, 168, 76, 0.3);
+    border-radius: 9999px;
+    padding: 6px 14px;
+    pointer-events: auto;
+    z-index: 20;
+  }
+
+  .ag-ring-indicator-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #F4D099;
+    box-shadow: 0 0 8px #F4D099;
+    animation: ringPulse 2s ease infinite;
+  }
+
+  .ag-ring-indicator-text {
+    font-family: 'Inter', sans-serif;
+    font-size: 9.5px;
+    font-weight: 600;
+    color: #FFFFFF;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  @keyframes ringPulse {
+    0%, 100% {
+      transform: scale(1);
+      opacity: 0.7;
+    }
+    50% {
+      transform: scale(1.4);
+      opacity: 1;
+    }
   }
 }
