@@ -413,3 +413,9 @@
     max-width: 400px;
   }
 }
+
+@media (max-width: 768px) {
+  .home-page > :not(:first-child) {
+    display: none !important;
+  }
+}
