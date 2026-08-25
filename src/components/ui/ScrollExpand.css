@@ -1,117 +1,151 @@
 /* ============================================================
-   ScrollExpand Component Styles (React Bits)
+   ScrollExpand Component Styles
+   Sticky Cinematic Frame Expansion & Smooth Scaling
    ============================================================ */
 
-.scroll-expand {
+.scroll-expand-container {
   position: relative;
   width: 100%;
-  height: 100%;
+  background: #0A0806;
 }
 
-.scroll-expand--scroller {
-  overflow-y: auto;
-  overflow-x: hidden;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  overscroll-behavior: contain;
-}
-
-.scroll-expand--scroller::-webkit-scrollbar {
-  display: none;
-}
-
-.scroll-expand__track {
-  position: relative;
-  width: 100%;
-}
-
-.scroll-expand__stage {
+.scroll-expand-sticky {
   position: sticky;
   top: 0;
-  width: 100%;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   overflow: hidden;
-  --se-title-size: 2.2rem;
-}
-
-.scroll-expand__frame {
-  position: absolute;
-  inset: 0;
-  clip-path: inset(21% 19% 21% 19% round 28px);
-  will-change: clip-path;
   background: #0A0806;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.85);
+  z-index: 1;
 }
 
-.scroll-expand__media {
+/* Expanding Frame Container */
+.scroll-expand-frame {
+  position: relative;
+  overflow: hidden;
+  box-shadow: 
+    0 24px 60px rgba(0, 0, 0, 0.8),
+    0 0 0 1px rgba(255, 255, 255, 0.08);
+  will-change: width, height, border-radius;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Media Asset */
+.scroll-expand-media {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
+  display: block;
   will-change: transform;
-  transform-origin: center 65%;
-  user-select: none;
-  -webkit-user-drag: none;
+  transform-origin: center center;
+  pointer-events: none;
 }
 
-.scroll-expand__scrim {
+/* Ambient Vignette */
+.scroll-expand-vignette {
   position: absolute;
   inset: 0;
+  background: radial-gradient(circle at 50% 40%, rgba(0, 0, 0, 0) 30%, rgba(0, 0, 0, 0.5) 85%, rgba(0, 0, 0, 0.85) 100%);
   pointer-events: none;
-  background: linear-gradient(
-    to top,
-    rgba(10, 8, 6, 0.88) 0%,
-    rgba(10, 8, 6, 0.45) 45%,
-    rgba(10, 8, 6, 0.25) 100%
-  );
-  opacity: 0;
+  transition: opacity 0.2s ease;
 }
 
-.scroll-expand__overlay {
+/* Overlay Text */
+.scroll-expand-overlay {
   position: absolute;
   inset: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-end;
+  padding-bottom: 40px;
   text-align: center;
-  padding: 0 20px 48px;
-  opacity: 0;
+  z-index: 3;
   will-change: opacity, transform;
 }
 
-.scroll-expand__title {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0;
-  padding: 0 6%;
-  text-align: center;
-  font-family: 'Cormorant Garamond', 'Georgia', serif;
-  font-size: var(--se-title-size);
-  font-weight: 300;
-  letter-spacing: 0.04em;
-  line-height: 1.1;
-  color: #fff;
-  text-shadow: 0 2px 24px rgba(0, 0, 0, 0.65);
-  pointer-events: none;
-  will-change: opacity, transform;
-}
-
-.scroll-expand__hint {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 1.5rem;
-  text-align: center;
+.scroll-expand-tag {
   font-family: 'Inter', sans-serif;
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.2em;
+  font-size: 9px;
+  font-weight: 700;
+  color: #F4D099;
+  letter-spacing: 0.35em;
   text-transform: uppercase;
-  color: rgba(244, 208, 153, 0.75);
-  pointer-events: none;
-  will-change: opacity, transform;
+  margin-bottom: 6px;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+}
+
+.scroll-expand-title {
+  font-family: 'Cormorant Garamond', 'Georgia', serif;
+  font-size: clamp(24px, 5.5vw, 36px);
+  font-weight: 400;
+  color: #FFFFFF;
+  line-height: 1.15;
+  letter-spacing: 0.04em;
+  margin: 0;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.9);
+  padding: 0 20px;
+}
+
+/* Scroll Indicator */
+.scroll-expand-indicator {
+  position: absolute;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  z-index: 4;
+  transition: opacity 0.3s ease;
+}
+
+.scroll-indicator-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 8.5px;
+  font-weight: 600;
+  color: rgba(244, 208, 153, 0.7);
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+}
+
+.scroll-indicator-mouse {
+  width: 20px;
+  height: 32px;
+  border: 1.5px solid rgba(244, 208, 153, 0.6);
+  border-radius: 10px;
+  position: relative;
+}
+
+.scroll-indicator-wheel {
+  width: 2.5px;
+  height: 6px;
+  background: #F4D099;
+  border-radius: 2px;
+  position: absolute;
+  top: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: scrollWheelBounce 1.6s ease-in-out infinite;
+}
+
+@keyframes scrollWheelBounce {
+  0%, 100% {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+  }
+  50% {
+    transform: translateX(-50%) translateY(8px);
+    opacity: 0.2;
+  }
 }

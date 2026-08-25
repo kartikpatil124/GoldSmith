@@ -1,0 +1,10 @@
+/* ============================================================
+   Cinematic Scroll Reveal Section Styles
+   ============================================================ */
+
+.cinematic-scroll-reveal-section {
+  position: relative;
+  width: 100%;
+  background: #0A0806;
+  overflow: hidden;
+}

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ShowroomWalkthroughHero from '../components/home/ShowroomWalkthroughHero';
 import MobileCurvedArchSection from '../components/home/MobileCurvedArchSection';
-import MobileScrollExpandSection from '../components/home/MobileScrollExpandSection';
+import CinematicScrollRevealSection from '../components/home/CinematicScrollRevealSection';
 import LuxuryShowcaseSection from '../components/home/LuxuryShowcaseSection';
 import ImageTrailSection from '../components/home/ImageTrailSection';
 import CategoryWheelSection from '../components/home/CategoryWheelSection';
@@ -31,7 +31,7 @@ export default function Home() {
       {!isDesktop && (
         <>
           <MobileCurvedArchSection />
-          <MobileScrollExpandSection />
+          <CinematicScrollRevealSection />
         </>
       )}
 
