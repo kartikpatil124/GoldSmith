@@ -1,0 +1,193 @@
+/* ============================================================
+   Mobile 3D Floating Card Field Section Styles
+   ============================================================ */
+
+.mobile-3d-card-field-section {
+  position: relative;
+  width: 100%;
+  background: #0A0806;
+  /* NO overflow: hidden to allow clean GSAP pinning */
+}
+
+.spatial-scroll-runway {
+  position: relative;
+  width: 100%;
+  background: #0A0806;
+}
+
+/* Pinned Viewport Stage */
+.spatial-pinned-stage {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: #0A0806;
+  z-index: 1;
+}
+
+/* Header Area */
+.spatial-header {
+  position: absolute;
+  top: 28px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  padding: 0 20px;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.spatial-badge {
+  font-family: 'Inter', sans-serif;
+  font-size: 8.5px;
+  font-weight: 700;
+  color: #F4D099;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  display: inline-block;
+  margin-bottom: 4px;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+}
+
+.spatial-title {
+  font-family: 'Cormorant Garamond', 'Georgia', serif;
+  font-size: clamp(26px, 7vw, 36px);
+  font-weight: 400;
+  color: #FFFFFF;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+  margin: 0 0 4px;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.95);
+}
+
+.spatial-subtitle {
+  font-family: 'Inter', sans-serif;
+  font-size: 10.5px;
+  font-weight: 400;
+  color: rgba(244, 208, 153, 0.65);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin: 0;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.9);
+}
+
+/* 3D Perspective Stage Canvas */
+.spatial-3d-stage {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1200px;
+  -webkit-perspective: 1200px;
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+  z-index: 2;
+}
+
+/* Spatial 3D Floating Card */
+.spatial-card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 160px;
+  margin-top: -105px;
+  margin-left: -80px;
+  border-radius: 22px;
+  overflow: hidden;
+  background: #110F0D;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow: 
+    0 16px 40px rgba(0, 0, 0, 0.85),
+    0 0 20px rgba(0, 0, 0, 0.5);
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  will-change: transform, opacity;
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  -webkit-tap-highlight-color: transparent;
+  cursor: pointer;
+}
+
+.spatial-card:active {
+  border-color: rgba(244, 208, 153, 0.8);
+}
+
+/* Image Wrap */
+.spatial-card-img-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  background: #000000;
+}
+
+.spatial-card-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.spatial-card-gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(10, 8, 6, 0.9) 0%, rgba(10, 8, 6, 0.15) 50%, transparent 100%);
+  pointer-events: none;
+}
+
+/* Card Information Overlay */
+.spatial-card-info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 8px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.spatial-card-tag {
+  font-family: 'Inter', sans-serif;
+  font-size: 7.5px;
+  font-weight: 700;
+  color: #F4D099;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.spatial-card-name {
+  font-family: 'Cormorant Garamond', 'Georgia', serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #FFFFFF;
+  line-height: 1.15;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.9);
+}
+
+/* Ambient Radial Glow */
+.spatial-ambient-glow {
+  position: absolute;
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(201, 168, 76, 0.12) 0%, rgba(140, 95, 179, 0.08) 45%, transparent 70%);
+  pointer-events: none;
+  z-index: 1;
+}
