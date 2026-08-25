@@ -1,0 +1,157 @@
+/* ============================================================
+   Mobile 2-Column Counter-Parallax Gallery Section
+   ============================================================ */
+
+.mobile-parallax-gallery-section {
+  position: relative;
+  width: 100%;
+  padding: 56px 0 80px;
+  background: #0A0806;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Header Area */
+.parallax-gallery-header {
+  text-align: center;
+  padding: 0 20px;
+  margin-bottom: 32px;
+  z-index: 10;
+}
+
+.parallax-badge {
+  font-family: 'Inter', sans-serif;
+  font-size: 8.5px;
+  font-weight: 700;
+  color: #F4D099;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  display: inline-block;
+  margin-bottom: 6px;
+}
+
+.parallax-title {
+  font-family: 'Cormorant Garamond', 'Georgia', serif;
+  font-size: clamp(28px, 7.5vw, 38px);
+  font-weight: 400;
+  color: #FFFFFF;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+  margin: 0 0 6px;
+}
+
+.parallax-subtitle {
+  font-family: 'Inter', sans-serif;
+  font-size: 10.5px;
+  font-weight: 400;
+  color: rgba(244, 208, 153, 0.65);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+/* Dual Column Track Container */
+.parallax-dual-track-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 540px;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0 12px;
+  box-sizing: border-box;
+}
+
+/* Individual Parallax Columns */
+.parallax-column {
+  width: calc(50% - 6px);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  will-change: transform;
+}
+
+/* Individual Gallery Card */
+.parallax-gallery-card {
+  position: relative;
+  width: 100%;
+  border-radius: 20px;
+  overflow: hidden;
+  background: #110F0D;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.7);
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  transition: border-color 0.25s ease, transform 0.25s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.parallax-gallery-card:active {
+  transform: scale(0.97);
+  border-color: rgba(244, 208, 153, 0.6);
+}
+
+/* Image Container */
+.parallax-img-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  background: #000000;
+}
+
+.parallax-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+.parallax-card-gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(10, 8, 6, 0.85) 0%, rgba(10, 8, 6, 0.1) 45%, transparent 100%);
+  pointer-events: none;
+}
+
+/* Card Information Overlay */
+.parallax-card-info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 12px 10px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.parallax-card-tag {
+  font-family: 'Inter', sans-serif;
+  font-size: 7.5px;
+  font-weight: 700;
+  color: #F4D099;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.parallax-card-name {
+  font-family: 'Cormorant Garamond', 'Georgia', serif;
+  font-size: 15px;
+  font-weight: 500;
+  color: #FFFFFF;
+  line-height: 1.15;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.9);
+}
