@@ -1,18 +1,17 @@
 /* ============================================================
-   ScrollExpand Component Styles
-   Sticky Cinematic Frame Expansion & Smooth Scaling
+   ScrollExpand Component Styles — GSAP ScrollTrigger Pinned
    ============================================================ */
 
-.scroll-expand-container {
+.scroll-expand-runway {
   position: relative;
   width: 100%;
   background: #0A0806;
+  /* NO overflow: hidden on the runway so ScrollTrigger pinning calculates flawlessly */
 }
 
-.scroll-expand-sticky {
-  position: sticky;
-  top: 0;
-  left: 0;
+/* Pinned Viewport Stage */
+.scroll-expand-stage {
+  position: relative;
   width: 100vw;
   height: 100vh;
   height: 100dvh;
@@ -30,11 +29,13 @@
   overflow: hidden;
   box-shadow: 
     0 24px 60px rgba(0, 0, 0, 0.8),
-    0 0 0 1px rgba(255, 255, 255, 0.08);
+    0 0 0 1px rgba(255, 255, 255, 0.1);
   will-change: width, height, border-radius;
   display: flex;
   align-items: center;
   justify-content: center;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
 }
 
 /* Media Asset */
@@ -54,9 +55,8 @@
 .scroll-expand-vignette {
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 50% 40%, rgba(0, 0, 0, 0) 30%, rgba(0, 0, 0, 0.5) 85%, rgba(0, 0, 0, 0.85) 100%);
+  background: radial-gradient(circle at 50% 40%, rgba(0, 0, 0, 0) 30%, rgba(0, 0, 0, 0.4) 85%, rgba(0, 0, 0, 0.75) 100%);
   pointer-events: none;
-  transition: opacity 0.2s ease;
 }
 
 /* Overlay Text */
@@ -71,6 +71,7 @@
   text-align: center;
   z-index: 3;
   will-change: opacity, transform;
+  pointer-events: none;
 }
 
 .scroll-expand-tag {
@@ -81,7 +82,7 @@
   letter-spacing: 0.35em;
   text-transform: uppercase;
   margin-bottom: 6px;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
 }
 
 .scroll-expand-title {
@@ -92,14 +93,14 @@
   line-height: 1.15;
   letter-spacing: 0.04em;
   margin: 0;
-  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.9);
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.95);
   padding: 0 20px;
 }
 
-/* Scroll Indicator */
+/* Scroll Prompt Indicator */
 .scroll-expand-indicator {
   position: absolute;
-  bottom: 28px;
+  bottom: 24px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -107,7 +108,7 @@
   align-items: center;
   gap: 8px;
   z-index: 4;
-  transition: opacity 0.3s ease;
+  pointer-events: none;
 }
 
 .scroll-indicator-label {
