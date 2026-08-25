@@ -1,0 +1,117 @@
+/* ============================================================
+   ScrollExpand Component Styles (React Bits)
+   ============================================================ */
+
+.scroll-expand {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.scroll-expand--scroller {
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  overscroll-behavior: contain;
+}
+
+.scroll-expand--scroller::-webkit-scrollbar {
+  display: none;
+}
+
+.scroll-expand__track {
+  position: relative;
+  width: 100%;
+}
+
+.scroll-expand__stage {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  overflow: hidden;
+  --se-title-size: 2.2rem;
+}
+
+.scroll-expand__frame {
+  position: absolute;
+  inset: 0;
+  clip-path: inset(21% 19% 21% 19% round 28px);
+  will-change: clip-path;
+  background: #0A0806;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.85);
+}
+
+.scroll-expand__media {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  will-change: transform;
+  transform-origin: center 65%;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.scroll-expand__scrim {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    to top,
+    rgba(10, 8, 6, 0.88) 0%,
+    rgba(10, 8, 6, 0.45) 45%,
+    rgba(10, 8, 6, 0.25) 100%
+  );
+  opacity: 0;
+}
+
+.scroll-expand__overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  text-align: center;
+  padding: 0 20px 48px;
+  opacity: 0;
+  will-change: opacity, transform;
+}
+
+.scroll-expand__title {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0 6%;
+  text-align: center;
+  font-family: 'Cormorant Garamond', 'Georgia', serif;
+  font-size: var(--se-title-size);
+  font-weight: 300;
+  letter-spacing: 0.04em;
+  line-height: 1.1;
+  color: #fff;
+  text-shadow: 0 2px 24px rgba(0, 0, 0, 0.65);
+  pointer-events: none;
+  will-change: opacity, transform;
+}
+
+.scroll-expand__hint {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 1.5rem;
+  text-align: center;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(244, 208, 153, 0.75);
+  pointer-events: none;
+  will-change: opacity, transform;
+}
