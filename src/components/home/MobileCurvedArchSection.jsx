@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
+import Silk from '../ui/Silk';
 import api, { getProductImage, getMediaUrl } from '../../utils/api';
 import { products as fallbackProducts, formatPrice } from '../../data/products';
 import './MobileCurvedArchSection.css';
@@ -8,7 +9,8 @@ import './MobileCurvedArchSection.css';
   Mobile Infinite 360° Curved Squircle Product Ring
   ─────────────────────────────────────────────────────────────
   Pure, full-bleed real product imagery on squircle cards circulating
-  in a continuous tight infinite 360-degree loop across the top convex arch.
+  in a continuous tight infinite 360-degree loop across the top convex arch
+  with an undulating dynamic Silk shader background.
   Tapping any card directly navigates to that exact product's page.
 */
 
@@ -198,6 +200,18 @@ export default function MobileCurvedArchSection() {
 
   return (
     <section className="mobile-curved-arch-section">
+      {/* ── Dynamic Silk WebGL Shader Background ── */}
+      <div className="arch-silk-bg">
+        <Silk
+          speed={5}
+          scale={1}
+          color="#8c5fb3"
+          noiseIntensity={1.5}
+          rotation={0}
+        />
+        <div className="arch-silk-overlay" />
+      </div>
+
       {/* Header Badge & Title */}
       <div className="arch-header">
         <span className="arch-badge">FEATURED COLLECTION</span>

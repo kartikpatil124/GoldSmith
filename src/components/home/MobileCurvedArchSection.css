@@ -1,6 +1,6 @@
 /* ============================================================
    Mobile Curved Squircle Product Ring
-   Pure Real Product Images & Tight Continuous Arch
+   Pure Real Product Images & Dynamic Silk Shader Background
    ============================================================ */
 
 .mobile-curved-arch-section {
@@ -16,12 +16,38 @@
   -webkit-user-select: none;
 }
 
+/* ── Dynamic Silk WebGL Background ── */
+.arch-silk-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.arch-silk-bg canvas {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+}
+
+/* Subtle dark vignette overlay over Silk to keep text and products pristine */
+.arch-silk-overlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 30%, rgba(10, 8, 6, 0.25) 0%, rgba(10, 8, 6, 0.75) 85%, #0A0806 100%);
+  pointer-events: none;
+}
+
 /* Header Area */
 .arch-header {
+  position: relative;
   text-align: center;
   padding: 0 20px;
   margin-bottom: 22px;
-  z-index: 10;
+  z-index: 2;
 }
 
 .arch-badge {
@@ -43,16 +69,18 @@
   line-height: 1.1;
   letter-spacing: 0.02em;
   margin: 0 0 4px;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
 }
 
 .arch-subtitle {
   font-family: 'Inter', sans-serif;
   font-size: 10.5px;
   font-weight: 400;
-  color: rgba(244, 208, 153, 0.65);
+  color: rgba(244, 208, 153, 0.75);
   letter-spacing: 0.12em;
   text-transform: uppercase;
   margin: 0;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6);
 }
 
 /* Arc Wheel Interactive Viewport */
@@ -65,6 +93,7 @@
   justify-content: center;
   cursor: grab;
   touch-action: pan-y;
+  z-index: 2;
 }
 
 .arch-wheel-viewport:active {
@@ -93,8 +122,8 @@
   border-radius: 28px;
   overflow: hidden;
   background: #0E0C0A;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
   will-change: transform, opacity;
   transform-origin: center bottom;
   cursor: pointer;
@@ -103,6 +132,8 @@
   display: block;
   transition: border-color 0.25s ease, box-shadow 0.25s ease;
   -webkit-tap-highlight-color: transparent;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 /* Card image fill - pure and crystal clear */
@@ -118,20 +149,21 @@
 /* Active Apex Card Glow */
 .arch-squircle-card.is-apex {
   border: 1.5px solid rgba(244, 208, 153, 0.95);
-  box-shadow: 0 0 24px rgba(201, 168, 76, 0.35);
+  box-shadow: 0 0 28px rgba(201, 168, 76, 0.45);
 }
 
 /* ============================================================
    Active Centered Product Info
    ============================================================ */
 .arch-action-footer {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-top: 10px;
   padding: 0 20px;
   text-align: center;
-  z-index: 10;
+  z-index: 2;
 }
 
 .arch-active-product-info {
@@ -153,7 +185,7 @@
   font-family: 'Inter', sans-serif;
   font-size: 9px;
   font-weight: 600;
-  color: #C9A84C;
+  color: #F4D099;
   letter-spacing: 0.16em;
   text-transform: uppercase;
 }
@@ -169,6 +201,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 100%;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
 }
 
 .arch-active-price {
@@ -178,4 +211,5 @@
   color: #F4D099;
   letter-spacing: 0.04em;
   margin-top: 2px;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
 }
