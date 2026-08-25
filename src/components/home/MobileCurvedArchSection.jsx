@@ -8,17 +8,21 @@ import img5 from '../../../images/ChatGPT Image Jul 26, 2026, 12_22_37 AM.png';
 import img6 from '../../../images/ChatGPT Image Jul 27, 2026, 12_01_57 AM.png';
 import img8 from '../../../images/ChatGPT Image Jul 27, 2026, 12_02_01 AM.png';
 import img9 from '../../../images/ChatGPT Image Jul 27, 2026, 12_02_03 AM.png';
+import img10 from '../../../images/ChatGPT Image Jul 27, 2026, 12_02_05 AM.png';
+import img11 from '../../../images/ChatGPT Image Jul 27, 2026, 12_02_08 AM.png';
+import img12 from '../../../images/ChatGPT Image Jul 27, 2026, 12_02_10 AM.png';
+import img13 from '../../../images/ChatGPT Image Jul 27, 2026, 12_02_12 AM.png';
 import './MobileCurvedArchSection.css';
 
 /*
-  Mobile Curved Squircle Arch Carousel
+  Mobile Infinite Continuous 360° Curved Squircle Arch
   ─────────────────────────────────────────────────────────────
-  Curved arc wheel of stylized squircle cards fanning out in a
-  convex semi-circular trajectory with smooth touch/drag physics,
-  tangential rotation, and luxury Goldsmiths brand storytelling.
+  Endless circulating 360-degree orbital ring of squircle cards.
+  Cards seamlessly rotate across the top convex arch in an infinite
+  smooth loop with zero ends, auto-rotation, and touch drag momentum.
 */
 
-const ARCH_CARDS = [
+const BASE_CARDS = [
   {
     id: 1,
     type: 'noir-text',
@@ -101,123 +105,204 @@ const ARCH_CARDS = [
     badge: 'ARCHIVE 08',
     slug: 'maharani-bridal-necklace-set',
   },
+  {
+    id: 9,
+    type: 'oval-quote',
+    bg: '#EBE7DE',
+    color: '#1A1A1A',
+    image: img10,
+    quote: 'Royal brilliance set in high polish 18K white gold',
+    dash: '—',
+    slug: 'royal-emerald-drop-earrings',
+  },
+  {
+    id: 10,
+    type: 'noir-text',
+    bg: '#161614',
+    color: '#F4D099',
+    topText: 'GENEVA',
+    bottomText: 'LONDON',
+    image: img13,
+    badge: 'EDITION · 10',
+    slug: 'elysian-bridal-heritage-choker',
+  },
+  {
+    id: 11,
+    type: 'split-archival',
+    bg: '#ECE8E1',
+    color: '#1A1A1A',
+    image: img11,
+    codeTop: '0142',
+    codeBottom: '0288',
+    tag: 'SOLITAIRE',
+    slug: 'infinity-diamond-tennis-bracelet',
+  },
+  {
+    id: 12,
+    type: 'polaroid-frame',
+    bg: '#273024',
+    color: '#FFFFFF',
+    image: img12,
+    caption: 'mayfair suite',
+    badge: 'BESPOKE',
+    slug: 'maharani-bridal-necklace-set',
+  },
 ];
 
 export default function MobileCurvedArchSection() {
-  const containerRef = useRef(null);
-  const [activeIdx, setActiveIdx] = useState(3);
-  const [currentAngle, setCurrentAngle] = useState(0);
-
-  // Drag physics state refs
+  const [activeCardIndex, setActiveCardIndex] = useState(0);
+  const [cardsState, setCardsState] = useState([]);
+  
+  // Animation state references
+  const angleRef = useRef(0);
+  const velocityRef = useRef(0);
   const isDraggingRef = useRef(false);
   const startXRef = useRef(0);
-  const lastAngleRef = useRef(0);
-  const velocityRef = useRef(0);
+  const lastXRef = useRef(0);
   const lastTimeRef = useRef(0);
-  const targetAngleRef = useRef(0);
   const animFrameRef = useRef(null);
+  const isPausedRef = useRef(false);
 
-  const numCards = ARCH_CARDS.length;
-  // Angular step between cards (approx 18 degrees)
-  const angleStepDeg = 18;
-  const maxAngleDeg = ((numCards - 1) * angleStepDeg) / 2;
+  const numCards = BASE_CARDS.length; // 12 cards around 360° circle
+  const angleStep = 360 / numCards; // 30° per card
 
-  // Center on card index
-  const centerOnIndex = useCallback((index) => {
-    const target = (Math.floor(numCards / 2) - index) * angleStepDeg;
-    targetAngleRef.current = target;
-    setActiveIdx(index);
-  }, [numCards, angleStepDeg]);
-
-  // Spring / Momentum physics loop
+  // Continuous 60fps animation loop
   useEffect(() => {
-    let current = currentAngle;
+    let lastTimestamp = performance.now();
+    const autoSpeed = 0.12; // Continuous smooth rotation speed (deg per frame)
 
-    const animate = () => {
+    const loop = (now) => {
+      const dt = Math.min(32, now - lastTimestamp);
+      lastTimestamp = now;
+
       if (!isDraggingRef.current) {
-        // Smooth spring interpolation toward target angle
-        const diff = targetAngleRef.current - current;
-        current += diff * 0.12;
-
-        if (Math.abs(diff) < 0.05) {
-          current = targetAngleRef.current;
+        // Apply residual drag velocity or steady auto-scroll
+        if (Math.abs(velocityRef.current) > 0.01) {
+          angleRef.current += velocityRef.current;
+          velocityRef.current *= 0.94; // Smooth momentum damping
+        } else if (!isPausedRef.current) {
+          // Smooth continuous auto-rotation
+          angleRef.current += autoSpeed * (dt / 16.66);
         }
-
-        setCurrentAngle(current);
-
-        // Compute closest active card at apex
-        const offsetFromCenter = current / angleStepDeg;
-        const centerIdx = Math.round(Math.floor(numCards / 2) - offsetFromCenter);
-        const clampedIdx = Math.max(0, Math.min(numCards - 1, centerIdx));
-        setActiveIdx(clampedIdx);
       }
 
-      animFrameRef.current = requestAnimationFrame(animate);
+      // Infinite modulo normalization to [0, 360)
+      const currentRot = ((angleRef.current % 360) + 360) % 360;
+
+      // Calculate position, scale, opacity, and rotation for all 12 cards
+      let closestIdx = 0;
+      let minApexDist = 999;
+
+      const updated = BASE_CARDS.map((card, i) => {
+        const baseAngle = i * angleStep;
+        // Current angle position on the 360-degree circle
+        const rawAngle = (baseAngle - currentRot + 360) % 360;
+        // Normalize angle relative to top apex (0°) to range [-180°, +180°]
+        const normDeg = ((rawAngle + 180) % 360) - 180;
+        const normRad = (normDeg * Math.PI) / 180;
+
+        const absDeg = Math.abs(normDeg);
+
+        if (absDeg < minApexDist) {
+          minApexDist = absDeg;
+          closestIdx = i;
+        }
+
+        // Visible only on the upper convex arch (-90° to +90°)
+        if (absDeg <= 95) {
+          const arcRadius = 420;
+          const x = Math.sin(normRad) * arcRadius;
+          const y = (1 - Math.cos(normRad)) * arcRadius * 0.72; // Convex arch drop
+          const rotZ = normDeg;
+          const rotY = -normDeg * 0.22;
+          
+          const scale = Math.max(0.78, 1.05 - (absDeg / 85) * 0.28);
+          // Quadratic fade at outer flanks
+          const opacity = Math.max(0, 1 - Math.pow(absDeg / 72, 2.2));
+          const zIndex = Math.round(100 - absDeg);
+          const isApex = absDeg < angleStep / 2;
+
+          return {
+            ...card,
+            visible: true,
+            x: x.toFixed(1),
+            y: y.toFixed(1),
+            rotZ: rotZ.toFixed(1),
+            rotY: rotY.toFixed(1),
+            scale: scale.toFixed(3),
+            opacity: opacity.toFixed(3),
+            zIndex,
+            isApex,
+          };
+        }
+
+        return {
+          ...card,
+          visible: false,
+          opacity: 0,
+        };
+      });
+
+      setCardsState(updated);
+      setActiveCardIndex(closestIdx);
+
+      animFrameRef.current = requestAnimationFrame(loop);
     };
 
-    animFrameRef.current = requestAnimationFrame(animate);
+    animFrameRef.current = requestAnimationFrame(loop);
     return () => cancelAnimationFrame(animFrameRef.current);
-  }, [currentAngle, numCards, angleStepDeg]);
+  }, [numCards, angleStep]);
 
-  // Touch / Mouse Drag handlers
+  // Center on clicked card
+  const handleCardClick = (index) => {
+    const targetRot = index * angleStep;
+    // Shortest angular path
+    let diff = (targetRot - (angleRef.current % 360) + 540) % 360 - 180;
+    velocityRef.current = -diff * 0.08;
+  };
+
+  // Touch / Pointer Drag Handlers
   const handlePointerDown = (e) => {
     isDraggingRef.current = true;
     const clientX = e.touches ? e.touches[0].clientX : e.clientX;
     startXRef.current = clientX;
-    lastAngleRef.current = targetAngleRef.current;
-    velocityRef.current = 0;
+    lastXRef.current = clientX;
     lastTimeRef.current = performance.now();
+    velocityRef.current = 0;
   };
 
   const handlePointerMove = (e) => {
     if (!isDraggingRef.current) return;
     const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-    const deltaX = clientX - startXRef.current;
+    const deltaX = clientX - lastXRef.current;
     const now = performance.now();
     const dt = Math.max(1, now - lastTimeRef.current);
 
     // Convert horizontal pixel drag into angle rotation
-    const angleDelta = (deltaX / 300) * 45;
-    let newAngle = lastAngleRef.current + angleDelta;
+    const angleDelta = (deltaX / 320) * 45;
+    angleRef.current -= angleDelta;
+    velocityRef.current = -angleDelta / (dt / 16.66);
 
-    // Elastic damping past boundaries
-    if (newAngle > maxAngleDeg) {
-      newAngle = maxAngleDeg + (newAngle - maxAngleDeg) * 0.3;
-    } else if (newAngle < -maxAngleDeg) {
-      newAngle = -maxAngleDeg + (newAngle - (-maxAngleDeg)) * 0.3;
-    }
-
-    velocityRef.current = angleDelta / dt;
+    lastXRef.current = clientX;
     lastTimeRef.current = now;
-    targetAngleRef.current = newAngle;
-    setCurrentAngle(newAngle);
   };
 
   const handlePointerUp = () => {
     if (!isDraggingRef.current) return;
     isDraggingRef.current = false;
-
-    // Apply momentum with snap to nearest card
-    let projectedAngle = targetAngleRef.current + velocityRef.current * 80;
-    projectedAngle = Math.max(-maxAngleDeg, Math.min(maxAngleDeg, projectedAngle));
-
-    // Snap to nearest integer angle step
-    const snappedStep = Math.round(projectedAngle / angleStepDeg);
-    targetAngleRef.current = snappedStep * angleStepDeg;
   };
 
   return (
     <section className="mobile-curved-arch-section">
       {/* Header Badge & Title */}
       <div className="arch-header">
-        <span className="arch-badge">CURATED MOOD BOARD</span>
-        <h2 className="arch-title">Atelier Masterpieces</h2>
-        <p className="arch-subtitle">Swipe through the orbital story</p>
+        <span className="arch-badge">CONTINUOUS 360° ATELIER</span>
+        <h2 className="arch-title">Orbit of Masterpieces</h2>
+        <p className="arch-subtitle">Seamless Endless Ring • Swipe or Watch</p>
       </div>
 
-      {/* Interactive Arc Wheel Canvas */}
+      {/* Infinite Arc Wheel Canvas */}
       <div
-        ref={containerRef}
         className="arch-wheel-viewport"
         onTouchStart={handlePointerDown}
         onTouchMove={handlePointerMove}
@@ -225,44 +310,29 @@ export default function MobileCurvedArchSection() {
         onMouseDown={handlePointerDown}
         onMouseMove={handlePointerMove}
         onMouseUp={handlePointerUp}
-        onMouseLeave={handlePointerUp}
+        onMouseEnter={() => { isPausedRef.current = true; }}
+        onMouseLeave={() => {
+          isPausedRef.current = false;
+          handlePointerUp();
+        }}
       >
         <div className="arch-cards-track">
-          {ARCH_CARDS.map((card, i) => {
-            // Calculate angle for this card
-            const baseAngleDeg = (i - Math.floor(numCards / 2)) * angleStepDeg;
-            const totalAngleDeg = baseAngleDeg + currentAngle;
-            const totalAngleRad = (totalAngleDeg * Math.PI) / 180;
-
-            // Convex Arch Math (Circle Arc)
-            const arcRadius = 420; // Arc radius in px
-            const x = Math.sin(totalAngleRad) * arcRadius;
-            const y = (1 - Math.cos(totalAngleRad)) * arcRadius * 0.75; // Arch curve drop
-
-            // Tangential Z-rotation & subtle 3D tilt
-            const rotZ = totalAngleDeg;
-            const rotY = -totalAngleDeg * 0.22;
-
-            // Distance from apex for scale & opacity
-            const distFromApex = Math.abs(totalAngleDeg);
-            const scale = Math.max(0.82, 1.04 - (distFromApex / 90) * 0.28);
-            const opacity = Math.max(0.65, 1 - (distFromApex / 100) * 0.45);
-            const isApex = distFromApex < angleStepDeg / 2;
+          {cardsState.map((card, i) => {
+            if (!card.visible) return null;
 
             return (
               <div
-                key={card.id}
-                className={`arch-squircle-card ${isApex ? 'is-apex' : ''}`}
+                key={`${card.id}-${i}`}
+                className={`arch-squircle-card ${card.isApex ? 'is-apex' : ''}`}
                 style={{
-                  transform: `translate3d(calc(-50% + ${x.toFixed(1)}px), ${y.toFixed(1)}px, 0) rotateZ(${rotZ.toFixed(1)}deg) rotateY(${rotY.toFixed(1)}deg) scale(${scale.toFixed(3)})`,
-                  opacity: opacity.toFixed(2),
-                  zIndex: Math.round(100 - distFromApex),
+                  transform: `translate3d(calc(-50% + ${card.x}px), ${card.y}px, 0) rotateZ(${card.rotZ}deg) rotateY(${card.rotY}deg) scale(${card.scale})`,
+                  opacity: card.opacity,
+                  zIndex: card.zIndex,
                   backgroundColor: card.bg,
                   color: card.color,
                 }}
-                onClick={() => centerOnIndex(i)}
+                onClick={() => handleCardClick(i)}
               >
-                {/* Render distinct squircle card variations matching reference aesthetic */}
                 {card.type === 'noir-text' && (
                   <div className="card-layout-noir-text">
                     <span className="card-top-tag">{card.topText}</span>
@@ -355,21 +425,21 @@ export default function MobileCurvedArchSection() {
       {/* Active Card Indicator & Action Bar */}
       <div className="arch-action-footer">
         <div className="arch-dots-indicator">
-          {ARCH_CARDS.map((_, i) => (
+          {BASE_CARDS.map((_, i) => (
             <button
               key={i}
-              className={`arch-dot ${i === activeIdx ? 'active' : ''}`}
-              onClick={() => centerOnIndex(i)}
-              aria-label={`Jump to slide ${i + 1}`}
+              className={`arch-dot ${i === activeCardIndex ? 'active' : ''}`}
+              onClick={() => handleCardClick(i)}
+              aria-label={`Jump to piece ${i + 1}`}
             />
           ))}
         </div>
 
         <Link
-          to={`/product/${ARCH_CARDS[activeIdx].slug}`}
+          to={`/product/${BASE_CARDS[activeCardIndex]?.slug || 'celestial-diamond-solitaire-ring'}`}
           className="arch-explore-cta"
         >
-          <span>Explore Masterpiece</span>
+          <span>Explore Piece #{activeCardIndex + 1}</span>
           <span className="arch-cta-arrow">→</span>
         </Link>
       </div>
