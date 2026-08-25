@@ -1,17 +1,7 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import main1Img from '../../../images/main1.png';
-import img2 from '../../../images/ChatGPT Image Jul 26, 2026, 12_18_39 AM.png';
-import img3 from '../../../images/ChatGPT Image Jul 26, 2026, 12_18_43 AM.png';
-import img4 from '../../../images/ChatGPT Image Jul 26, 2026, 12_18_46 AM.png';
-import img5 from '../../../images/ChatGPT Image Jul 26, 2026, 12_22_37 AM.png';
-import img6 from '../../../images/ChatGPT Image Jul 27, 2026, 12_01_57 AM.png';
-import img8 from '../../../images/ChatGPT Image Jul 27, 2026, 12_02_01 AM.png';
-import img9 from '../../../images/ChatGPT Image Jul 27, 2026, 12_02_03 AM.png';
-import img10 from '../../../images/ChatGPT Image Jul 27, 2026, 12_02_05 AM.png';
-import img11 from '../../../images/ChatGPT Image Jul 27, 2026, 12_02_08 AM.png';
-import img12 from '../../../images/ChatGPT Image Jul 27, 2026, 12_02_10 AM.png';
-import img13 from '../../../images/ChatGPT Image Jul 27, 2026, 12_02_12 AM.png';
+import api, { getProductImage, getMediaUrl } from '../../utils/api';
+import { products as fallbackProducts, formatPrice } from '../../data/products';
 import './MobileCurvedArchSection.css';
 
 /*
@@ -19,109 +9,11 @@ import './MobileCurvedArchSection.css';
   ─────────────────────────────────────────────────────────────
   Pure, full-bleed real product imagery on squircle cards circulating
   in a continuous infinite 360-degree loop across the top convex arch.
-  Tapping any card directly navigates to its product page.
+  Tapping any card directly navigates to that exact product's page.
 */
 
-const REAL_PRODUCTS = [
-  {
-    id: 1,
-    name: 'Celestial Diamond Solitaire Ring',
-    slug: 'celestial-diamond-solitaire-ring',
-    category: 'Rings · 18K Yellow Gold',
-    price: '₹2,85,000',
-    image: main1Img,
-  },
-  {
-    id: 2,
-    name: 'Royal Emerald Drop Earrings',
-    slug: 'royal-emerald-drop-earrings',
-    category: 'Earrings · 18K White Gold',
-    price: '₹1,65,000',
-    image: img2,
-  },
-  {
-    id: 3,
-    name: 'Infinity Diamond Tennis Bracelet',
-    slug: 'infinity-diamond-tennis-bracelet',
-    category: 'Bracelets · 18K White Gold',
-    price: '₹4,25,000',
-    image: img3,
-  },
-  {
-    id: 4,
-    name: 'Maharani Bridal Necklace Set',
-    slug: 'maharani-bridal-necklace-set',
-    category: 'Necklaces · 22K Yellow Gold',
-    price: '₹8,50,000',
-    image: img5,
-  },
-  {
-    id: 5,
-    name: 'Sapphire Heart Pendant',
-    slug: 'sapphire-heart-pendant',
-    category: 'Pendants · 18K Rose Gold',
-    price: '₹78,000',
-    image: img4,
-  },
-  {
-    id: 6,
-    name: 'Floral Gold Bangle Set',
-    slug: 'floral-gold-bangle-set',
-    category: 'Bangles · 22K Gold',
-    price: '₹1,85,000',
-    image: img8,
-  },
-  {
-    id: 7,
-    name: 'Serpentine Gold Chain',
-    slug: 'serpentine-gold-chain',
-    category: 'Chains · 22K Gold',
-    price: '₹95,000',
-    image: img9,
-  },
-  {
-    id: 8,
-    name: 'Elysian Heritage Choker',
-    slug: 'maharani-bridal-necklace-set',
-    category: 'Bridal · 22K Temple Gold',
-    price: '₹6,40,000',
-    image: img6,
-  },
-  {
-    id: 9,
-    name: 'Solitaire Diamond Pendant',
-    slug: 'celestial-diamond-solitaire-ring',
-    category: 'Pendants · Platinum & Gold',
-    price: '₹1,95,000',
-    image: img10,
-  },
-  {
-    id: 10,
-    name: 'Royal Diamond Line Bracelet',
-    slug: 'infinity-diamond-tennis-bracelet',
-    category: 'Bracelets · 18K White Gold',
-    price: '₹3,40,000',
-    image: img11,
-  },
-  {
-    id: 11,
-    name: 'Imperial Gemstone Earrings',
-    slug: 'royal-emerald-drop-earrings',
-    category: 'Earrings · 18K Rose Gold',
-    price: '₹1,45,000',
-    image: img12,
-  },
-  {
-    id: 12,
-    name: 'Masterpiece Gold Necklace',
-    slug: 'maharani-bridal-necklace-set',
-    category: 'Necklaces · 22K Gold',
-    price: '₹7,20,000',
-    image: img13,
-  },
-];
-
 export default function MobileCurvedArchSection() {
+  const [productsList, setProductsList] = useState(() => fallbackProducts.slice(0, 12));
   const [activeCardIndex, setActiveCardIndex] = useState(0);
   const [cardsState, setCardsState] = useState([]);
 
@@ -136,11 +28,45 @@ export default function MobileCurvedArchSection() {
   const animFrameRef = useRef(null);
   const isPausedRef = useRef(false);
 
-  const numCards = REAL_PRODUCTS.length; // 12 real products around 360° circle
-  const angleStep = 360 / numCards; // 30° per card
+  // Fetch live shop products with fallback
+  useEffect(() => {
+    const fetchShopProducts = async () => {
+      try {
+        const res = await api.get('/products?limit=16');
+        const list = res && res.success && res.data && res.data.products ? res.data.products : res?.products;
+        if (list && list.length >= 4) {
+          setProductsList(list.slice(0, 12));
+        }
+      } catch (err) {
+        console.error('Error fetching arch products, using catalog fallback:', err);
+      }
+    };
+    fetchShopProducts();
+  }, []);
+
+  // Format real products with clean images, real slugs, and formatted prices
+  const realProducts = useMemo(() => {
+    return productsList.map((p, idx) => {
+      const rawImg = getProductImage(p);
+      const imgSrc = rawImg ? getMediaUrl(rawImg) : null;
+      return {
+        id: p._id || p.id || idx,
+        name: p.name,
+        slug: p.slug,
+        category: `${p.category || 'Atelier'} · ${p.metal || 'Certified Gold'}`,
+        price: formatPrice(p.price),
+        image: imgSrc,
+      };
+    });
+  }, [productsList]);
+
+  const numCards = realProducts.length || 12;
+  const angleStep = 360 / numCards;
 
   // Continuous 60fps animation loop
   useEffect(() => {
+    if (realProducts.length === 0) return;
+
     let lastTimestamp = performance.now();
     const autoSpeed = 0.12; // Continuous smooth rotation speed (deg per frame)
 
@@ -162,11 +88,11 @@ export default function MobileCurvedArchSection() {
       // Infinite modulo normalization to [0, 360)
       const currentRot = ((angleRef.current % 360) + 360) % 360;
 
-      // Calculate position, scale, opacity, and rotation for all 12 cards
+      // Calculate position, scale, opacity, and rotation for all cards
       let closestIdx = 0;
       let minApexDist = 999;
 
-      const updated = REAL_PRODUCTS.map((product, i) => {
+      const updated = realProducts.map((product, i) => {
         const baseAngle = i * angleStep;
         // Current angle position on the 360-degree circle
         const rawAngle = (baseAngle - currentRot + 360) % 360;
@@ -224,7 +150,7 @@ export default function MobileCurvedArchSection() {
 
     animFrameRef.current = requestAnimationFrame(loop);
     return () => cancelAnimationFrame(animFrameRef.current);
-  }, [numCards, angleStep]);
+  }, [realProducts, numCards, angleStep]);
 
   // Touch / Pointer Drag Handlers
   const handlePointerDown = (e) => {
@@ -263,7 +189,7 @@ export default function MobileCurvedArchSection() {
     isDraggingRef.current = false;
   };
 
-  const activeProduct = REAL_PRODUCTS[activeCardIndex] || REAL_PRODUCTS[0];
+  const activeProduct = realProducts[activeCardIndex] || realProducts[0] || {};
 
   return (
     <section className="mobile-curved-arch-section">
@@ -311,12 +237,14 @@ export default function MobileCurvedArchSection() {
                 aria-label={`View ${product.name}`}
               >
                 {/* Full-bleed real product image inside squircle */}
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  className="arch-card-product-img"
-                  loading="lazy"
-                />
+                {product.image && (
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                    className="arch-card-product-img"
+                    loading="lazy"
+                  />
+                )}
               </Link>
             );
           })}
@@ -324,21 +252,23 @@ export default function MobileCurvedArchSection() {
       </div>
 
       {/* Active Centered Product Info & Direct Navigation */}
-      <div className="arch-action-footer">
-        <div className="arch-active-product-info">
-          <span className="arch-active-category">{activeProduct.category}</span>
-          <h3 className="arch-active-name">{activeProduct.name}</h3>
-          <span className="arch-active-price">{activeProduct.price}</span>
-        </div>
+      {activeProduct.name && (
+        <div className="arch-action-footer">
+          <div className="arch-active-product-info">
+            <span className="arch-active-category">{activeProduct.category}</span>
+            <h3 className="arch-active-name">{activeProduct.name}</h3>
+            <span className="arch-active-price">{activeProduct.price}</span>
+          </div>
 
-        <Link
-          to={`/product/${activeProduct.slug}`}
-          className="arch-explore-cta"
-        >
-          <span>View Product Details</span>
-          <span className="arch-cta-arrow">→</span>
-        </Link>
-      </div>
+          <Link
+            to={`/product/${activeProduct.slug}`}
+            className="arch-explore-cta"
+          >
+            <span>View Product Details</span>
+            <span className="arch-cta-arrow">→</span>
+          </Link>
+        </div>
+      )}
     </section>
   );
 }

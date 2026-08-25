@@ -1,7 +1,7 @@
 import { useParams, Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import shopBg from '../../images/shopbg.png';
-import { formatPrice } from '../data/products';
+import { products as fallbackProducts, formatPrice } from '../data/products';
 import { useCart } from '../context/CartContext';
 import { useWishlist } from '../context/WishlistContext';
 import ProductCard from '../components/shop/ProductCard';
@@ -40,21 +40,37 @@ export default function ProductDetail() {
       try {
         setLoading(true);
         const data = await api.get(`/products/${slug}`);
-        const productData = data.success ? data.data : data;
-        setProduct(productData);
+        const productData = data && data.success ? data.data : data;
         
-        if (productData) {
+        if (productData && (productData._id || productData.id || productData.name)) {
+          setProduct(productData);
           const primaryImg = getProductImage(productData);
           setActiveMedia(primaryImg || null);
-        }
-        
-        if (productData && productData.category) {
-          const related = await api.get(`/products?category=${productData.category}&limit=4`);
-          const relatedList = related.success ? related.data.products : related.products;
-          setRelatedProducts(relatedList ? relatedList.filter(p => (p._id || p.id) !== (productData._id || productData.id)) : []);
+          
+          if (productData.category) {
+            const related = await api.get(`/products?category=${productData.category}&limit=4`);
+            const relatedList = related && related.success ? related.data.products : related?.products;
+            setRelatedProducts(relatedList ? relatedList.filter(p => (p._id || p.id) !== (productData._id || productData.id)) : []);
+          }
+        } else {
+          // Fallback to static catalog products
+          const fallback = fallbackProducts.find(p => p.slug === slug || String(p.id) === slug);
+          if (fallback) {
+            setProduct(fallback);
+            setActiveMedia(getProductImage(fallback) || null);
+            const related = fallbackProducts.filter(p => p.category === fallback.category && p.slug !== fallback.slug).slice(0, 4);
+            setRelatedProducts(related);
+          }
         }
       } catch (err) {
-        console.error(err);
+        console.error('API fetch failed, checking fallback catalog:', err);
+        const fallback = fallbackProducts.find(p => p.slug === slug || String(p.id) === slug);
+        if (fallback) {
+          setProduct(fallback);
+          setActiveMedia(getProductImage(fallback) || null);
+          const related = fallbackProducts.filter(p => p.category === fallback.category && p.slug !== fallback.slug).slice(0, 4);
+          setRelatedProducts(related);
+        }
       } finally {
         setLoading(false);
       }
