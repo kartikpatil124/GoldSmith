@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ShowroomWalkthroughHero from '../components/home/ShowroomWalkthroughHero';
+import MobileArcGallerySection from '../components/mobile/MobileArcGallerySection';
 import LuxuryShowcaseSection from '../components/home/LuxuryShowcaseSection';
 import ImageTrailSection from '../components/home/ImageTrailSection';
 import CategoryWheelSection from '../components/home/CategoryWheelSection';
@@ -22,10 +23,13 @@ export default function Home() {
 
   return (
     <div className="home-page">
-      {/* First Section (Kept on both mobile and desktop) */}
+      {/* First Section (Showroom Walkthrough Hero Canvas) */}
       <ShowroomWalkthroughHero />
 
-      {/* Subsequent Sections (Rendered on Big Screen / Desktop Only) */}
+      {/* Mobile-Only Section 2: Curved Arch Product Gallery */}
+      {!isDesktop && <MobileArcGallerySection />}
+
+      {/* Desktop-Only Subsequent Sections (Preserved & Frozen) */}
       {isDesktop && (
         <>
           <LuxuryShowcaseSection />
