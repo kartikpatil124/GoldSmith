@@ -1,12 +1,12 @@
 /* ============================================================
    Mobile Curved Squircle Product Ring
-   Pure Real Product Images & Direct Navigation
+   Pure Real Product Images & Tight Continuous Arch
    ============================================================ */
 
 .mobile-curved-arch-section {
   position: relative;
   width: 100%;
-  padding: 48px 0 54px;
+  padding: 44px 0 50px;
   background: #0A0806;
   overflow: hidden;
   display: flex;
@@ -20,7 +20,7 @@
 .arch-header {
   text-align: center;
   padding: 0 20px;
-  margin-bottom: 24px;
+  margin-bottom: 22px;
   z-index: 10;
 }
 
@@ -37,7 +37,7 @@
 
 .arch-title {
   font-family: 'Cormorant Garamond', 'Georgia', serif;
-  font-size: clamp(28px, 7.5vw, 38px);
+  font-size: clamp(28px, 7.5vw, 36px);
   font-weight: 400;
   color: #FFFFFF;
   line-height: 1.1;
@@ -59,7 +59,7 @@
 .arch-wheel-viewport {
   position: relative;
   width: 100%;
-  height: 340px;
+  height: 310px;
   display: flex;
   align-items: flex-start;
   justify-content: center;
@@ -73,7 +73,7 @@
 
 .arch-cards-track {
   position: absolute;
-  top: 30px;
+  top: 24px;
   left: 50%;
   width: 0;
   height: 0;
@@ -83,27 +83,27 @@
   -webkit-transform-style: preserve-3d;
 }
 
-/* Pure Squircle Card Primitive (Full-bleed real product image) */
+/* Pure Squircle Card Primitive (Tight, seamless fanned cards) */
 .arch-squircle-card {
   position: absolute;
   top: 0;
   left: 0;
-  width: 175px;
-  height: 185px;
-  border-radius: 32px;
+  width: 144px;
+  height: 154px;
+  border-radius: 28px;
   overflow: hidden;
   background: #12100E;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   box-shadow: 
-    0 16px 40px rgba(0, 0, 0, 0.75),
-    0 0 20px rgba(0, 0, 0, 0.5);
+    0 14px 35px rgba(0, 0, 0, 0.75),
+    0 0 15px rgba(0, 0, 0, 0.4);
   will-change: transform, opacity;
   transform-origin: center bottom;
   cursor: pointer;
   box-sizing: border-box;
   text-decoration: none;
   display: block;
-  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+  transition: box-shadow 0.25s ease, border-color 0.25s ease;
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -113,16 +113,16 @@
   height: 100%;
   object-fit: cover;
   display: block;
-  border-radius: 32px;
+  border-radius: 28px;
   pointer-events: none;
 }
 
 /* Active Apex Card Glow */
 .arch-squircle-card.is-apex {
-  border: 1.5px solid rgba(244, 208, 153, 0.9);
+  border: 1.5px solid rgba(244, 208, 153, 0.95);
   box-shadow: 
-    0 24px 60px rgba(0, 0, 0, 0.9),
-    0 0 35px rgba(201, 168, 76, 0.45);
+    0 20px 50px rgba(0, 0, 0, 0.9),
+    0 0 30px rgba(201, 168, 76, 0.45);
 }
 
 /* ============================================================
@@ -132,8 +132,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 14px;
-  margin-top: 16px;
+  gap: 12px;
+  margin-top: 14px;
   padding: 0 20px;
   text-align: center;
   z-index: 10;

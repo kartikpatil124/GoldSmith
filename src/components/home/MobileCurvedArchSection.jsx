@@ -8,7 +8,7 @@ import './MobileCurvedArchSection.css';
   Mobile Infinite 360° Curved Squircle Product Ring
   ─────────────────────────────────────────────────────────────
   Pure, full-bleed real product imagery on squircle cards circulating
-  in a continuous infinite 360-degree loop across the top convex arch.
+  in a continuous tight infinite 360-degree loop across the top convex arch.
   Tapping any card directly navigates to that exact product's page.
 */
 
@@ -60,8 +60,9 @@ export default function MobileCurvedArchSection() {
     });
   }, [productsList]);
 
-  const numCards = realProducts.length || 12;
-  const angleStep = 360 / numCards;
+  // 18 slots around 360° circle for a tight, elegant fanned arch with minimal gap
+  const totalSlots = 18;
+  const angleStep = 360 / totalSlots; // 20° per card slot
 
   // Continuous 60fps animation loop
   useEffect(() => {
@@ -88,12 +89,14 @@ export default function MobileCurvedArchSection() {
       // Infinite modulo normalization to [0, 360)
       const currentRot = ((angleRef.current % 360) + 360) % 360;
 
-      // Calculate position, scale, opacity, and rotation for all cards
-      let closestIdx = 0;
+      // Calculate position, scale, opacity, and rotation for all slots
+      let closestProductIdx = 0;
       let minApexDist = 999;
 
-      const updated = realProducts.map((product, i) => {
-        const baseAngle = i * angleStep;
+      const updated = Array.from({ length: totalSlots }).map((_, slotIdx) => {
+        const product = realProducts[slotIdx % realProducts.length];
+        const baseAngle = slotIdx * angleStep;
+        
         // Current angle position on the 360-degree circle
         const rawAngle = (baseAngle - currentRot + 360) % 360;
         // Normalize angle relative to top apex (0°) to range [-180°, +180°]
@@ -104,25 +107,26 @@ export default function MobileCurvedArchSection() {
 
         if (absDeg < minApexDist) {
           minApexDist = absDeg;
-          closestIdx = i;
+          closestProductIdx = slotIdx % realProducts.length;
         }
 
-        // Visible only on the upper convex arch (-90° to +90°)
+        // Visible only on the upper convex arch (-95° to +95°)
         if (absDeg <= 95) {
-          const arcRadius = 420;
+          const arcRadius = 390;
           const x = Math.sin(normRad) * arcRadius;
-          const y = (1 - Math.cos(normRad)) * arcRadius * 0.72; // Convex arch drop
+          const y = (1 - Math.cos(normRad)) * arcRadius * 0.74; // Convex arch drop
           const rotZ = normDeg;
-          const rotY = -normDeg * 0.22;
+          const rotY = -normDeg * 0.20;
 
-          const scale = Math.max(0.78, 1.05 - (absDeg / 85) * 0.28);
+          const scale = Math.max(0.78, 1.04 - (absDeg / 85) * 0.26);
           // Smooth fade at outer flanks
-          const opacity = Math.max(0, 1 - Math.pow(absDeg / 72, 2.2));
+          const opacity = Math.max(0, 1 - Math.pow(absDeg / 76, 2.2));
           const zIndex = Math.round(100 - absDeg);
           const isApex = absDeg < angleStep / 2;
 
           return {
             ...product,
+            slotKey: `slot-${slotIdx}`,
             visible: true,
             x: x.toFixed(1),
             y: y.toFixed(1),
@@ -137,20 +141,21 @@ export default function MobileCurvedArchSection() {
 
         return {
           ...product,
+          slotKey: `slot-${slotIdx}`,
           visible: false,
           opacity: 0,
         };
       });
 
       setCardsState(updated);
-      setActiveCardIndex(closestIdx);
+      setActiveCardIndex(closestProductIdx);
 
       animFrameRef.current = requestAnimationFrame(loop);
     };
 
     animFrameRef.current = requestAnimationFrame(loop);
     return () => cancelAnimationFrame(animFrameRef.current);
-  }, [realProducts, numCards, angleStep]);
+  }, [realProducts, totalSlots, angleStep]);
 
   // Touch / Pointer Drag Handlers
   const handlePointerDown = (e) => {
@@ -176,7 +181,7 @@ export default function MobileCurvedArchSection() {
     const dt = Math.max(1, now - lastTimeRef.current);
 
     // Convert horizontal pixel drag into angle rotation
-    const angleDelta = (deltaX / 320) * 45;
+    const angleDelta = (deltaX / 300) * 45;
     angleRef.current -= angleDelta;
     velocityRef.current = -angleDelta / (dt / 16.66);
 
@@ -216,31 +221,31 @@ export default function MobileCurvedArchSection() {
         }}
       >
         <div className="arch-cards-track">
-          {cardsState.map((product, i) => {
-            if (!product.visible) return null;
+          {cardsState.map((card) => {
+            if (!card.visible) return null;
 
             return (
               <Link
-                key={`${product.id}-${i}`}
-                to={`/product/${product.slug}`}
-                className={`arch-squircle-card ${product.isApex ? 'is-apex' : ''}`}
+                key={card.slotKey}
+                to={`/product/${card.slug}`}
+                className={`arch-squircle-card ${card.isApex ? 'is-apex' : ''}`}
                 style={{
-                  transform: `translate3d(calc(-50% + ${product.x}px), ${product.y}px, 0) rotateZ(${product.rotZ}deg) rotateY(${product.rotY}deg) scale(${product.scale})`,
-                  opacity: product.opacity,
-                  zIndex: product.zIndex,
+                  transform: `translate3d(calc(-50% + ${card.x}px), ${card.y}px, 0) rotateZ(${card.rotZ}deg) rotateY(${card.rotY}deg) scale(${card.scale})`,
+                  opacity: card.opacity,
+                  zIndex: card.zIndex,
                 }}
                 onClick={(e) => {
                   if (hasDraggedRef.current) {
                     e.preventDefault();
                   }
                 }}
-                aria-label={`View ${product.name}`}
+                aria-label={`View ${card.name}`}
               >
                 {/* Full-bleed real product image inside squircle */}
-                {product.image && (
+                {card.image && (
                   <img
-                    src={product.image}
-                    alt={product.name}
+                    src={card.image}
+                    alt={card.name}
                     className="arch-card-product-img"
                     loading="lazy"
                   />
