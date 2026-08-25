@@ -1,5 +1,5 @@
 /* ============================================================
-   Mobile 3D Floating Card Field Section Styles
+   Mobile 3D Perspective Card Conveyor Corridor Styles
    ============================================================ */
 
 .mobile-3d-card-field-section {
@@ -9,14 +9,14 @@
   /* NO overflow: hidden to allow clean GSAP pinning */
 }
 
-.spatial-scroll-runway {
+.corridor-scroll-runway {
   position: relative;
   width: 100%;
   background: #0A0806;
 }
 
 /* Pinned Viewport Stage */
-.spatial-pinned-stage {
+.corridor-pinned-stage {
   position: relative;
   width: 100vw;
   height: 100vh;
@@ -31,9 +31,9 @@
 }
 
 /* Header Area */
-.spatial-header {
+.corridor-header {
   position: absolute;
-  top: 28px;
+  top: 24px;
   left: 0;
   right: 0;
   text-align: center;
@@ -42,7 +42,7 @@
   pointer-events: none;
 }
 
-.spatial-badge {
+.corridor-badge {
   font-family: 'Inter', sans-serif;
   font-size: 8.5px;
   font-weight: 700;
@@ -54,7 +54,7 @@
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
 }
 
-.spatial-title {
+.corridor-title {
   font-family: 'Cormorant Garamond', 'Georgia', serif;
   font-size: clamp(26px, 7vw, 36px);
   font-weight: 400;
@@ -65,9 +65,9 @@
   text-shadow: 0 2px 12px rgba(0, 0, 0, 0.95);
 }
 
-.spatial-subtitle {
+.corridor-subtitle {
   font-family: 'Inter', sans-serif;
-  font-size: 10.5px;
+  font-size: 10px;
   font-weight: 400;
   color: rgba(244, 208, 153, 0.65);
   letter-spacing: 0.12em;
@@ -77,53 +77,90 @@
 }
 
 /* 3D Perspective Stage Canvas */
-.spatial-3d-stage {
+.corridor-3d-stage {
   position: relative;
   width: 100%;
-  max-width: 480px;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  perspective: 1200px;
-  -webkit-perspective: 1200px;
+  perspective: 1400px;
+  -webkit-perspective: 1400px;
   transform-style: preserve-3d;
   -webkit-transform-style: preserve-3d;
   z-index: 2;
+  overflow: hidden;
 }
 
-/* Spatial 3D Floating Card */
-.spatial-card {
+/* Base Track Styling */
+.corridor-track {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 160px;
-  margin-top: -105px;
-  margin-left: -80px;
-  border-radius: 22px;
+  display: flex;
+  gap: 16px;
+  will-change: transform;
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+}
+
+/* Track 1: Upper / Background Track */
+.track-upper {
+  top: 14%;
+  right: -25%;
+  transform: translateZ(-130px) rotateX(-6deg) rotateY(10deg) rotateZ(-3deg);
+  z-index: 1;
+  opacity: 0.85;
+}
+
+/* Track 2: Middle / Main Track */
+.track-middle {
+  top: 40%;
+  left: -20%;
+  transform: translateZ(0px) rotateX(-2deg) rotateY(4deg) rotateZ(-2deg);
+  z-index: 3;
+}
+
+/* Track 3: Lower / Foreground Track */
+.track-lower {
+  top: 66%;
+  right: -20%;
+  transform: translateZ(70px) rotateX(4deg) rotateY(-8deg) rotateZ(3deg);
+  z-index: 5;
+}
+
+/* Individual Conveyor Card */
+.corridor-card {
+  position: relative;
+  width: 145px;
+  flex-shrink: 0;
+  border-radius: 20px;
   overflow: hidden;
   background: #110F0D;
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  box-shadow: 
-    0 16px 40px rgba(0, 0, 0, 0.85),
-    0 0 20px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.85);
   text-decoration: none;
   display: flex;
   flex-direction: column;
-  will-change: transform, opacity;
-  transform-style: preserve-3d;
-  -webkit-transform-style: preserve-3d;
-  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  transition: transform 0.2s ease, border-color 0.2s ease;
   -webkit-tap-highlight-color: transparent;
   cursor: pointer;
 }
 
-.spatial-card:active {
-  border-color: rgba(244, 208, 153, 0.8);
+.corridor-card:active {
+  transform: scale(0.96);
+  border-color: rgba(244, 208, 153, 0.6);
 }
 
-/* Image Wrap */
-.spatial-card-img-wrap {
+.card-upper {
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7);
+}
+
+.card-lower {
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.9);
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+/* Image Container */
+.corridor-card-img-wrap {
   position: relative;
   width: 100%;
   aspect-ratio: 3 / 4;
@@ -131,14 +168,14 @@
   background: #000000;
 }
 
-.spatial-card-img-wrap img {
+.corridor-card-img-wrap img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
 }
 
-.spatial-card-gradient {
+.corridor-card-gradient {
   position: absolute;
   inset: 0;
   background: linear-gradient(to top, rgba(10, 8, 6, 0.9) 0%, rgba(10, 8, 6, 0.15) 50%, transparent 100%);
@@ -146,7 +183,7 @@
 }
 
 /* Card Information Overlay */
-.spatial-card-info {
+.corridor-card-info {
   position: absolute;
   bottom: 0;
   left: 0;
@@ -159,7 +196,7 @@
   pointer-events: none;
 }
 
-.spatial-card-tag {
+.corridor-card-tag {
   font-family: 'Inter', sans-serif;
   font-size: 7.5px;
   font-weight: 700;
@@ -168,7 +205,7 @@
   text-transform: uppercase;
 }
 
-.spatial-card-name {
+.corridor-card-name {
   font-family: 'Cormorant Garamond', 'Georgia', serif;
   font-size: 14px;
   font-weight: 500;
@@ -179,15 +216,4 @@
   overflow: hidden;
   text-overflow: ellipsis;
   text-shadow: 0 1px 6px rgba(0, 0, 0, 0.9);
-}
-
-/* Ambient Radial Glow */
-.spatial-ambient-glow {
-  position: absolute;
-  width: 320px;
-  height: 320px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(201, 168, 76, 0.12) 0%, rgba(140, 95, 179, 0.08) 45%, transparent 70%);
-  pointer-events: none;
-  z-index: 1;
 }

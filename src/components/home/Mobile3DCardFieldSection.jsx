@@ -7,82 +7,62 @@ import img2 from '../../../images/ChatGPT Image Jul 26, 2026, 12_18_39 AM.png';
 import img3 from '../../../images/ChatGPT Image Jul 26, 2026, 12_18_43 AM.png';
 import img4 from '../../../images/ChatGPT Image Jul 26, 2026, 12_18_46 AM.png';
 import img5 from '../../../images/ChatGPT Image Jul 26, 2026, 12_22_37 AM.png';
+import img6 from '../../../images/ChatGPT Image Jul 27, 2026, 12_01_57 AM.png';
 import img8 from '../../../images/ChatGPT Image Jul 27, 2026, 12_02_01 AM.png';
 import img9 from '../../../images/ChatGPT Image Jul 27, 2026, 12_02_03 AM.png';
+import img10 from '../../../images/ChatGPT Image Jul 27, 2026, 12_02_05 AM.png';
+import img11 from '../../../images/ChatGPT Image Jul 27, 2026, 12_02_08 AM.png';
+import img12 from '../../../images/ChatGPT Image Jul 27, 2026, 12_02_10 AM.png';
+import img13 from '../../../images/ChatGPT Image Jul 27, 2026, 12_02_12 AM.png';
 import './Mobile3DCardFieldSection.css';
 
 gsap.registerPlugin(ScrollTrigger);
 
 /*
-  Mobile Cinematic 3D Floating Card Scroll Section
+  Mobile 3D Perspective Card Conveyor Corridor
   ─────────────────────────────────────────────────────────────
-  Spatial 3D card field suspended in virtual perspective space.
-  Scroll progress drives continuous 3D translations (X, Y, Z),
-  subtle rotations, scale adjustments, and dynamic hero focus.
+  Continuous 3-track 3D perspective card wall.
+  Cards move continuously through upper, middle, and lower
+  depth tracks with diagonal offset and natural viewport clipping.
 */
 
-const SPATIAL_CARDS = [
-  {
-    id: 'card-1',
-    title: 'Emerald Tear Drops',
-    tag: 'ROYAL EMERALD',
-    slug: 'royal-emerald-drop-earrings',
-    image: img2,
-  },
-  {
-    id: 'card-2',
-    title: 'Celestial Solitaire Ring',
-    tag: '18K YELLOW GOLD',
-    slug: 'celestial-diamond-solitaire-ring',
-    image: main1Img,
-  },
-  {
-    id: 'card-3',
-    title: 'Maharani Bridal Suite',
-    tag: '22K RUBY & GOLD',
-    slug: 'maharani-bridal-necklace-set',
-    image: img5,
-  },
-  {
-    id: 'card-4',
-    title: 'Infinity Diamond Tennis',
-    tag: '18K WHITE GOLD',
-    slug: 'infinity-diamond-tennis-bracelet',
-    image: img3,
-  },
-  {
-    id: 'card-5',
-    title: 'Sapphire Heart Gem',
-    tag: '18K ROSE GOLD',
-    slug: 'sapphire-heart-pendant',
-    image: img4,
-  },
-  {
-    id: 'card-6',
-    title: 'Floral Heritage Bangles',
-    tag: '22K HANDCRAFTED',
-    slug: 'floral-gold-bangle-set',
-    image: img8,
-  },
-  {
-    id: 'card-7',
-    title: 'Serpentine Gold Rope',
-    tag: 'HIGH POLISH 916',
-    slug: 'serpentine-gold-chain',
-    image: img9,
-  },
+const UPPER_TRACK_CARDS = [
+  { id: 'u1', title: 'Emerald Tear Drops', tag: '18K WHITE GOLD', slug: 'royal-emerald-drop-earrings', image: img2 },
+  { id: 'u2', title: 'Sapphire Heart Gem', tag: '18K ROSE GOLD', slug: 'sapphire-heart-pendant', image: img4 },
+  { id: 'u3', title: 'Elysian Heritage Choker', tag: 'TEMPLE GOLD', slug: 'maharani-bridal-necklace-set', image: img6 },
+  { id: 'u4', title: 'Floral Heritage Bangles', tag: '22K HANDCRAFTED', slug: 'floral-gold-bangle-set', image: img8 },
+  { id: 'u5', title: 'Solitaire Platinum Drop', tag: 'CERTIFIED VS1', slug: 'celestial-diamond-solitaire-ring', image: img10 },
+];
+
+const MIDDLE_TRACK_CARDS = [
+  { id: 'm1', title: 'Celestial Solitaire Ring', tag: '18K YELLOW GOLD', slug: 'celestial-diamond-solitaire-ring', image: main1Img },
+  { id: 'm2', title: 'Infinity Diamond Tennis', tag: 'BRILLIANT CUT', slug: 'infinity-diamond-tennis-bracelet', image: img3 },
+  { id: 'm3', title: 'Maharani Bridal Suite', tag: '22K RUBY & GOLD', slug: 'maharani-bridal-necklace-set', image: img5 },
+  { id: 'm4', title: 'Serpentine Gold Rope', tag: 'HIGH POLISH 916', slug: 'serpentine-gold-chain', image: img9 },
+  { id: 'm5', title: 'Diamond Line Bracelet', tag: '18K WHITE GOLD', slug: 'infinity-diamond-tennis-bracelet', image: img11 },
+  { id: 'm6', title: 'Masterpiece Gold Choker', tag: 'ROYAL BRIDAL', slug: 'maharani-bridal-necklace-set', image: img13 },
+];
+
+const LOWER_TRACK_CARDS = [
+  { id: 'l1', title: 'Sapphire Heart Gem', tag: '18K ROSE GOLD', slug: 'sapphire-heart-pendant', image: img4 },
+  { id: 'l2', title: 'Floral Gold Bangles', tag: '22K TRADITIONAL', slug: 'floral-gold-bangle-set', image: img8 },
+  { id: 'l3', title: 'Imperial Cascade Earrings', tag: 'ATELIER 08', slug: 'royal-emerald-drop-earrings', image: img12 },
+  { id: 'l4', title: 'Emerald Tear Drops', tag: '18K WHITE GOLD', slug: 'royal-emerald-drop-earrings', image: img2 },
+  { id: 'l5', title: 'Maharani Bridal Suite', tag: '22K RUBY & GOLD', slug: 'maharani-bridal-necklace-set', image: img5 },
 ];
 
 export default function Mobile3DCardFieldSection() {
   const runwayRef = useRef(null);
   const stageRef = useRef(null);
-  const cardsRef = useRef([]);
+  const upperTrackRef = useRef(null);
+  const middleTrackRef = useRef(null);
+  const lowerTrackRef = useRef(null);
 
   useEffect(() => {
     if (!runwayRef.current || !stageRef.current) return;
 
     const ctx = gsap.context(() => {
-      const scrollDistancePx = window.innerHeight * 2.4; // 240vh scroll runway
+      const scrollDistancePx = window.innerHeight * 2.2; // 220vh scroll runway
 
       const tl = gsap.timeline({
         scrollTrigger: {
@@ -97,250 +77,35 @@ export default function Mobile3DCardFieldSection() {
         },
       });
 
-      const cards = cardsRef.current;
-
-      // ── Card 1 (Emerald): Starts top-left, takes hero focus at 30%, exits upper-left ──
-      if (cards[0]) {
+      // Track A: Upper / Background Track (Speed 0.75x)
+      if (upperTrackRef.current) {
         tl.fromTo(
-          cards[0],
-          {
-            xPercent: -42,
-            yPercent: -35,
-            z: -90,
-            rotationX: 4,
-            rotationY: 8,
-            rotationZ: -5,
-            scale: 0.86,
-            opacity: 0.85,
-          },
-          {
-            xPercent: 0,
-            yPercent: 0,
-            z: 80,
-            rotationX: 0,
-            rotationY: 0,
-            rotationZ: 0,
-            scale: 1.10,
-            opacity: 1,
-            duration: 0.32,
-            ease: 'power2.out',
-          },
+          upperTrackRef.current,
+          { xPercent: 12, yPercent: -8 },
+          { xPercent: -48, yPercent: 14, duration: 1.0, ease: 'none' },
           0
-        ).to(
-          cards[0],
-          {
-            xPercent: -70,
-            yPercent: -50,
-            z: -180,
-            rotationX: 6,
-            rotationY: 12,
-            rotationZ: -8,
-            scale: 0.74,
-            opacity: 0.35,
-            duration: 0.38,
-            ease: 'power2.in',
-          },
-          0.38
         );
       }
 
-      // ── Card 2 (Solitaire): Starts lower-right, takes hero focus at 62%, exits upper-right ──
-      if (cards[1]) {
+      // Track B: Middle / Main Track (Speed 1.00x)
+      if (middleTrackRef.current) {
         tl.fromTo(
-          cards[1],
-          {
-            xPercent: 55,
-            yPercent: 42,
-            z: -140,
-            rotationX: -5,
-            rotationY: -8,
-            rotationZ: 6,
-            scale: 0.78,
-            opacity: 0.7,
-          },
-          {
-            xPercent: 0,
-            yPercent: 0,
-            z: 88,
-            rotationX: 0,
-            rotationY: 0,
-            rotationZ: 0,
-            scale: 1.12,
-            opacity: 1,
-            duration: 0.36,
-            ease: 'power2.inOut',
-          },
-          0.26
-        ).to(
-          cards[1],
-          {
-            xPercent: 65,
-            yPercent: -45,
-            z: -160,
-            rotationX: -6,
-            rotationY: -10,
-            rotationZ: 6,
-            scale: 0.78,
-            opacity: 0.35,
-            duration: 0.32,
-            ease: 'power2.in',
-          },
-          0.66
+          middleTrackRef.current,
+          { xPercent: -42, yPercent: 12 },
+          { xPercent: 28, yPercent: -26, duration: 1.0, ease: 'none' },
+          0
         );
       }
 
-      // ── Card 3 (Maharani Bridal): Starts lower-left, takes hero focus at 90% ──
-      if (cards[2]) {
+      // Track C: Lower / Foreground Track (Speed 0.85x)
+      if (lowerTrackRef.current) {
         tl.fromTo(
-          cards[2],
-          {
-            xPercent: -55,
-            yPercent: 48,
-            z: -170,
-            rotationX: 5,
-            rotationY: 6,
-            rotationZ: 4,
-            scale: 0.75,
-            opacity: 0.6,
-          },
-          {
-            xPercent: 0,
-            yPercent: 0,
-            z: 85,
-            rotationX: 0,
-            rotationY: 0,
-            rotationZ: 0,
-            scale: 1.10,
-            opacity: 1,
-            duration: 0.40,
-            ease: 'power2.out',
-          },
-          0.54
+          lowerTrackRef.current,
+          { xPercent: 22, yPercent: -10 },
+          { xPercent: -42, yPercent: 18, duration: 1.0, ease: 'none' },
+          0
         );
       }
-
-      // ── Card 4 (Tennis Bracelet): Starts upper-right, drifts toward upper-left depth ──
-      if (cards[3]) {
-        tl.fromTo(
-          cards[3],
-          {
-            xPercent: 48,
-            yPercent: -42,
-            z: -80,
-            rotationX: -4,
-            rotationY: -6,
-            rotationZ: 7,
-            scale: 0.84,
-            opacity: 0.8,
-          },
-          {
-            xPercent: -50,
-            yPercent: -35,
-            z: -140,
-            rotationX: 5,
-            rotationY: 8,
-            rotationZ: -4,
-            scale: 0.75,
-            opacity: 0.45,
-            duration: 0.70,
-            ease: 'none',
-          },
-          0.10
-        );
-      }
-
-      // ── Card 5 (Sapphire Heart): Starts center-bottom, recedes into depth ──
-      if (cards[4]) {
-        tl.fromTo(
-          cards[4],
-          {
-            xPercent: 12,
-            yPercent: 52,
-            z: -110,
-            rotationX: -6,
-            rotationY: 4,
-            rotationZ: -3,
-            scale: 0.82,
-            opacity: 0.75,
-          },
-          {
-            xPercent: -35,
-            yPercent: 40,
-            z: -200,
-            rotationX: -8,
-            rotationY: 6,
-            rotationZ: -5,
-            scale: 0.70,
-            opacity: 0.3,
-            duration: 0.65,
-            ease: 'none',
-          },
-          0.20
-        );
-      }
-
-      // ── Card 6 (Floral Bangles): Enters from bottom-left flank ──
-      if (cards[5]) {
-        tl.fromTo(
-          cards[5],
-          {
-            xPercent: -60,
-            yPercent: 65,
-            z: -60,
-            rotationX: 4,
-            rotationY: -5,
-            rotationZ: 5,
-            scale: 0.80,
-            opacity: 0.65,
-          },
-          {
-            xPercent: 45,
-            yPercent: 35,
-            z: -120,
-            rotationX: -4,
-            rotationY: 6,
-            rotationZ: -4,
-            scale: 0.78,
-            opacity: 0.5,
-            duration: 0.75,
-            ease: 'none',
-          },
-          0.15
-        );
-      }
-
-      // ── Card 7 (Serpentine Rope): Enters from upper-center flank ──
-      if (cards[6]) {
-        tl.fromTo(
-          cards[6],
-          {
-            xPercent: -15,
-            yPercent: -60,
-            z: -130,
-            rotationX: 6,
-            rotationY: -4,
-            rotationZ: -6,
-            scale: 0.76,
-            opacity: 0.6,
-          },
-          {
-            xPercent: 50,
-            yPercent: -30,
-            z: -80,
-            rotationX: -3,
-            rotationY: 5,
-            rotationZ: 4,
-            scale: 0.85,
-            opacity: 0.75,
-            duration: 0.70,
-            ease: 'none',
-          },
-          0.25
-        );
-      }
-
-      // Final brief hold
-      tl.to({}, { duration: 0.05 }, 0.95);
     }, runwayRef);
 
     return () => ctx.revert();
@@ -348,40 +113,81 @@ export default function Mobile3DCardFieldSection() {
 
   return (
     <section className="mobile-3d-card-field-section">
-      <div ref={runwayRef} className="spatial-scroll-runway">
+      <div ref={runwayRef} className="corridor-scroll-runway">
         {/* Pinned Viewport Stage */}
-        <div ref={stageRef} className="spatial-pinned-stage">
+        <div ref={stageRef} className="corridor-pinned-stage">
           {/* Header Title */}
-          <div className="spatial-header">
-            <span className="spatial-badge">SPATIAL DIMENSION</span>
-            <h2 className="spatial-title">Floating Atelier</h2>
-            <p className="spatial-subtitle">Scroll through the 3D constellation</p>
+          <div className="corridor-header">
+            <span className="corridor-badge">PERSPECTIVE CORRIDOR</span>
+            <h2 className="corridor-title">The Atelier Archive</h2>
+            <p className="corridor-subtitle">Continuous 3D spatial exhibition</p>
           </div>
 
-          {/* 3D Perspective Canvas */}
-          <div className="spatial-3d-stage">
-            {SPATIAL_CARDS.map((card, idx) => (
-              <Link
-                key={card.id}
-                ref={(el) => (cardsRef.current[idx] = el)}
-                to={`/product/${card.slug}`}
-                className="spatial-card"
-                aria-label={`View ${card.title}`}
-              >
-                <div className="spatial-card-img-wrap">
-                  <img src={card.image} alt={card.title} loading="lazy" />
-                  <div className="spatial-card-gradient" />
-                </div>
-                <div className="spatial-card-info">
-                  <span className="spatial-card-tag">{card.tag}</span>
-                  <h3 className="spatial-card-name">{card.title}</h3>
-                </div>
-              </Link>
-            ))}
-          </div>
+          {/* 3D Perspective Corridor Container */}
+          <div className="corridor-3d-stage">
+            {/* Track 1: Upper / Background Track */}
+            <div ref={upperTrackRef} className="corridor-track track-upper">
+              {UPPER_TRACK_CARDS.map((card) => (
+                <Link
+                  key={card.id}
+                  to={`/product/${card.slug}`}
+                  className="corridor-card card-upper"
+                  aria-label={`View ${card.title}`}
+                >
+                  <div className="corridor-card-img-wrap">
+                    <img src={card.image} alt={card.title} loading="lazy" />
+                    <div className="corridor-card-gradient" />
+                  </div>
+                  <div className="corridor-card-info">
+                    <span className="corridor-card-tag">{card.tag}</span>
+                    <h3 className="corridor-card-name">{card.title}</h3>
+                  </div>
+                </Link>
+              ))}
+            </div>
 
-          {/* Ambient Lighting Accents */}
-          <div className="spatial-ambient-glow" />
+            {/* Track 2: Middle / Main Track */}
+            <div ref={middleTrackRef} className="corridor-track track-middle">
+              {MIDDLE_TRACK_CARDS.map((card) => (
+                <Link
+                  key={card.id}
+                  to={`/product/${card.slug}`}
+                  className="corridor-card card-middle"
+                  aria-label={`View ${card.title}`}
+                >
+                  <div className="corridor-card-img-wrap">
+                    <img src={card.image} alt={card.title} loading="lazy" />
+                    <div className="corridor-card-gradient" />
+                  </div>
+                  <div className="corridor-card-info">
+                    <span className="corridor-card-tag">{card.tag}</span>
+                    <h3 className="corridor-card-name">{card.title}</h3>
+                  </div>
+                </Link>
+              ))}
+            </div>
+
+            {/* Track 3: Lower / Foreground Track */}
+            <div ref={lowerTrackRef} className="corridor-track track-lower">
+              {LOWER_TRACK_CARDS.map((card) => (
+                <Link
+                  key={card.id}
+                  to={`/product/${card.slug}`}
+                  className="corridor-card card-lower"
+                  aria-label={`View ${card.title}`}
+                >
+                  <div className="corridor-card-img-wrap">
+                    <img src={card.image} alt={card.title} loading="lazy" />
+                    <div className="corridor-card-gradient" />
+                  </div>
+                  <div className="corridor-card-info">
+                    <span className="corridor-card-tag">{card.tag}</span>
+                    <h3 className="corridor-card-name">{card.title}</h3>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </section>
