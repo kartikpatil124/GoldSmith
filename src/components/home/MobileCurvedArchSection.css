@@ -1,12 +1,12 @@
 /* ============================================================
-   Mobile Curved Squircle Arch Section
-   Archival Editorial Mood Board Carousel
+   Mobile Curved Squircle Product Ring
+   Pure Real Product Images & Direct Navigation
    ============================================================ */
 
 .mobile-curved-arch-section {
   position: relative;
   width: 100%;
-  padding: 56px 0 64px;
+  padding: 48px 0 54px;
   background: #0A0806;
   overflow: hidden;
   display: flex;
@@ -20,7 +20,7 @@
 .arch-header {
   text-align: center;
   padding: 0 20px;
-  margin-bottom: 28px;
+  margin-bottom: 24px;
   z-index: 10;
 }
 
@@ -32,24 +32,24 @@
   letter-spacing: 0.35em;
   text-transform: uppercase;
   display: inline-block;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
 }
 
 .arch-title {
   font-family: 'Cormorant Garamond', 'Georgia', serif;
-  font-size: clamp(30px, 8vw, 42px);
+  font-size: clamp(28px, 7.5vw, 38px);
   font-weight: 400;
   color: #FFFFFF;
   line-height: 1.1;
   letter-spacing: 0.02em;
-  margin: 0 0 6px;
+  margin: 0 0 4px;
 }
 
 .arch-subtitle {
   font-family: 'Inter', sans-serif;
-  font-size: 11px;
+  font-size: 10.5px;
   font-weight: 400;
-  color: rgba(244, 208, 153, 0.6);
+  color: rgba(244, 208, 153, 0.65);
   letter-spacing: 0.12em;
   text-transform: uppercase;
   margin: 0;
@@ -59,7 +59,7 @@
 .arch-wheel-viewport {
   position: relative;
   width: 100%;
-  height: 380px;
+  height: 340px;
   display: flex;
   align-items: flex-start;
   justify-content: center;
@@ -73,7 +73,7 @@
 
 .arch-cards-track {
   position: absolute;
-  top: 40px;
+  top: 30px;
   left: 50%;
   width: 0;
   height: 0;
@@ -83,7 +83,7 @@
   -webkit-transform-style: preserve-3d;
 }
 
-/* Squircle Card Primitive */
+/* Pure Squircle Card Primitive (Full-bleed real product image) */
 .arch-squircle-card {
   position: absolute;
   top: 0;
@@ -92,319 +92,97 @@
   height: 185px;
   border-radius: 32px;
   overflow: hidden;
+  background: #12100E;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 
-    0 16px 40px rgba(0, 0, 0, 0.65),
-    0 0 0 1px rgba(255, 255, 255, 0.08);
+    0 16px 40px rgba(0, 0, 0, 0.75),
+    0 0 20px rgba(0, 0, 0, 0.5);
   will-change: transform, opacity;
   transform-origin: center bottom;
   cursor: pointer;
   box-sizing: border-box;
-  transition: box-shadow 0.3s ease;
+  text-decoration: none;
+  display: block;
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+  -webkit-tap-highlight-color: transparent;
 }
 
+/* Card image fill */
+.arch-card-product-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 32px;
+  pointer-events: none;
+}
+
+/* Active Apex Card Glow */
 .arch-squircle-card.is-apex {
+  border: 1.5px solid rgba(244, 208, 153, 0.9);
   box-shadow: 
-    0 24px 60px rgba(0, 0, 0, 0.85),
-    0 0 35px rgba(201, 168, 76, 0.3),
-    0 0 0 1.5px rgba(244, 208, 153, 0.6);
+    0 24px 60px rgba(0, 0, 0, 0.9),
+    0 0 35px rgba(201, 168, 76, 0.45);
 }
 
 /* ============================================================
-   CARD LAYOUT VARIATIONS (Matching Reference Aesthetic)
-   ============================================================ */
-
-/* 1. Noir Text Card (Top & Bottom Typography with portrait center) */
-.card-layout-noir-text {
-  width: 100%;
-  height: 100%;
-  padding: 14px 12px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  box-sizing: border-box;
-}
-
-.card-top-tag {
-  font-family: 'Inter', sans-serif;
-  font-size: 8.5px;
-  font-weight: 700;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: #FFFFFF;
-}
-
-.card-bottom-tag {
-  font-family: 'Inter', sans-serif;
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: #FFFFFF;
-}
-
-.card-img-wrap {
-  width: 100%;
-  height: 105px;
-  border-radius: 18px;
-  overflow: hidden;
-  background: rgba(0, 0, 0, 0.4);
-}
-
-.card-img-wrap img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-/* 2. Split Card (Left Image + Right Archival Numbers) */
-.card-layout-split {
-  width: 100%;
-  height: 100%;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  box-sizing: border-box;
-}
-
-.card-split-left {
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-}
-
-.card-split-left img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.card-split-right {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 12px;
-  gap: 12px;
-}
-
-.card-code-num {
-  font-family: 'Inter', sans-serif;
-  font-size: 13px;
-  font-weight: 700;
-  color: #1A1A1A;
-  letter-spacing: 0.08em;
-}
-
-.card-code-dash {
-  font-size: 16px;
-  color: #1A1A1A;
-  line-height: 1;
-}
-
-/* 3. Portrait Mood Card */
-.card-layout-portrait {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-}
-
-.card-bg-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.card-portrait-overlay {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.card-flower-mosaic {
-  width: 58px;
-  height: 58px;
-  background-image: radial-gradient(circle, #F4D099 20%, transparent 20%),
-                    radial-gradient(circle, #EAE6DF 20%, transparent 20%);
-  background-size: 16px 16px;
-  background-position: 0 0, 8px 8px;
-  border-radius: 50%;
-  opacity: 0.85;
-}
-
-/* 4. Polaroid Inset Frame Card */
-.card-layout-polaroid {
-  width: 100%;
-  height: 100%;
-  padding: 14px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  box-sizing: border-box;
-}
-
-.card-polaroid-frame {
-  width: 86%;
-  height: 96px;
-  background: #FFFFFF;
-  padding: 6px;
-  border-radius: 10px;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
-  box-sizing: border-box;
-}
-
-.card-polaroid-frame img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 6px;
-  display: block;
-}
-
-.card-polaroid-caption {
-  font-family: 'Inter', sans-serif;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.18em;
-  text-transform: lowercase;
-  color: #FFFFFF;
-  text-align: right;
-  margin-top: 4px;
-}
-
-/* 5. Oval Cutout & Editorial Quote Card */
-.card-layout-oval-quote {
-  width: 100%;
-  height: 100%;
-  padding: 16px 14px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  text-align: center;
-  box-sizing: border-box;
-}
-
-.card-oval-frame {
-  width: 56px;
-  height: 44px;
-  border-radius: 24px;
-  overflow: hidden;
-  background: #000000;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
-.card-oval-frame img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.card-quote-text {
-  font-family: 'Inter', sans-serif;
-  font-size: 8.5px;
-  font-weight: 500;
-  line-height: 1.35;
-  color: #1C1C1A;
-  margin: 6px 0 2px;
-  letter-spacing: 0.02em;
-}
-
-.card-quote-dash {
-  font-size: 12px;
-  color: #1C1C1A;
-  line-height: 1;
-}
-
-/* 6. Bokeh Cluster & Vertical Text Card */
-.card-layout-bokeh {
-  width: 100%;
-  height: 100%;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 16px;
-  box-sizing: border-box;
-}
-
-.card-bokeh-dots {
-  position: relative;
-  width: 70px;
-  height: 100px;
-}
-
-.bokeh-dot {
-  position: absolute;
-  border-radius: 50%;
-  background: #3B4738;
-}
-
-.bokeh-dot.d1 { width: 28px; height: 28px; top: 10px; left: 0; }
-.bokeh-dot.d2 { width: 34px; height: 34px; top: 32px; left: 16px; }
-.bokeh-dot.d3 { width: 24px; height: 24px; top: 60px; left: 4px; }
-.bokeh-dot.d4 { width: 26px; height: 26px; top: 4px; left: 24px; }
-.bokeh-dot.d5 { width: 28px; height: 28px; top: 64px; left: 30px; }
-.bokeh-dot.d6 { width: 20px; height: 20px; top: 40px; left: 44px; }
-
-.card-vertical-text {
-  font-family: 'Inter', sans-serif;
-  font-size: 9px;
-  font-weight: 800;
-  letter-spacing: 0.22em;
-  color: #263024;
-  writing-mode: vertical-rl;
-  text-orientation: mixed;
-  text-transform: uppercase;
-  margin-left: auto;
-}
-
-/* ============================================================
-   Action Footer (Dots + Explore Button)
+   Active Centered Product Info & Action Footer
    ============================================================ */
 .arch-action-footer {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 16px;
-  margin-top: 10px;
+  gap: 14px;
+  margin-top: 16px;
+  padding: 0 20px;
+  text-align: center;
   z-index: 10;
 }
 
-.arch-dots-indicator {
+.arch-active-product-info {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 6px;
+  gap: 2px;
+  max-width: 320px;
 }
 
-.arch-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.2);
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  transition: all 0.25s ease;
+.arch-active-category {
+  font-family: 'Inter', sans-serif;
+  font-size: 9px;
+  font-weight: 600;
+  color: #C9A84C;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
 }
 
-.arch-dot.active {
-  width: 20px;
-  border-radius: 10px;
-  background: #F4D099;
-  box-shadow: 0 0 10px rgba(244, 208, 153, 0.6);
+.arch-active-name {
+  font-family: 'Cormorant Garamond', 'Georgia', serif;
+  font-size: 20px;
+  font-weight: 500;
+  color: #FFFFFF;
+  line-height: 1.2;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.arch-active-price {
+  font-family: 'Cormorant Garamond', 'Georgia', serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: #F4D099;
+  letter-spacing: 0.04em;
+  margin-top: 1px;
 }
 
 .arch-explore-cta {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 10px 22px;
+  padding: 10px 24px;
   background: rgba(201, 168, 76, 0.18);
   border: 1px solid rgba(244, 208, 153, 0.45);
   border-radius: 9999px;

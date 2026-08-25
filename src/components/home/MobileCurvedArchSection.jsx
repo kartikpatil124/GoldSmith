@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import main1Img from '../../../images/main1.png';
 import img2 from '../../../images/ChatGPT Image Jul 26, 2026, 12_18_39 AM.png';
@@ -15,155 +15,128 @@ import img13 from '../../../images/ChatGPT Image Jul 27, 2026, 12_02_12 AM.png';
 import './MobileCurvedArchSection.css';
 
 /*
-  Mobile Infinite Continuous 360° Curved Squircle Arch
+  Mobile Infinite 360° Curved Squircle Product Ring
   ─────────────────────────────────────────────────────────────
-  Endless circulating 360-degree orbital ring of squircle cards.
-  Cards seamlessly rotate across the top convex arch in an infinite
-  smooth loop with zero ends, auto-rotation, and touch drag momentum.
+  Pure, full-bleed real product imagery on squircle cards circulating
+  in a continuous infinite 360-degree loop across the top convex arch.
+  Tapping any card directly navigates to its product page.
 */
 
-const BASE_CARDS = [
+const REAL_PRODUCTS = [
   {
     id: 1,
-    type: 'noir-text',
-    bg: '#141412',
-    color: '#FFFFFF',
-    topText: 'SEVILLA',
-    bottomText: 'BARCELONA',
-    image: main1Img,
-    badge: 'HALO · 01',
+    name: 'Celestial Diamond Solitaire Ring',
     slug: 'celestial-diamond-solitaire-ring',
+    category: 'Rings · 18K Yellow Gold',
+    price: '₹2,85,000',
+    image: main1Img,
   },
   {
     id: 2,
-    type: 'split-archival',
-    bg: '#EAE6DF',
-    color: '#1A1A1A',
-    image: img2,
-    codeTop: '0034',
-    codeBottom: '0095',
-    tag: 'HERITAGE',
+    name: 'Royal Emerald Drop Earrings',
     slug: 'royal-emerald-drop-earrings',
+    category: 'Earrings · 18K White Gold',
+    price: '₹1,65,000',
+    image: img2,
   },
   {
     id: 3,
-    type: 'portrait-mood',
-    bg: '#1E251E',
-    color: '#EAE6DF',
-    image: img4,
-    centerText: 'ATELIER',
-    badge: 'BESPOKE 03',
+    name: 'Infinity Diamond Tennis Bracelet',
     slug: 'infinity-diamond-tennis-bracelet',
+    category: 'Bracelets · 18K White Gold',
+    price: '₹4,25,000',
+    image: img3,
   },
   {
     id: 4,
-    type: 'polaroid-frame',
-    bg: '#2C3428',
-    color: '#FFFFFF',
-    image: img5,
-    caption: 'north ave',
-    badge: 'COLOMBIAN',
+    name: 'Maharani Bridal Necklace Set',
     slug: 'maharani-bridal-necklace-set',
+    category: 'Necklaces · 22K Yellow Gold',
+    price: '₹8,50,000',
+    image: img5,
   },
   {
     id: 5,
-    type: 'oval-quote',
-    bg: '#F2EFE9',
-    color: '#1C1C1A',
-    image: img3,
-    quote: 'Maple Street is a lovely avenue with lush gold',
-    dash: '—',
-    slug: 'solitaire-diamond-pendant',
+    name: 'Sapphire Heart Pendant',
+    slug: 'sapphire-heart-pendant',
+    category: 'Pendants · 18K Rose Gold',
+    price: '₹78,000',
+    image: img4,
   },
   {
     id: 6,
-    type: 'bokeh-vertical',
-    bg: '#EFEBE2',
-    color: '#263024',
-    verticalText: 'ULTIMATE TASTE',
+    name: 'Floral Gold Bangle Set',
+    slug: 'floral-gold-bangle-set',
+    category: 'Bangles · 22K Gold',
+    price: '₹1,85,000',
     image: img8,
-    slug: 'elysian-bridal-heritage-choker',
   },
   {
     id: 7,
-    type: 'noir-gold',
-    bg: '#121210',
-    color: '#F4D099',
-    topText: 'ATELIER',
-    bottomText: 'IMPERIAL',
+    name: 'Serpentine Gold Chain',
+    slug: 'serpentine-gold-chain',
+    category: 'Chains · 22K Gold',
+    price: '₹95,000',
     image: img9,
-    badge: 'BIS · 916',
-    slug: 'celestial-diamond-solitaire-ring',
   },
   {
     id: 8,
-    type: 'archival-date',
-    bg: '#252D23',
-    color: '#FFFFFF',
-    image: img6,
-    caption: 'NOV',
-    badge: 'ARCHIVE 08',
+    name: 'Elysian Heritage Choker',
     slug: 'maharani-bridal-necklace-set',
+    category: 'Bridal · 22K Temple Gold',
+    price: '₹6,40,000',
+    image: img6,
   },
   {
     id: 9,
-    type: 'oval-quote',
-    bg: '#EBE7DE',
-    color: '#1A1A1A',
+    name: 'Solitaire Diamond Pendant',
+    slug: 'celestial-diamond-solitaire-ring',
+    category: 'Pendants · Platinum & Gold',
+    price: '₹1,95,000',
     image: img10,
-    quote: 'Royal brilliance set in high polish 18K white gold',
-    dash: '—',
-    slug: 'royal-emerald-drop-earrings',
   },
   {
     id: 10,
-    type: 'noir-text',
-    bg: '#161614',
-    color: '#F4D099',
-    topText: 'GENEVA',
-    bottomText: 'LONDON',
-    image: img13,
-    badge: 'EDITION · 10',
-    slug: 'elysian-bridal-heritage-choker',
+    name: 'Royal Diamond Line Bracelet',
+    slug: 'infinity-diamond-tennis-bracelet',
+    category: 'Bracelets · 18K White Gold',
+    price: '₹3,40,000',
+    image: img11,
   },
   {
     id: 11,
-    type: 'split-archival',
-    bg: '#ECE8E1',
-    color: '#1A1A1A',
-    image: img11,
-    codeTop: '0142',
-    codeBottom: '0288',
-    tag: 'SOLITAIRE',
-    slug: 'infinity-diamond-tennis-bracelet',
+    name: 'Imperial Gemstone Earrings',
+    slug: 'royal-emerald-drop-earrings',
+    category: 'Earrings · 18K Rose Gold',
+    price: '₹1,45,000',
+    image: img12,
   },
   {
     id: 12,
-    type: 'polaroid-frame',
-    bg: '#273024',
-    color: '#FFFFFF',
-    image: img12,
-    caption: 'mayfair suite',
-    badge: 'BESPOKE',
+    name: 'Masterpiece Gold Necklace',
     slug: 'maharani-bridal-necklace-set',
+    category: 'Necklaces · 22K Gold',
+    price: '₹7,20,000',
+    image: img13,
   },
 ];
 
 export default function MobileCurvedArchSection() {
   const [activeCardIndex, setActiveCardIndex] = useState(0);
   const [cardsState, setCardsState] = useState([]);
-  
+
   // Animation state references
   const angleRef = useRef(0);
   const velocityRef = useRef(0);
   const isDraggingRef = useRef(false);
+  const hasDraggedRef = useRef(false);
   const startXRef = useRef(0);
   const lastXRef = useRef(0);
   const lastTimeRef = useRef(0);
   const animFrameRef = useRef(null);
   const isPausedRef = useRef(false);
 
-  const numCards = BASE_CARDS.length; // 12 cards around 360° circle
+  const numCards = REAL_PRODUCTS.length; // 12 real products around 360° circle
   const angleStep = 360 / numCards; // 30° per card
 
   // Continuous 60fps animation loop
@@ -193,7 +166,7 @@ export default function MobileCurvedArchSection() {
       let closestIdx = 0;
       let minApexDist = 999;
 
-      const updated = BASE_CARDS.map((card, i) => {
+      const updated = REAL_PRODUCTS.map((product, i) => {
         const baseAngle = i * angleStep;
         // Current angle position on the 360-degree circle
         const rawAngle = (baseAngle - currentRot + 360) % 360;
@@ -215,15 +188,15 @@ export default function MobileCurvedArchSection() {
           const y = (1 - Math.cos(normRad)) * arcRadius * 0.72; // Convex arch drop
           const rotZ = normDeg;
           const rotY = -normDeg * 0.22;
-          
+
           const scale = Math.max(0.78, 1.05 - (absDeg / 85) * 0.28);
-          // Quadratic fade at outer flanks
+          // Smooth fade at outer flanks
           const opacity = Math.max(0, 1 - Math.pow(absDeg / 72, 2.2));
           const zIndex = Math.round(100 - absDeg);
           const isApex = absDeg < angleStep / 2;
 
           return {
-            ...card,
+            ...product,
             visible: true,
             x: x.toFixed(1),
             y: y.toFixed(1),
@@ -237,7 +210,7 @@ export default function MobileCurvedArchSection() {
         }
 
         return {
-          ...card,
+          ...product,
           visible: false,
           opacity: 0,
         };
@@ -253,17 +226,10 @@ export default function MobileCurvedArchSection() {
     return () => cancelAnimationFrame(animFrameRef.current);
   }, [numCards, angleStep]);
 
-  // Center on clicked card
-  const handleCardClick = (index) => {
-    const targetRot = index * angleStep;
-    // Shortest angular path
-    let diff = (targetRot - (angleRef.current % 360) + 540) % 360 - 180;
-    velocityRef.current = -diff * 0.08;
-  };
-
   // Touch / Pointer Drag Handlers
   const handlePointerDown = (e) => {
     isDraggingRef.current = true;
+    hasDraggedRef.current = false;
     const clientX = e.touches ? e.touches[0].clientX : e.clientX;
     startXRef.current = clientX;
     lastXRef.current = clientX;
@@ -275,6 +241,11 @@ export default function MobileCurvedArchSection() {
     if (!isDraggingRef.current) return;
     const clientX = e.touches ? e.touches[0].clientX : e.clientX;
     const deltaX = clientX - lastXRef.current;
+    const totalDist = Math.abs(clientX - startXRef.current);
+    if (totalDist > 6) {
+      hasDraggedRef.current = true;
+    }
+
     const now = performance.now();
     const dt = Math.max(1, now - lastTimeRef.current);
 
@@ -292,13 +263,15 @@ export default function MobileCurvedArchSection() {
     isDraggingRef.current = false;
   };
 
+  const activeProduct = REAL_PRODUCTS[activeCardIndex] || REAL_PRODUCTS[0];
+
   return (
     <section className="mobile-curved-arch-section">
       {/* Header Badge & Title */}
       <div className="arch-header">
-        <span className="arch-badge">CONTINUOUS 360° ATELIER</span>
-        <h2 className="arch-title">Orbit of Masterpieces</h2>
-        <p className="arch-subtitle">Seamless Endless Ring • Swipe or Watch</p>
+        <span className="arch-badge">FEATURED COLLECTION</span>
+        <h2 className="arch-title">Masterpiece Orbit</h2>
+        <p className="arch-subtitle">Tap any piece to explore details</p>
       </div>
 
       {/* Infinite Arc Wheel Canvas */}
@@ -317,129 +290,52 @@ export default function MobileCurvedArchSection() {
         }}
       >
         <div className="arch-cards-track">
-          {cardsState.map((card, i) => {
-            if (!card.visible) return null;
+          {cardsState.map((product, i) => {
+            if (!product.visible) return null;
 
             return (
-              <div
-                key={`${card.id}-${i}`}
-                className={`arch-squircle-card ${card.isApex ? 'is-apex' : ''}`}
+              <Link
+                key={`${product.id}-${i}`}
+                to={`/product/${product.slug}`}
+                className={`arch-squircle-card ${product.isApex ? 'is-apex' : ''}`}
                 style={{
-                  transform: `translate3d(calc(-50% + ${card.x}px), ${card.y}px, 0) rotateZ(${card.rotZ}deg) rotateY(${card.rotY}deg) scale(${card.scale})`,
-                  opacity: card.opacity,
-                  zIndex: card.zIndex,
-                  backgroundColor: card.bg,
-                  color: card.color,
+                  transform: `translate3d(calc(-50% + ${product.x}px), ${product.y}px, 0) rotateZ(${product.rotZ}deg) rotateY(${product.rotY}deg) scale(${product.scale})`,
+                  opacity: product.opacity,
+                  zIndex: product.zIndex,
                 }}
-                onClick={() => handleCardClick(i)}
+                onClick={(e) => {
+                  if (hasDraggedRef.current) {
+                    e.preventDefault();
+                  }
+                }}
+                aria-label={`View ${product.name}`}
               >
-                {card.type === 'noir-text' && (
-                  <div className="card-layout-noir-text">
-                    <span className="card-top-tag">{card.topText}</span>
-                    <div className="card-img-wrap">
-                      <img src={card.image} alt={card.bottomText} />
-                    </div>
-                    <span className="card-bottom-tag">{card.bottomText}</span>
-                  </div>
-                )}
-
-                {card.type === 'split-archival' && (
-                  <div className="card-layout-split">
-                    <div className="card-split-left">
-                      <img src={card.image} alt="Jewel Bloom" />
-                    </div>
-                    <div className="card-split-right">
-                      <span className="card-code-num">{card.codeTop}</span>
-                      <span className="card-code-dash">-</span>
-                      <span className="card-code-num">{card.codeBottom}</span>
-                    </div>
-                  </div>
-                )}
-
-                {card.type === 'portrait-mood' && (
-                  <div className="card-layout-portrait">
-                    <img src={card.image} alt="Mood Portrait" className="card-bg-img" />
-                    <div className="card-portrait-overlay">
-                      <div className="card-flower-mosaic" />
-                    </div>
-                  </div>
-                )}
-
-                {card.type === 'polaroid-frame' && (
-                  <div className="card-layout-polaroid">
-                    <div className="card-polaroid-frame">
-                      <img src={card.image} alt={card.caption} />
-                    </div>
-                    <span className="card-polaroid-caption">{card.caption}</span>
-                  </div>
-                )}
-
-                {card.type === 'oval-quote' && (
-                  <div className="card-layout-oval-quote">
-                    <div className="card-oval-frame">
-                      <img src={card.image} alt="Floral gem" />
-                    </div>
-                    <p className="card-quote-text">{card.quote}</p>
-                    <span className="card-quote-dash">{card.dash}</span>
-                  </div>
-                )}
-
-                {card.type === 'bokeh-vertical' && (
-                  <div className="card-layout-bokeh">
-                    <div className="card-bokeh-dots">
-                      <div className="bokeh-dot d1" />
-                      <div className="bokeh-dot d2" />
-                      <div className="bokeh-dot d3" />
-                      <div className="bokeh-dot d4" />
-                      <div className="bokeh-dot d5" />
-                      <div className="bokeh-dot d6" />
-                    </div>
-                    <span className="card-vertical-text">{card.verticalText}</span>
-                  </div>
-                )}
-
-                {card.type === 'noir-gold' && (
-                  <div className="card-layout-noir-text">
-                    <span className="card-top-tag" style={{ color: '#F4D099' }}>{card.topText}</span>
-                    <div className="card-img-wrap">
-                      <img src={card.image} alt={card.bottomText} />
-                    </div>
-                    <span className="card-bottom-tag" style={{ color: '#F4D099' }}>{card.bottomText}</span>
-                  </div>
-                )}
-
-                {card.type === 'archival-date' && (
-                  <div className="card-layout-polaroid">
-                    <div className="card-polaroid-frame">
-                      <img src={card.image} alt={card.caption} />
-                    </div>
-                    <span className="card-polaroid-caption">{card.caption}</span>
-                  </div>
-                )}
-              </div>
+                {/* Full-bleed real product image inside squircle */}
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  className="arch-card-product-img"
+                  loading="lazy"
+                />
+              </Link>
             );
           })}
         </div>
       </div>
 
-      {/* Active Card Indicator & Action Bar */}
+      {/* Active Centered Product Info & Direct Navigation */}
       <div className="arch-action-footer">
-        <div className="arch-dots-indicator">
-          {BASE_CARDS.map((_, i) => (
-            <button
-              key={i}
-              className={`arch-dot ${i === activeCardIndex ? 'active' : ''}`}
-              onClick={() => handleCardClick(i)}
-              aria-label={`Jump to piece ${i + 1}`}
-            />
-          ))}
+        <div className="arch-active-product-info">
+          <span className="arch-active-category">{activeProduct.category}</span>
+          <h3 className="arch-active-name">{activeProduct.name}</h3>
+          <span className="arch-active-price">{activeProduct.price}</span>
         </div>
 
         <Link
-          to={`/product/${BASE_CARDS[activeCardIndex]?.slug || 'celestial-diamond-solitaire-ring'}`}
+          to={`/product/${activeProduct.slug}`}
           className="arch-explore-cta"
         >
-          <span>Explore Piece #{activeCardIndex + 1}</span>
+          <span>View Product Details</span>
           <span className="arch-cta-arrow">→</span>
         </Link>
       </div>
