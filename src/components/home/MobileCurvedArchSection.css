@@ -6,7 +6,7 @@
 .mobile-curved-arch-section {
   position: relative;
   width: 100%;
-  padding: 44px 0 50px;
+  padding: 44px 0 36px;
   background: #0A0806;
   overflow: hidden;
   display: flex;
@@ -59,7 +59,7 @@
 .arch-wheel-viewport {
   position: relative;
   width: 100%;
-  height: 310px;
+  height: 290px;
   display: flex;
   align-items: flex-start;
   justify-content: center;
@@ -73,7 +73,7 @@
 
 .arch-cards-track {
   position: absolute;
-  top: 24px;
+  top: 20px;
   left: 50%;
   width: 0;
   height: 0;
@@ -83,7 +83,7 @@
   -webkit-transform-style: preserve-3d;
 }
 
-/* Pure Squircle Card Primitive (Tight, seamless fanned cards) */
+/* Pure Squircle Card Primitive (Clean, crisp without dark shadow casting) */
 .arch-squircle-card {
   position: absolute;
   top: 0;
@@ -92,22 +92,20 @@
   height: 154px;
   border-radius: 28px;
   overflow: hidden;
-  background: #12100E;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: 
-    0 14px 35px rgba(0, 0, 0, 0.75),
-    0 0 15px rgba(0, 0, 0, 0.4);
+  background: #0E0C0A;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
   will-change: transform, opacity;
   transform-origin: center bottom;
   cursor: pointer;
   box-sizing: border-box;
   text-decoration: none;
   display: block;
-  transition: box-shadow 0.25s ease, border-color 0.25s ease;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
   -webkit-tap-highlight-color: transparent;
 }
 
-/* Card image fill */
+/* Card image fill - pure and crystal clear */
 .arch-card-product-img {
   width: 100%;
   height: 100%;
@@ -120,20 +118,17 @@
 /* Active Apex Card Glow */
 .arch-squircle-card.is-apex {
   border: 1.5px solid rgba(244, 208, 153, 0.95);
-  box-shadow: 
-    0 20px 50px rgba(0, 0, 0, 0.9),
-    0 0 30px rgba(201, 168, 76, 0.45);
+  box-shadow: 0 0 24px rgba(201, 168, 76, 0.35);
 }
 
 /* ============================================================
-   Active Centered Product Info & Action Footer
+   Active Centered Product Info
    ============================================================ */
 .arch-action-footer {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
-  margin-top: 14px;
+  margin-top: 10px;
   padding: 0 20px;
   text-align: center;
   z-index: 10;
@@ -145,6 +140,13 @@
   align-items: center;
   gap: 2px;
   max-width: 320px;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.2s ease;
+}
+
+.arch-active-product-info:active {
+  transform: scale(0.97);
 }
 
 .arch-active-category {
@@ -158,7 +160,7 @@
 
 .arch-active-name {
   font-family: 'Cormorant Garamond', 'Georgia', serif;
-  font-size: 20px;
+  font-size: 21px;
   font-weight: 500;
   color: #FFFFFF;
   line-height: 1.2;
@@ -171,41 +173,9 @@
 
 .arch-active-price {
   font-family: 'Cormorant Garamond', 'Georgia', serif;
-  font-size: 18px;
+  font-size: 19px;
   font-weight: 700;
   color: #F4D099;
   letter-spacing: 0.04em;
-  margin-top: 1px;
-}
-
-.arch-explore-cta {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 24px;
-  background: rgba(201, 168, 76, 0.18);
-  border: 1px solid rgba(244, 208, 153, 0.45);
-  border-radius: 9999px;
-  color: #FFFFFF;
-  text-decoration: none;
-  font-family: 'Inter', sans-serif;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  transition: all 0.25s ease;
-}
-
-.arch-explore-cta:active {
-  transform: scale(0.96);
-  background: rgba(201, 168, 76, 0.35);
-  border-color: #F4D099;
-}
-
-.arch-cta-arrow {
-  color: #F4D099;
-  font-size: 13px;
-  line-height: 1;
+  margin-top: 2px;
 }

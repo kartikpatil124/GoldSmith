@@ -60,7 +60,7 @@ export default function MobileCurvedArchSection() {
     });
   }, [productsList]);
 
-  // 18 slots around 360° circle for a tight, elegant fanned arch with minimal gap
+  // 18 slots around 360° circle for a tight, elegant fanned arch
   const totalSlots = 18;
   const angleStep = 360 / totalSlots; // 20° per card slot
 
@@ -119,7 +119,7 @@ export default function MobileCurvedArchSection() {
           const rotY = -normDeg * 0.20;
 
           const scale = Math.max(0.78, 1.04 - (absDeg / 85) * 0.26);
-          // Smooth fade at outer flanks
+          // Smooth clean fade at outer flanks
           const opacity = Math.max(0, 1 - Math.pow(absDeg / 76, 2.2));
           const zIndex = Math.round(100 - absDeg);
           const isApex = absDeg < angleStep / 2;
@@ -202,7 +202,7 @@ export default function MobileCurvedArchSection() {
       <div className="arch-header">
         <span className="arch-badge">FEATURED COLLECTION</span>
         <h2 className="arch-title">Masterpiece Orbit</h2>
-        <p className="arch-subtitle">Tap any piece to explore details</p>
+        <p className="arch-subtitle">Tap any piece to view details</p>
       </div>
 
       {/* Infinite Arc Wheel Canvas */}
@@ -241,7 +241,7 @@ export default function MobileCurvedArchSection() {
                 }}
                 aria-label={`View ${card.name}`}
               >
-                {/* Full-bleed real product image inside squircle */}
+                {/* Clean, crystal clear real product image */}
                 {card.image && (
                   <img
                     src={card.image}
@@ -256,21 +256,16 @@ export default function MobileCurvedArchSection() {
         </div>
       </div>
 
-      {/* Active Centered Product Info & Direct Navigation */}
+      {/* Active Centered Product Info */}
       {activeProduct.name && (
         <div className="arch-action-footer">
-          <div className="arch-active-product-info">
+          <Link
+            to={`/product/${activeProduct.slug}`}
+            className="arch-active-product-info"
+          >
             <span className="arch-active-category">{activeProduct.category}</span>
             <h3 className="arch-active-name">{activeProduct.name}</h3>
             <span className="arch-active-price">{activeProduct.price}</span>
-          </div>
-
-          <Link
-            to={`/product/${activeProduct.slug}`}
-            className="arch-explore-cta"
-          >
-            <span>View Product Details</span>
-            <span className="arch-cta-arrow">→</span>
           </Link>
         </div>
       )}
