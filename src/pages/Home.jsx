@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ShowroomWalkthroughHero from '../components/home/ShowroomWalkthroughHero';
 import MobileCurvedArchSection from '../components/home/MobileCurvedArchSection';
 import CinematicParallaxUnifiedSection from '../components/home/CinematicParallaxUnifiedSection';
+import Mobile3DFloatingCardsSection from '../components/home/Mobile3DFloatingCardsSection';
 import LuxuryShowcaseSection from '../components/home/LuxuryShowcaseSection';
 import ImageTrailSection from '../components/home/ImageTrailSection';
 import CategoryWheelSection from '../components/home/CategoryWheelSection';
@@ -32,6 +33,7 @@ export default function Home() {
         <>
           <MobileCurvedArchSection />
           <CinematicParallaxUnifiedSection />
+          <Mobile3DFloatingCardsSection />
         </>
       )}
 
