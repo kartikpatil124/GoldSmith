@@ -240,8 +240,14 @@ export default function ProductDetail() {
   return (
     <div className="pdp-page-container">
       
+      {/* Dedicated Atmospheric Background Layer (Mobile Only) */}
+      <div className="pdp-mobile-bg-layer" aria-hidden="true">
+        <div className="pdp-mobile-bg-image" />
+        <div className="pdp-mobile-bg-overlay" />
+      </div>
+
       {/* Main Liquid Glass Showcase Grid */}
-      <div className="container">
+      <div className="container pdp-content-container">
         <div className="pdp-open-grid">
           
           {/* LEFT: Ultra-Frosted Refractive Glass Showcase Gallery */}
@@ -603,6 +609,17 @@ export default function ProductDetail() {
           padding-top: 100px;
           padding-bottom: 120px;
           margin: 0;
+          position: relative;
+        }
+
+        /* Dedicated mobile background layer is hidden on desktop */
+        .pdp-mobile-bg-layer {
+          display: none;
+        }
+
+        .pdp-content-container {
+          position: relative;
+          z-index: 2;
         }
 
         .pdp-open-grid {
@@ -908,8 +925,56 @@ export default function ProductDetail() {
         /* Mobile specific styling */
         @media (max-width: 768px) {
           .pdp-page-container {
+            background-image: none !important;
+            background-color: #FAF8F5 !important;
             padding-top: 75px !important;
             padding-bottom: calc(160px + env(safe-area-inset-bottom, 0px)) !important;
+            overflow-x: hidden;
+          }
+
+          /* Active Atmospheric Mobile Background Layer */
+          .pdp-mobile-bg-layer {
+            display: block !important;
+            position: fixed;
+            inset: 0;
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 0;
+          }
+
+          .pdp-mobile-bg-image {
+            position: absolute;
+            inset: -6%;
+            width: 112%;
+            height: 112%;
+            background-image: url(${shopBg});
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            filter: blur(14px);
+            transform: scale(1.06);
+            opacity: 0.38;
+            will-change: transform, filter, opacity;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+          }
+
+          .pdp-mobile-bg-overlay {
+            position: absolute;
+            inset: 0;
+            background:
+              radial-gradient(circle at 50% 30%, rgba(255, 255, 255, 0.05) 0%, rgba(18, 14, 10, 0.12) 100%),
+              linear-gradient(180deg, rgba(250, 248, 245, 0.25) 0%, rgba(245, 240, 232, 0.15) 50%, rgba(20, 16, 12, 0.18) 100%);
+            pointer-events: none;
+          }
+
+          @media (prefers-reduced-motion: reduce) {
+            .pdp-mobile-bg-image {
+              transform: none !important;
+            }
           }
 
           .pdp-open-grid {
