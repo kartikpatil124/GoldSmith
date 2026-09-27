@@ -595,14 +595,31 @@ export default function ProductDetail() {
         .pdp-page-container {
           min-height: 100vh;
           min-height: 100dvh;
+          position: relative;
+          padding-top: 100px;
+          padding-bottom: 120px;
+          margin: 0;
+          overflow-x: hidden;
+        }
+
+        .pdp-page-container::before {
+          content: '';
+          position: fixed;
+          inset: -30px;
           background-image: url(${shopBg});
           background-size: cover;
           background-position: center;
           background-repeat: no-repeat;
-          background-attachment: fixed;
-          padding-top: 100px;
-          padding-bottom: 120px;
-          margin: 0;
+          filter: blur(28px) saturate(140%) brightness(0.96);
+          -webkit-filter: blur(28px) saturate(140%) brightness(0.96);
+          transform: scale(1.12);
+          z-index: 0;
+          pointer-events: none;
+        }
+
+        .pdp-page-container > * {
+          position: relative;
+          z-index: 1;
         }
 
         .pdp-open-grid {

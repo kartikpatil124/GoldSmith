@@ -2520,6 +2520,32 @@ div[style*="width: 120px"][style*="height: 120px"] {
   transform: none !important;
 }
 
+/* Blurred Luxury Background Image System */
+.shop-page-wrapper {
+  position: relative !important;
+  overflow-x: hidden !important;
+}
+
+.shop-page-wrapper::before {
+  content: '';
+  position: fixed;
+  inset: -30px;
+  background-image: inherit;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: blur(28px) saturate(140%) brightness(0.96);
+  -webkit-filter: blur(28px) saturate(140%) brightness(0.96);
+  transform: scale(1.12);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.shop-page-wrapper > * {
+  position: relative;
+  z-index: 1;
+}
+
 /* ============================================================
    MOBILE-FIRST APPLICATION TRANSFORMATION RULES (<= 768px)
    ============================================================ */
