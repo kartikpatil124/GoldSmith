@@ -2554,14 +2554,14 @@ div[style*="width: 120px"][style*="height: 120px"] {
   /* Safe WhatsApp positioning well above floating control pills */
   a[aria-label="WhatsApp Support"],
   .whatsapp-floating-btn {
-    bottom: calc(200px + env(safe-area-inset-bottom, 0px)) !important;
+    bottom: calc(82px + env(safe-area-inset-bottom, 0px)) !important;
     left: auto !important;
     right: 14px !important;
-    width: 48px !important;
-    height: 48px !important;
-    font-size: 22px !important;
+    width: 44px !important;
+    height: 44px !important;
+    font-size: 20px !important;
     border-radius: 50% !important;
-    box-shadow: 0 8px 24px rgba(37, 211, 102, 0.45), 0 2px 8px rgba(0, 0, 0, 0.25) !important;
+    box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4), 0 2px 6px rgba(0, 0, 0, 0.2) !important;
     z-index: 992 !important;
   }
 

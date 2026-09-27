@@ -57,7 +57,7 @@ function Toast() {
 
 function WhatsAppButton() {
   const location = useLocation();
-  if (location.pathname.startsWith('/admin')) return null;
+  if (location.pathname.startsWith('/admin') || location.pathname.startsWith('/product/')) return null;
 
   return (
     <a 

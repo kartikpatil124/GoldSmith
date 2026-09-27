@@ -867,6 +867,10 @@ export default function ProductDetail() {
 
         /* Mobile specific styling */
         @media (max-width: 768px) {
+          .pdp-page-container {
+            padding-bottom: calc(160px + env(safe-area-inset-bottom, 0px)) !important;
+          }
+
           .pdp-breadcrumb-bar {
             margin-top: 60px;
             margin-bottom: 20px;
@@ -921,26 +925,41 @@ export default function ProductDetail() {
             gap: 10px !important;
           }
 
-          /* Sticky bottom inquiry bar for quick action */
+          /* Liquid Glass Floating Product Action Bar on Mobile — positioned with perfect optical gap above Bottom Navigation */
           .pdp-mobile-sticky-bar {
             position: fixed;
-            bottom: calc(56px + env(safe-area-inset-bottom, 0px));
-            left: 0;
-            right: 0;
-            z-index: 980;
-            background: rgba(255, 255, 255, 0.92);
-            backdrop-filter: blur(24px) saturate(180%);
-            -webkit-backdrop-filter: blur(24px) saturate(180%);
-            border-top: 1px solid rgba(201, 168, 76, 0.3);
-            box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.12);
-            padding: 10px 16px;
+            bottom: calc(76px + env(safe-area-inset-bottom, 0px));
+            left: 12px;
+            right: 12px;
+            max-width: 440px;
+            margin: 0 auto;
+            z-index: 1040;
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(35px) saturate(200%) brightness(1.06);
+            -webkit-backdrop-filter: blur(35px) saturate(200%) brightness(1.06);
+            border-radius: 9999px;
+            border: 1.5px solid rgba(255, 255, 255, 0.95);
+            box-shadow:
+              0 14px 40px rgba(0, 0, 0, 0.14),
+              0 4px 18px rgba(201, 168, 76, 0.22),
+              inset 0 1.5px 2px rgba(255, 255, 255, 0.95);
+            padding: 6px 14px;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            box-sizing: border-box;
+            animation: slideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+          }
+
+          .pdp-mobile-sticky-price {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-width: 80px;
           }
 
           .pdp-mobile-sticky-btn {
-            padding: 10px 18px;
+            padding: 9px 18px;
             border-radius: 9999px;
             background: linear-gradient(135deg, #F5E6B8 0%, #E0BB55 40%, #C9A84C 70%, #A38832 100%);
             border: 1px solid rgba(255, 255, 255, 0.9);
@@ -950,19 +969,33 @@ export default function ProductDetail() {
             letter-spacing: 0.08em;
             text-transform: uppercase;
             cursor: pointer;
+            box-shadow: 0 4px 14px rgba(201, 168, 76, 0.38);
+            white-space: nowrap;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+          }
+
+          .pdp-mobile-sticky-btn:active {
+            transform: scale(0.96);
           }
 
           .pdp-mobile-sticky-wa {
-            width: 38px;
-            height: 38px;
+            width: 36px;
+            height: 36px;
+            min-width: 36px;
             border-radius: 50%;
-            background: #25D366;
+            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
             color: #fff;
             display: flex;
             align-items: center;
             justify-content: center;
             text-decoration: none;
-            font-size: 18px;
+            font-size: 17px;
+            box-shadow: 0 4px 14px rgba(37, 211, 102, 0.38);
+            transition: transform 0.2s ease;
+          }
+
+          .pdp-mobile-sticky-wa:active {
+            transform: scale(0.92);
           }
         }
       `}</style>
