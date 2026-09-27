@@ -1,5 +1,5 @@
 import { useParams, Link } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import shopBg from '../../images/shopbg.png';
 import { products as fallbackProducts, formatPrice } from '../data/products';
 import { useCart } from '../context/CartContext';
@@ -34,6 +34,66 @@ export default function ProductDetail() {
   // Inquiry Modal States
   const [isInquiryOpen, setIsInquiryOpen] = useState(false);
   const [inquiryType, setInquiryType] = useState('Price Inquiry');
+
+  // Sticky Bottom Bar Auto-Scroll Visibility (RAF smooth tracking with threshold & ref protection)
+  const [isStickyBarVisible, setIsStickyBarVisible] = useState(true);
+  const isVisibleRef = useRef(true);
+
+  useEffect(() => {
+    let ticking = false;
+    let previousScrollY = Math.max(0, window.scrollY || document.documentElement.scrollTop || 0);
+    const TOP_THRESHOLD = 60; // Near-top buffer (always show bar when near top)
+    const SCROLL_THRESHOLD = 12; // Minimum scroll delta threshold to ignore micro-jitters
+
+    const updateVisibility = (visible) => {
+      if (isVisibleRef.current !== visible) {
+        isVisibleRef.current = visible;
+        setIsStickyBarVisible(visible);
+      }
+    };
+
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const currentScrollY = Math.max(0, window.scrollY || document.documentElement.scrollTop || 0);
+          const maxScrollY = Math.max(0, (document.documentElement.scrollHeight || document.body.scrollHeight) - window.innerHeight);
+
+          // 1. TOP OF SCREEN: Always visible when near top
+          if (currentScrollY <= TOP_THRESHOLD) {
+            updateVisibility(true);
+            previousScrollY = currentScrollY;
+          }
+          // 2. Ignore bottom rubber-band overscroll on iOS
+          else if (currentScrollY > maxScrollY) {
+            // Retain state during overscroll bounce
+          }
+          // 3. SCROLL DOWN: deliberate downward movement beyond threshold -> hide
+          else if (currentScrollY > previousScrollY + SCROLL_THRESHOLD) {
+            updateVisibility(false);
+            previousScrollY = currentScrollY;
+          }
+          // 4. SCROLL UP: deliberate upward movement beyond threshold -> reveal
+          else if (currentScrollY < previousScrollY - SCROLL_THRESHOLD) {
+            updateVisibility(true);
+            previousScrollY = currentScrollY;
+          }
+
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    // Initial check on mount
+    handleScroll();
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleScroll);
+    };
+  }, []);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -180,20 +240,7 @@ export default function ProductDetail() {
   return (
     <div className="pdp-page-container">
       
-      {/* 1. Liquid Glass Breadcrumb Strip */}
-      <div className="pdp-breadcrumb-bar">
-        <div className="container" style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', color: 'rgba(26,26,26,0.65)', overflowX: 'auto', whiteSpace: 'nowrap', scrollbarWidth: 'none' }}>
-          <Link to="/" style={{ color: 'rgba(26,26,26,0.65)', textDecoration: 'none' }}>Home</Link>
-          <span>/</span>
-          <Link to="/shop" style={{ color: 'rgba(26,26,26,0.65)', textDecoration: 'none' }}>Shop</Link>
-          <span>/</span>
-          <Link to={`/shop?category=${product.category?.toLowerCase()}`} style={{ color: 'rgba(26,26,26,0.65)', textDecoration: 'none' }}>{product.category}</Link>
-          <span>/</span>
-          <span style={{ color: 'var(--color-gold-dark)', fontWeight: 700 }}>{product.name}</span>
-        </div>
-      </div>
-
-      {/* 2. Main Liquid Glass Showcase Grid */}
+      {/* Main Liquid Glass Showcase Grid */}
       <div className="container">
         <div className="pdp-open-grid">
           
@@ -512,7 +559,7 @@ export default function ProductDetail() {
       </div>
 
       {/* 5. Sticky Bottom Inquiry Bar on Mobile */}
-      <div className="pdp-mobile-sticky-bar">
+      <div className={`pdp-mobile-sticky-bar ${isStickyBarVisible ? 'visible' : 'hidden'}`}>
         <div className="pdp-mobile-sticky-price">
           <div style={{ fontSize: '9px', textTransform: 'uppercase', color: 'var(--color-gray-500)', fontWeight: 600 }}>Direct Atelier</div>
           <div style={{ fontFamily: 'var(--font-display)', fontSize: '16px', fontWeight: 800, color: 'var(--color-charcoal)' }}>{formatPrice(product.price)}</div>
@@ -547,22 +594,15 @@ export default function ProductDetail() {
       <style>{`
         .pdp-page-container {
           min-height: 100vh;
+          min-height: 100dvh;
           background-image: url(${shopBg});
           background-size: cover;
           background-position: center;
           background-repeat: no-repeat;
           background-attachment: fixed;
+          padding-top: 100px;
           padding-bottom: 120px;
           margin: 0;
-        }
-
-        .pdp-breadcrumb-bar {
-          background: rgba(255, 255, 255, 0.45);
-          backdrop-filter: blur(25px) saturate(180%);
-          -webkit-backdrop-filter: blur(25px) saturate(180%);
-          border-bottom: 1.5px solid rgba(255, 255, 255, 0.75);
-          padding: 14px 0;
-          margin-bottom: 36px;
         }
 
         .pdp-open-grid {
@@ -868,13 +908,8 @@ export default function ProductDetail() {
         /* Mobile specific styling */
         @media (max-width: 768px) {
           .pdp-page-container {
+            padding-top: 75px !important;
             padding-bottom: calc(160px + env(safe-area-inset-bottom, 0px)) !important;
-          }
-
-          .pdp-breadcrumb-bar {
-            margin-top: 60px;
-            margin-bottom: 20px;
-            padding: 10px 0;
           }
 
           .pdp-open-grid {
@@ -948,7 +983,19 @@ export default function ProductDetail() {
             align-items: center;
             justify-content: space-between;
             box-sizing: border-box;
-            animation: slideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: transform, opacity;
+            transform: translate3d(0, 0, 0);
+            opacity: 1;
+            pointer-events: auto;
+            transition: transform 0.42s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.38s cubic-bezier(0.22, 1, 0.36, 1);
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+          }
+
+          .pdp-mobile-sticky-bar.hidden {
+            transform: translate3d(0, calc(100% + 95px), 0) !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
           }
 
           .pdp-mobile-sticky-price {
