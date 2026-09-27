@@ -230,6 +230,12 @@ export default function ProductDetail() {
   const wishlisted = product ? isInWishlist(product._id || product.id) : false;
   const productReviews = product?.reviews || [];
 
+  // Dedicated atmospheric background source using the existing product image
+  const primaryProductImg = product ? getProductImage(product) : null;
+  const bgImageUrl = (primaryProductImg ? getMediaUrl(primaryProductImg) : null) 
+    || (activeMedia && activeMedia !== 'video' ? getMediaUrl(activeMedia) : null) 
+    || shopBg;
+
   const tabs = [
     { id: 'description', label: 'Description & Care' },
     { id: 'details', label: 'Details & Specifications' },
@@ -242,7 +248,17 @@ export default function ProductDetail() {
       
       {/* Dedicated Atmospheric Background Layer (Mobile Only) */}
       <div className="pdp-mobile-bg-layer" aria-hidden="true">
-        <div className="pdp-mobile-bg-image" />
+        <img 
+          src={bgImageUrl} 
+          alt="" 
+          className="pdp-mobile-bg-image"
+          loading="eager"
+          onError={(e) => {
+            if (e.currentTarget.src !== shopBg) {
+              e.currentTarget.src = shopBg;
+            }
+          }}
+        />
         <div className="pdp-mobile-bg-overlay" />
       </div>
 
@@ -926,7 +942,7 @@ export default function ProductDetail() {
         @media (max-width: 768px) {
           .pdp-page-container {
             background-image: none !important;
-            background-color: #FAF8F5 !important;
+            background-color: #0E0C0A !important;
             padding-top: 75px !important;
             padding-bottom: calc(160px + env(safe-area-inset-bottom, 0px)) !important;
             overflow-x: hidden;
@@ -947,27 +963,40 @@ export default function ProductDetail() {
 
           .pdp-mobile-bg-image {
             position: absolute;
-            inset: -6%;
-            width: 112%;
-            height: 112%;
-            background-image: url(${shopBg});
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            filter: blur(14px);
-            transform: scale(1.06);
-            opacity: 0.38;
+            inset: -8%;
+            width: 116%;
+            height: 116%;
+            object-fit: cover;
+            object-position: center;
+            filter: blur(26px);
+            -webkit-filter: blur(26px);
+            transform: scale(1.10);
+            -webkit-transform: scale(1.10);
+            transform-origin: center center;
+            opacity: 0.70;
             will-change: transform, filter, opacity;
             backface-visibility: hidden;
             -webkit-backface-visibility: hidden;
+            pointer-events: none;
+            user-select: none;
           }
 
           .pdp-mobile-bg-overlay {
             position: absolute;
             inset: 0;
             background:
-              radial-gradient(circle at 50% 30%, rgba(255, 255, 255, 0.05) 0%, rgba(18, 14, 10, 0.12) 100%),
-              linear-gradient(180deg, rgba(250, 248, 245, 0.25) 0%, rgba(245, 240, 232, 0.15) 50%, rgba(20, 16, 12, 0.18) 100%);
+              radial-gradient(
+                circle at 50% 35%,
+                rgba(255, 255, 255, 0.04) 0%,
+                rgba(40, 30, 22, 0.08) 55%,
+                rgba(20, 16, 13, 0.14) 100%
+              ),
+              linear-gradient(
+                180deg,
+                rgba(30, 23, 18, 0.10) 0%,
+                rgba(30, 23, 18, 0.12) 40%,
+                rgba(15, 12, 10, 0.22) 100%
+              );
             pointer-events: none;
           }
 
