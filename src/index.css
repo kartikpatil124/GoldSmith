@@ -1852,6 +1852,160 @@ div[style*="width: 120px"][style*="height: 120px"] {
   height: 100vh !important;
   overflow: hidden !important;
   z-index: 1;
+  background: #0A0806 !important;
+}
+
+/* ── Dynamic Silk WebGL Background for Shop Page ── */
+.shop-silk-bg {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  z-index: 0 !important;
+  pointer-events: none !important;
+  overflow: hidden !important;
+}
+
+.shop-silk-bg canvas {
+  width: 100% !important;
+  height: 100% !important;
+  display: block !important;
+}
+
+/* Subtle dark vignette overlay over Silk matching Masterpiece Orbit */
+.shop-silk-overlay {
+  position: absolute !important;
+  inset: 0 !important;
+  background: radial-gradient(circle at 50% 30%, rgba(10, 8, 6, 0.25) 0%, rgba(10, 8, 6, 0.75) 85%, #0A0806 100%) !important;
+  pointer-events: none !important;
+  z-index: 1 !important;
+}
+
+/* ── Free Space Editorial Layer Above Glass Box ── */
+.shop-hero-editorial {
+  position: fixed !important;
+  top: 85px !important;
+  left: 0 !important;
+  right: 0 !important;
+  height: calc(50vh - 42px) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  padding: 0 24px !important;
+  z-index: 5 !important;
+  box-sizing: border-box !important;
+  user-select: none !important;
+  -webkit-user-select: none !important;
+  transform-origin: center center !important;
+  will-change: opacity, filter, transform;
+}
+
+/* State 1: Visible while sheet is at 50% peek */
+.shop-hero-editorial.visible {
+  opacity: 1 !important;
+  filter: blur(0px) !important;
+  transform: translate3d(0, 0, 0) scale(1) !important;
+  pointer-events: auto !important;
+  transition: 
+    opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.65s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+/* State 2: Smoothly blurs and fades out when user scrolls / expands to full sheet */
+.shop-hero-editorial.blurred-out {
+  opacity: 0 !important;
+  filter: blur(20px) !important;
+  transform: translate3d(0, -32px, 0) scale(0.92) !important;
+  pointer-events: none !important;
+  transition: 
+    opacity 0.48s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.55s cubic-bezier(0.22, 1, 0.36, 1) !important;
+}
+
+/* Editorial Badge */
+.shop-hero-badge {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  padding: 5px 16px !important;
+  border-radius: 9999px !important;
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.18) 0%, rgba(255, 255, 255, 0.06) 100%) !important;
+  border: 1px solid rgba(212, 175, 55, 0.35) !important;
+  backdrop-filter: blur(14px) !important;
+  -webkit-backdrop-filter: blur(14px) !important;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.3) !important;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
+  font-size: 10.5px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.22em !important;
+  text-transform: uppercase !important;
+  color: #eed59a !important;
+  margin-bottom: 12px !important;
+}
+
+.shop-hero-badge-sparkle {
+  font-size: 9px !important;
+  color: #c9a84c !important;
+}
+
+/* Editorial Title */
+.shop-hero-title {
+  font-family: 'Playfair Display', Georgia, serif !important;
+  font-size: clamp(28px, 4.2vw, 44px) !important;
+  font-weight: 400 !important;
+  line-height: 1.15 !important;
+  letter-spacing: -0.015em !important;
+  color: #ffffff !important;
+  margin: 0 0 8px 0 !important;
+  text-shadow: 0 2px 24px rgba(0, 0, 0, 0.5), 0 0 40px rgba(201, 168, 76, 0.2) !important;
+}
+
+.shop-hero-title em {
+  font-family: 'Cormorant Garamond', Georgia, serif !important;
+  font-style: italic !important;
+  font-weight: 400 !important;
+  background: linear-gradient(135deg, #ffffff 15%, #f4e1aa 55%, #c9a84c 100%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  padding-left: 2px !important;
+}
+
+/* Editorial Subtitle */
+.shop-hero-subtitle {
+  font-family: 'Cormorant Garamond', Georgia, serif !important;
+  font-size: clamp(14px, 1.8vw, 17px) !important;
+  font-weight: 400 !important;
+  font-style: italic !important;
+  color: rgba(255, 255, 255, 0.85) !important;
+  letter-spacing: 0.03em !important;
+  line-height: 1.4 !important;
+  margin: 0 !important;
+  max-width: 440px !important;
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.6) !important;
+}
+
+/* Editorial Meta row */
+.shop-hero-meta {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  margin-top: 12px !important;
+  font-family: 'Inter', sans-serif !important;
+  font-size: 10.5px !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.14em !important;
+  text-transform: uppercase !important;
+  color: rgba(240, 225, 195, 0.72) !important;
+}
+
+.shop-hero-meta-dot {
+  font-size: 7px !important;
+  color: #c9a84c !important;
+  opacity: 0.8 !important;
 }
 
 .glass-big-center-box-container {
@@ -1865,6 +2019,115 @@ div[style*="width: 120px"][style*="height: 120px"] {
   padding: 0 20px !important;
   box-sizing: border-box !important;
   z-index: 10;
+  will-change: transform;
+}
+
+/* ── Pop-Up Sheet State 1: Hidden (starts off-screen bottom) ── */
+.glass-big-center-box-container.sheet-hidden {
+  transform: translate3d(0, 100vh, 0) !important;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ── Pop-Up Sheet State 2: 50% Peek with Springy Animation ── */
+.glass-big-center-box-container.sheet-half {
+  transform: translate3d(0, calc(50vh - 42px), 0) !important;
+  opacity: 1;
+  transition: transform 0.85s cubic-bezier(0.34, 1.28, 0.64, 1), opacity 0.35s ease;
+}
+
+.glass-big-center-box-container.sheet-half .glass-big-center-box {
+  overflow-y: hidden !important;
+  cursor: pointer;
+}
+
+/* ── Pop-Up Sheet State 3: 100% Full Smooth Reach & Normal Lock ── */
+.glass-big-center-box-container.sheet-full {
+  transform: translate3d(0, 0, 0) !important;
+  opacity: 1;
+  transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.glass-big-center-box-container.sheet-full .glass-big-center-box {
+  overflow-y: auto !important;
+  cursor: default;
+}
+
+/* ── Interactive Liquid Glass Sheet Drag Handle & Peek Indicator ── */
+.glass-sheet-handle-bar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 0 0 16px;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: pan-y;
+  transition: opacity 0.3s ease;
+}
+
+.glass-sheet-handle-pill {
+  width: 44px;
+  height: 4.5px;
+  border-radius: 9999px;
+  background: rgba(201, 168, 76, 0.55);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.6);
+  transition: width 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.glass-sheet-handle-bar:hover .glass-sheet-handle-pill,
+.glass-sheet-handle-bar.active-peek .glass-sheet-handle-pill,
+.glass-sheet-handle-bar.active-full:hover .glass-sheet-handle-pill {
+  width: 58px;
+  background: var(--color-gold);
+  box-shadow: 0 2px 10px rgba(201, 168, 76, 0.45);
+}
+
+.glass-sheet-expand-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+  padding: 4px 14px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.75);
+  border: 1px solid rgba(201, 168, 76, 0.35);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  animation: bounceHint 2s infinite ease-in-out;
+  transition: transform 0.25s ease, background 0.25s ease;
+}
+
+.glass-sheet-collapse-indicator {
+  animation: bounceHintDown 2s infinite ease-in-out !important;
+}
+
+.glass-sheet-expand-text {
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  color: var(--color-gold-dark);
+  text-transform: uppercase;
+}
+
+.glass-sheet-expand-chevron {
+  font-size: 9px;
+  color: var(--color-gold-dark);
+  font-weight: 900;
+}
+
+@keyframes bounceHint {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+@keyframes bounceHintDown {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(4px); }
 }
 
 .glass-big-center-box {
@@ -2575,11 +2838,51 @@ div[style*="width: 120px"][style*="height: 120px"] {
     display: none !important;
   }
 
+  /* Mobile Free Space Editorial Layer Adjustments */
+  .shop-hero-editorial {
+    top: 68px !important;
+    height: calc(50vh - 34px) !important;
+    padding: 0 16px !important;
+  }
+
+  .shop-hero-badge {
+    font-size: 9px !important;
+    padding: 4px 12px !important;
+    margin-bottom: 8px !important;
+    letter-spacing: 0.18em !important;
+  }
+
+  .shop-hero-title {
+    font-size: clamp(23px, 6.2vw, 30px) !important;
+    margin-bottom: 5px !important;
+  }
+
+  .shop-hero-subtitle {
+    font-size: 13px !important;
+    max-width: 310px !important;
+    line-height: 1.35 !important;
+  }
+
+  .shop-hero-meta {
+    font-size: 9.5px !important;
+    gap: 7px !important;
+    margin-top: 8px !important;
+    letter-spacing: 0.1em !important;
+  }
+
   /* Mobile Big Center Glass Box Adjustments */
   .glass-big-center-box-container {
     top: 68px !important;
     padding: 0 8px !important;
     bottom: 0 !important;
+  }
+
+  .glass-big-center-box-container.sheet-half {
+    transform: translate3d(0, calc(50vh - 34px), 0) !important;
+  }
+
+  .glass-big-center-box-container.sheet-full {
+    transform: translate3d(0, 0, 0) !important;
   }
 
   .glass-big-center-box {

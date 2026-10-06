@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import shopBg from '../../images/shopbg.png';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
+import Silk from '../components/ui/Silk';
 import ProductCard from '../components/shop/ProductCard';
 import OptionWheel from '../components/ui/OptionWheel';
 import api from '../utils/api';
@@ -34,6 +34,100 @@ export default function Shop() {
     priceRange: '',
     gemstone: ''
   });
+
+  // Springy Bottom-Sheet Pop-Up and Bidirectional Scroll Progression State
+  const [sheetState, setSheetState] = useState('hidden'); // 'hidden' -> 'half' -> 'full'
+  const centerBoxRef = useRef(null);
+  const accumulatedUpDelta = useRef(0);
+  const wheelResetTimer = useRef(null);
+  const touchStartY = useRef(null);
+  const touchStartScrollTop = useRef(0);
+
+  useEffect(() => {
+    // Pop up from bottom to 50% peek position with springy animation on mount
+    const timer = setTimeout(() => {
+      setSheetState('half');
+    }, 60);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const expandToFull = () => {
+    setSheetState('full');
+  };
+
+  const collapseToHalf = () => {
+    if (centerBoxRef.current) {
+      centerBoxRef.current.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    setSheetState('half');
+  };
+
+  // Bidirectional scroll & touch listener:
+  // - While at 50% ('half'): scrolling down expands to 100% ('full') and blurs editorial
+  // - While at 100% ('full'): scrolling up at the top returns to 50% ('half') and reveals editorial
+  useEffect(() => {
+    const handleWindowWheel = (e) => {
+      if (sheetState === 'half') {
+        if (e.deltaY > 3) {
+          expandToFull();
+        }
+      } else if (sheetState === 'full') {
+        const currentScrollTop = centerBoxRef.current ? centerBoxRef.current.scrollTop : 0;
+        if (currentScrollTop <= 4 && e.deltaY < 0) {
+          accumulatedUpDelta.current += Math.abs(e.deltaY);
+          clearTimeout(wheelResetTimer.current);
+          wheelResetTimer.current = setTimeout(() => {
+            accumulatedUpDelta.current = 0;
+          }, 200);
+
+          if (accumulatedUpDelta.current > 25) {
+            accumulatedUpDelta.current = 0;
+            collapseToHalf();
+          }
+        } else {
+          accumulatedUpDelta.current = 0;
+        }
+      }
+    };
+
+    const handleTouchStart = (e) => {
+      if (e.touches && e.touches[0]) {
+        touchStartY.current = e.touches[0].clientY;
+        touchStartScrollTop.current = centerBoxRef.current ? centerBoxRef.current.scrollTop : 0;
+      }
+    };
+
+    const handleTouchMove = (e) => {
+      if (touchStartY.current === null || !e.touches || !e.touches[0]) return;
+
+      const currentY = e.touches[0].clientY;
+      const deltaY = currentY - touchStartY.current;
+
+      if (sheetState === 'half') {
+        if (-deltaY > 12) { // Swipe up expands to full
+          expandToFull();
+          touchStartY.current = null;
+        }
+      } else if (sheetState === 'full') {
+        if (touchStartScrollTop.current <= 4 && deltaY > 30) { // Pull down at top collapses back to half
+          collapseToHalf();
+          touchStartY.current = null;
+          touchStartScrollTop.current = 9999;
+        }
+      }
+    };
+
+    window.addEventListener('wheel', handleWindowWheel, { passive: true });
+    window.addEventListener('touchstart', handleTouchStart, { passive: true });
+    window.addEventListener('touchmove', handleTouchMove, { passive: true });
+
+    return () => {
+      clearTimeout(wheelResetTimer.current);
+      window.removeEventListener('wheel', handleWindowWheel);
+      window.removeEventListener('touchstart', handleTouchStart);
+      window.removeEventListener('touchmove', handleTouchMove);
+    };
+  }, [sheetState]);
 
   const handleMouseMove = (e) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -114,15 +208,18 @@ export default function Shop() {
   }, [filters.category]);
 
   return (
-    <div 
-      className="shop-page-wrapper"
-      style={{ 
-        backgroundImage: `url(${shopBg})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat'
-      }}
-    >
+    <div className="shop-page-wrapper">
+      {/* ── Dynamic Silk WebGL Shader Background (Same as Masterpiece Orbit section) ── */}
+      <div className="shop-silk-bg">
+        <Silk
+          speed={5}
+          scale={1}
+          color="#8c5fb3"
+          noiseIntensity={1.5}
+          rotation={0}
+        />
+        <div className="shop-silk-overlay" />
+      </div>
       {/* Top Center Liquid Glass UI Capsule Header */}
       <div className="glass-floating-shop-pill" onMouseMove={handleMouseMove}>
         <span className="glass-floating-shop-text">
@@ -130,9 +227,64 @@ export default function Shop() {
         </span>
       </div>
 
+      {/* ── Editorial Headline Above Glass Box (Smoothly blurs & fades out on scroll) ── */}
+      <div 
+        className={`shop-hero-editorial ${sheetState === 'half' ? 'visible' : 'blurred-out'}`}
+        onClick={sheetState === 'half' ? expandToFull : undefined}
+      >
+        <div className="shop-hero-badge">
+          <span className="shop-hero-badge-sparkle">✦</span>
+          <span>HAUTE JOAILLERIE ATELIER</span>
+          <span className="shop-hero-badge-sparkle">✦</span>
+        </div>
+        <h1 className="shop-hero-title">
+          Timeless <em>Radiance</em>
+        </h1>
+        <p className="shop-hero-subtitle">
+          Sculpted in pure 24k gold & celestial solitaires
+        </p>
+        <div className="shop-hero-meta">
+          <span>Rare Gems</span>
+          <span className="shop-hero-meta-dot">✦</span>
+          <span>Certified Craft</span>
+          <span className="shop-hero-meta-dot">✦</span>
+          <span>Bespoke Luxury</span>
+        </div>
+      </div>
+
       {/* Big Liquid Glass Box in Display Center with Internal Product Scroll */}
-      <div className="glass-big-center-box-container">
-        <div className="glass-big-center-box">
+      <div 
+        className={`glass-big-center-box-container sheet-${sheetState}`}
+        onClick={sheetState === 'half' ? expandToFull : undefined}
+      >
+        <div className="glass-big-center-box" ref={centerBoxRef}>
+          
+          {/* Interactive Sheet Grab Handle & Peek Expansion/Collapse Bar */}
+          <div 
+            className={`glass-sheet-handle-bar ${sheetState === 'half' ? 'active-peek' : 'active-full'}`}
+            onClick={(e) => {
+              e.stopPropagation();
+              if (sheetState === 'half') {
+                expandToFull();
+              } else {
+                collapseToHalf();
+              }
+            }}
+            title={sheetState === 'half' ? "Click or scroll to expand catalog" : "Click or pull down to reveal editorial"}
+          >
+            <div className="glass-sheet-handle-pill" />
+            {sheetState === 'half' ? (
+              <div className="glass-sheet-expand-indicator">
+                <span className="glass-sheet-expand-text">SCROLL OR TAP TO EXPAND</span>
+                <span className="glass-sheet-expand-chevron">▲</span>
+              </div>
+            ) : (
+              <div className="glass-sheet-expand-indicator glass-sheet-collapse-indicator">
+                <span className="glass-sheet-expand-text">PULL OR TAP TO REVEAL</span>
+                <span className="glass-sheet-expand-chevron">▼</span>
+              </div>
+            )}
+          </div>
           
           {/* Active Category Header Pill Indicator */}
           {filters.category && (
