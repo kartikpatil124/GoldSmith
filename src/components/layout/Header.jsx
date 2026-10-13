@@ -9,11 +9,11 @@ import api, { getMediaUrl, getProductImage } from '../../utils/api';
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isCollectionsExpanded, setIsCollectionsExpanded] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [allBackendProducts, setAllBackendProducts] = useState([]);
-  const [isCollectionsExpanded, setIsCollectionsExpanded] = useState(false);
   
   const { cartCount, setIsCartOpen } = useCart();
   const { wishlistCount } = useWishlist();
@@ -534,9 +534,9 @@ export default function Header() {
         {/* SECTION 1: Toggle Button Capsule */}
         <div className="mobile-header-pill mobile-header-toggle-pill">
           <button 
-            onClick={() => setIsMobileMenuOpen(true)}
+            onClick={() => setIsMobileMenuOpen(prev => !prev)}
             className="mobile-header-touch-btn"
-            aria-label="Open Navigation Menu"
+            aria-label="Toggle Navigation Menu"
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round">
               <line x1="3" y1="6" x2="21" y2="6" />
@@ -736,134 +736,114 @@ export default function Header() {
           {/* Backdrop */}
           <div className="mobile-drawer-backdrop" onClick={() => setIsMobileMenuOpen(false)} />
 
-          {/* Drawer Container */}
-          <div className="mobile-drawer-content">
-            {/* Drawer Header */}
-            <div className="mobile-drawer-header">
-              <div className="mobile-drawer-brand">
-                <span className="mobile-drawer-brand-title">GOLDSMITHS</span>
-                <span className="mobile-drawer-brand-sub">JEWELS ATELIER</span>
+          {/* Floating Popover Stack */}
+          <div className="mobile-drawer-popover-stack">
+            {/* 1. Main Navigation Container */}
+            <div className="mobile-drawer-content">
+              {/* Drawer Header */}
+              <div className="mobile-drawer-header">
+                <div className="mobile-drawer-brand">
+                  <span className="mobile-drawer-brand-title">GOLDSMITHS</span>
+                  <span className="mobile-drawer-brand-sub">JEWELS ATELIER</span>
+                </div>
+                <button 
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="mobile-drawer-close-btn"
+                  aria-label="Close navigation menu"
+                >
+                  ✕
+                </button>
               </div>
-              <button 
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="mobile-drawer-close-btn"
-                aria-label="Close navigation menu"
-              >
-                ✕
-              </button>
-            </div>
 
-            {/* User Profile Quick Banner (if logged in) */}
-            {user ? (
-              <div className="mobile-drawer-user-card">
-                <div className="mobile-drawer-user-avatar">
-                  {avatarUrl ? (
-                    <img src={getMediaUrl(avatarUrl)} alt={user.fullName || user.email} />
-                  ) : (
-                    <span>{(user.fullName || user.email || 'U').charAt(0).toUpperCase()}</span>
+              {/* User Profile Quick Banner (if logged in) */}
+              {user && (
+                <div className="mobile-drawer-user-card">
+                  <div className="mobile-drawer-user-avatar">
+                    {avatarUrl ? (
+                      <img src={getMediaUrl(avatarUrl)} alt={user.fullName || user.email} />
+                    ) : (
+                      <span>{(user.fullName || user.email || 'U').charAt(0).toUpperCase()}</span>
+                    )}
+                  </div>
+                  <div className="mobile-drawer-user-details">
+                    <div className="mobile-drawer-user-name">{user.fullName || 'Valued Patron'}</div>
+                    <div className="mobile-drawer-user-role">{user.role || 'Member'}</div>
+                  </div>
+                  <Link 
+                    to={(user.role === 'Super Admin' || user.role === 'Admin') ? '/admin' : '/account'}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="mobile-drawer-user-link"
+                  >
+                    Manage →
+                  </Link>
+                </div>
+              )}
+
+              {/* Navigation Links */}
+              <nav className="mobile-drawer-nav">
+                <Link to="/" onClick={() => setIsMobileMenuOpen(false)} className={`mobile-nav-link ${location.pathname === '/' ? 'active' : ''}`}>
+                  <span>Home</span>
+                  <span>→</span>
+                </Link>
+                
+                <Link to="/shop" onClick={() => setIsMobileMenuOpen(false)} className={`mobile-nav-link ${location.pathname === '/shop' ? 'active' : ''}`}>
+                  <span>Shop All Jewellery</span>
+                  <span className="mobile-nav-badge-pill">New 2026</span>
+                </Link>
+
+                {/* Expandable Collections Accordion */}
+                <div>
+                  <button 
+                    onClick={() => setIsCollectionsExpanded(!isCollectionsExpanded)}
+                    className="mobile-nav-accordion-trigger"
+                  >
+                    <span>Curated Collections</span>
+                    <span style={{ transform: isCollectionsExpanded ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s ease' }}>▼</span>
+                  </button>
+                  {isCollectionsExpanded && (
+                    <div className="mobile-nav-sub-list">
+                      {categories.slice(0, 8).map((cat) => (
+                        <Link 
+                          key={cat.slug} 
+                          to={`/shop?category=${cat.slug}`}
+                          onClick={() => setIsMobileMenuOpen(false)}
+                          className="mobile-nav-sub-link"
+                        >
+                          <span>{cat.name}</span>
+                          <span style={{ fontSize: '10px', color: 'var(--color-gold-dark)' }}>Explore</span>
+                        </Link>
+                      ))}
+                    </div>
                   )}
                 </div>
-                <div className="mobile-drawer-user-details">
-                  <div className="mobile-drawer-user-name">{user.fullName || 'Valued Patron'}</div>
-                  <div className="mobile-drawer-user-role">{user.role || 'Member'}</div>
-                </div>
-                <Link 
-                  to={(user.role === 'Super Admin' || user.role === 'Admin') ? '/admin' : '/account'}
-                  className="mobile-drawer-user-link"
-                >
-                  Manage →
+
+                <Link to="/bridal" onClick={() => setIsMobileMenuOpen(false)} className={`mobile-nav-link ${location.pathname === '/bridal' ? 'active' : ''}`}>
+                  <span>Royal Bridal Trousseau</span>
+                  <span style={{ color: 'var(--color-gold-dark)', fontSize: '12px' }}>👑</span>
                 </Link>
-              </div>
-            ) : (
-              <div className="mobile-drawer-auth-card">
-                <div>
-                  <div style={{ fontWeight: 700, fontSize: '13px', color: 'var(--color-charcoal)' }}>Patron Privilege</div>
-                  <div style={{ fontSize: '11px', color: 'var(--color-gray-500)' }}>Sign in to track orders & bespoke inquiries</div>
-                </div>
-                <Link to="/account" className="mobile-drawer-auth-btn">Sign In</Link>
-              </div>
-            )}
 
-            {/* Navigation Links */}
-            <nav className="mobile-drawer-nav">
-              <Link to="/" className={`mobile-nav-link ${location.pathname === '/' ? 'active' : ''}`}>
-                <span>Home</span>
-                <span>→</span>
-              </Link>
-              
-              <Link to="/shop" className={`mobile-nav-link ${location.pathname === '/shop' ? 'active' : ''}`}>
-                <span>Shop All Jewellery</span>
-                <span className="mobile-nav-badge-pill">New 2026</span>
-              </Link>
+                <Link to="/custom-order" onClick={() => setIsMobileMenuOpen(false)} className={`mobile-nav-link ${location.pathname === '/custom-order' ? 'active' : ''}`}>
+                  <span>Custom Jewellery Atelier</span>
+                  <span style={{ color: 'var(--color-gold-dark)', fontSize: '12px' }}>✨</span>
+                </Link>
 
-              {/* Expandable Collections Accordion */}
-              <div>
-                <button 
-                  onClick={() => setIsCollectionsExpanded(!isCollectionsExpanded)}
-                  className="mobile-nav-accordion-trigger"
-                >
-                  <span>Curated Collections</span>
-                  <span style={{ transform: isCollectionsExpanded ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s ease' }}>▼</span>
-                </button>
-                {isCollectionsExpanded && (
-                  <div className="mobile-nav-sub-list">
-                    {categories.slice(0, 8).map((cat) => (
-                      <Link 
-                        key={cat.slug} 
-                        to={`/shop?category=${cat.slug}`}
-                        className="mobile-nav-sub-link"
-                      >
-                        <span>{cat.name}</span>
-                        <span style={{ fontSize: '10px', color: 'var(--color-gold-dark)' }}>Explore</span>
-                      </Link>
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              <Link to="/bridal" className={`mobile-nav-link ${location.pathname === '/bridal' ? 'active' : ''}`}>
-                <span>Royal Bridal Trousseau</span>
-                <span style={{ color: 'var(--color-gold-dark)', fontSize: '12px' }}>👑</span>
-              </Link>
-
-              <Link to="/custom-order" className={`mobile-nav-link ${location.pathname === '/custom-order' ? 'active' : ''}`}>
-                <span>Custom Jewellery Atelier</span>
-                <span style={{ color: 'var(--color-gold-dark)', fontSize: '12px' }}>✨</span>
-              </Link>
-
-              <Link to="/wishlist" className={`mobile-nav-link ${location.pathname === '/wishlist' ? 'active' : ''}`}>
-                <span>My Wishlist</span>
-                {wishlistCount > 0 && <span className="mobile-nav-count-tag">{wishlistCount}</span>}
-              </Link>
-
-              <div style={{ height: '1px', background: 'rgba(188, 156, 108, 0.15)', margin: '14px 0' }} />
-
-              <Link to="/about" className={`mobile-nav-link-secondary ${location.pathname === '/about' ? 'active' : ''}`}>
-                About Goldsmiths Heritage
-              </Link>
-              <Link to="/contact" className={`mobile-nav-link-secondary ${location.pathname === '/contact' ? 'active' : ''}`}>
-                Contact & Showrooms
-              </Link>
-              <Link to="/faq" className={`mobile-nav-link-secondary ${location.pathname === '/faq' ? 'active' : ''}`}>
-                Patron FAQ & Authenticity
-              </Link>
-            </nav>
-
-            {/* Footer Contact Actions */}
-            <div className="mobile-drawer-footer">
-              <a 
-                href="https://wa.me/919106251842" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="mobile-drawer-whatsapp-btn"
-              >
-                <span>💬</span>
-                <span>Chat on WhatsApp</span>
-              </a>
-              <div className="mobile-drawer-phone">
-                📞 Concierge: +91 91062 51842
-              </div>
+                <Link to="/wishlist" onClick={() => setIsMobileMenuOpen(false)} className={`mobile-nav-link ${location.pathname === '/wishlist' ? 'active' : ''}`}>
+                  <span>My Wishlist</span>
+                  {wishlistCount > 0 && <span className="mobile-nav-count-tag">{wishlistCount}</span>}
+                </Link>
+              </nav>
             </div>
+
+            {/* 2. Separate WhatsApp Action Button */}
+            <a 
+              href="https://wa.me/919106251842" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="mobile-drawer-whatsapp-btn"
+            >
+              <span>💬</span>
+              <span>Chat on WhatsApp</span>
+            </a>
           </div>
         </div>
       )}
@@ -1217,47 +1197,72 @@ export default function Header() {
             cursor: pointer;
           }
 
-          /* Mobile Drawer Navigation */
+          /* Mobile Drawer Navigation (Opens directly below toggle button as shown in user reference) */
           .mobile-drawer-overlay {
             position: fixed;
             inset: 0;
-            z-index: 10000;
-            display: flex;
-            animation: fadeIn 0.25s ease-out;
+            z-index: 999;
           }
 
           .mobile-drawer-backdrop {
             position: absolute;
             inset: 0;
-            background: rgba(14, 12, 10, 0.65);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            background: rgba(0, 0, 0, 0.25);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            animation: fadeIn 0.2s ease-out;
+          }
+
+          .mobile-drawer-popover-stack {
+            position: absolute;
+            top: 64px;
+            left: 12px;
+            width: min(300px, calc(100vw - 24px));
+            max-height: calc(100vh - 78px);
+            max-height: calc(100dvh - 78px);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            z-index: 2;
+            transform-origin: top left;
+            animation: popoverDropIn 0.24s cubic-bezier(0.16, 1, 0.3, 1);
           }
 
           .mobile-drawer-content {
             position: relative;
-            width: 320px;
-            max-width: 85vw;
-            height: 100%;
-            height: 100dvh;
-            background: #FAF8F5;
-            box-shadow: 10px 0 50px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-height: calc(100vh - 146px);
+            max-height: calc(100dvh - 146px);
+            background: #FFFFFF;
+            border-radius: 20px;
+            border: 1.5px solid rgba(255, 255, 255, 0.95);
+            box-shadow: 
+              0 20px 48px rgba(0, 0, 0, 0.18),
+              0 6px 18px rgba(201, 168, 76, 0.16);
             display: flex;
             flex-direction: column;
             overflow-y: auto;
-            animation: slideInLeft 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-            padding: 20px 20px calc(24px + env(safe-area-inset-bottom, 0px));
+            overscroll-behavior: contain;
+            -webkit-overflow-scrolling: touch;
             box-sizing: border-box;
-            border-right: 1.5px solid rgba(201, 168, 76, 0.3);
+            padding: 16px 14px 14px;
+          }
+
+          .mobile-drawer-content::-webkit-scrollbar {
+            width: 4px;
+          }
+          .mobile-drawer-content::-webkit-scrollbar-thumb {
+            background: rgba(201, 168, 76, 0.25);
+            border-radius: 4px;
           }
 
           .mobile-drawer-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding-bottom: 16px;
+            padding-bottom: 12px;
             border-bottom: 1px solid rgba(188, 156, 108, 0.2);
-            margin-bottom: 16px;
+            margin-bottom: 12px;
           }
 
           .mobile-drawer-brand {
@@ -1267,27 +1272,29 @@ export default function Header() {
 
           .mobile-drawer-brand-title {
             font-family: var(--font-display);
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 800;
             color: #1A1A1A;
             letter-spacing: 0.05em;
+            line-height: 1.1;
           }
 
           .mobile-drawer-brand-sub {
             font-family: var(--font-accent);
-            font-size: 9px;
+            font-size: 8.5px;
             font-weight: 600;
             color: var(--color-gold-dark);
             letter-spacing: 0.22em;
+            margin-top: 2px;
           }
 
           .mobile-drawer-close-btn {
-            width: 36px;
-            height: 36px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
-            border: 1px solid rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(0, 0, 0, 0.08);
             background: rgba(0, 0, 0, 0.04);
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
             display: flex;
             align-items: center;
@@ -1299,18 +1306,17 @@ export default function Header() {
           .mobile-drawer-user-card {
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 12px;
-            border-radius: 16px;
-            background: #FFFFFF;
+            gap: 10px;
+            padding: 10px 12px;
+            border-radius: 14px;
+            background: #FAF8F5;
             border: 1px solid rgba(201, 168, 76, 0.25);
-            margin-bottom: 16px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+            margin-bottom: 12px;
           }
 
           .mobile-drawer-user-avatar {
-            width: 40px;
-            height: 40px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             overflow: hidden;
             background: #1A1A1A;
@@ -1319,8 +1325,9 @@ export default function Header() {
             align-items: center;
             justify-content: center;
             font-weight: 700;
-            font-size: 15px;
+            font-size: 14px;
             border: 1.5px solid var(--color-gold);
+            flex-shrink: 0;
           }
 
           .mobile-drawer-user-avatar img {
@@ -1335,7 +1342,7 @@ export default function Header() {
           }
 
           .mobile-drawer-user-name {
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 700;
             color: #1A1A1A;
             white-space: nowrap;
@@ -1344,43 +1351,47 @@ export default function Header() {
           }
 
           .mobile-drawer-user-role {
-            font-size: 11px;
+            font-size: 10.5px;
             color: var(--color-gold-dark);
             font-weight: 600;
           }
 
           .mobile-drawer-user-link {
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 700;
             color: var(--color-gold-dark);
             text-decoration: none;
+            flex-shrink: 0;
           }
 
           .mobile-drawer-auth-card {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 12px 14px;
-            border-radius: 16px;
-            background: #FFFFFF;
+            gap: 8px;
+            padding: 10px 12px;
+            border-radius: 14px;
+            background: #FAF8F5;
             border: 1px solid rgba(201, 168, 76, 0.25);
-            margin-bottom: 16px;
+            margin-bottom: 12px;
           }
 
           .mobile-drawer-auth-btn {
-            padding: 8px 16px;
+            padding: 6px 14px;
             border-radius: 9999px;
             background: var(--color-gold);
             color: #fff;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 700;
             text-decoration: none;
+            white-space: nowrap;
+            flex-shrink: 0;
           }
 
           .mobile-drawer-nav {
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 2px;
             flex: 1;
           }
 
@@ -1388,9 +1399,9 @@ export default function Header() {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 12px 14px;
-            border-radius: 12px;
-            font-size: 14px;
+            padding: 9px 12px;
+            border-radius: 10px;
+            font-size: 13.5px;
             font-weight: 600;
             color: #1A1A1A;
             text-decoration: none;
@@ -1404,20 +1415,20 @@ export default function Header() {
           }
 
           .mobile-nav-badge-pill {
-            font-size: 10px;
+            font-size: 9.5px;
             font-weight: 700;
             color: #fff;
             background: var(--color-gold-dark);
-            padding: 2px 8px;
+            padding: 2px 7px;
             border-radius: 9999px;
           }
 
           .mobile-nav-count-tag {
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 700;
             color: #fff;
             background: var(--color-ruby);
-            padding: 2px 8px;
+            padding: 2px 7px;
             border-radius: 9999px;
           }
 
@@ -1426,9 +1437,9 @@ export default function Header() {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 12px 14px;
-            border-radius: 12px;
-            font-size: 14px;
+            padding: 9px 12px;
+            border-radius: 10px;
+            font-size: 13.5px;
             font-weight: 600;
             color: #1A1A1A;
             background: transparent;
@@ -1441,7 +1452,7 @@ export default function Header() {
             display: flex;
             flex-direction: column;
             gap: 2px;
-            padding: 4px 0 8px 16px;
+            padding: 4px 0 6px 12px;
             margin-left: 8px;
             border-left: 2px solid rgba(201, 168, 76, 0.3);
           }
@@ -1450,9 +1461,9 @@ export default function Header() {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 8px 12px;
+            padding: 7px 10px;
             border-radius: 8px;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 500;
             color: #444;
             text-decoration: none;
@@ -1460,8 +1471,8 @@ export default function Header() {
 
           .mobile-nav-link-secondary {
             display: block;
-            padding: 8px 14px;
-            font-size: 12px;
+            padding: 7px 12px;
+            font-size: 11.5px;
             color: var(--color-gray-600);
             text-decoration: none;
             font-weight: 500;
@@ -1472,35 +1483,44 @@ export default function Header() {
             font-weight: 700;
           }
 
-          .mobile-drawer-footer {
-            margin-top: 24px;
-            padding-top: 16px;
-            border-top: 1px solid rgba(188, 156, 108, 0.2);
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-          }
-
           .mobile-drawer-whatsapp-btn {
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
-            padding: 12px;
-            border-radius: 12px;
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 18px;
             background: #25D366;
             color: #FFFFFF;
             font-weight: 700;
-            font-size: 13px;
+            font-size: 13.5px;
             text-decoration: none;
-            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+            box-shadow: 
+              0 12px 30px rgba(0, 0, 0, 0.16),
+              0 4px 12px rgba(37, 211, 102, 0.35);
+            box-sizing: border-box;
+            border: none;
+            flex-shrink: 0;
+            transition: transform 0.15s ease, filter 0.15s ease;
           }
 
-          .mobile-drawer-phone {
-            font-size: 11px;
-            color: var(--color-gray-500);
-            text-align: center;
+          .mobile-drawer-whatsapp-btn:active {
+            transform: scale(0.98);
+            filter: brightness(0.96);
           }
+
+          @keyframes popoverDropIn {
+            from {
+              opacity: 0;
+              transform: scale(0.9) translateY(-8px);
+            }
+            to {
+              opacity: 1;
+              transform: scale(1) translateY(0);
+            }
+          }
+
         }
 
         @keyframes slideDown {

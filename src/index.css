@@ -2201,6 +2201,7 @@ div[style*="width: 120px"][style*="height: 120px"] {
 .glass-control-btn {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 6px;
   background: transparent;
   border: none;
@@ -2213,7 +2214,15 @@ div[style*="width: 120px"][style*="height: 120px"] {
   text-transform: uppercase;
   padding: 6px 10px;
   border-radius: 20px;
+  line-height: 1;
+  box-sizing: border-box;
   transition: all 0.2s ease;
+}
+
+.glass-control-btn span {
+  display: inline-flex;
+  align-items: center;
+  line-height: 1;
 }
 
 .glass-control-btn:hover {
@@ -2223,8 +2232,10 @@ div[style*="width: 120px"][style*="height: 120px"] {
 
 .glass-control-divider {
   width: 1px;
-  height: 20px;
+  height: 18px;
   background: rgba(188, 156, 108, 0.3);
+  align-self: center;
+  flex-shrink: 0;
 }
 
 /* Liquid Glass Filter Drawer */
@@ -2813,7 +2824,7 @@ div[style*="width: 120px"][style*="height: 120px"] {
   /* Safe WhatsApp positioning well above floating control pills */
   a[aria-label="WhatsApp Support"],
   .whatsapp-floating-btn {
-    bottom: calc(82px + env(safe-area-inset-bottom, 0px)) !important;
+    bottom: calc(130px + env(safe-area-inset-bottom, 0px)) !important;
     left: auto !important;
     right: 14px !important;
     width: 44px !important;
@@ -2918,12 +2929,12 @@ div[style*="width: 120px"][style*="height: 120px"] {
   .glass-floating-controls-pill {
     bottom: calc(80px + env(safe-area-inset-bottom, 0px)) !important;
     right: 14px !important;
-    padding: 0 10px !important;
+    padding: 0 8px !important;
     height: 36px !important;
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
-    gap: 6px !important;
+    gap: 4px !important;
     border-radius: 9999px !important;
     background: rgba(255, 255, 255, 0.88) !important;
     backdrop-filter: blur(28px) saturate(200%) !important;
@@ -2940,12 +2951,27 @@ div[style*="width: 120px"][style*="height: 120px"] {
     letter-spacing: 0.05em !important;
     padding: 0 6px !important;
     height: 100% !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    line-height: 1 !important;
+    gap: 4px !important;
+    box-sizing: border-box !important;
+  }
+
+  .glass-control-btn span {
+    display: inline-flex !important;
+    align-items: center !important;
+    line-height: 1 !important;
   }
 
   .glass-control-divider {
-    height: 16px !important;
+    height: 14px !important;
     width: 1px !important;
-    background: rgba(0, 0, 0, 0.15) !important;
+    background: rgba(0, 0, 0, 0.18) !important;
+    align-self: center !important;
+    flex-shrink: 0 !important;
+    margin: 0 1px !important;
   }
 
   /* Mobile Filter Drawer Body */

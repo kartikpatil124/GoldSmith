@@ -571,10 +571,10 @@ export default function Shop() {
           className="glass-control-btn"
           aria-label="Open Filters"
         >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{ display: 'block', flexShrink: 0 }}>
             <line x1="4" y1="6" x2="20" y2="6" />
-            <line x1="8" y1="12" x2="20" y2="12" />
-            <line x1="12" y1="18" x2="20" y2="18" />
+            <line x1="7" y1="12" x2="20" y2="12" />
+            <line x1="10" y1="18" x2="20" y2="18" />
           </svg>
           <span>FILTER {activeFilterCount > 0 && `(${activeFilterCount})`}</span>
         </button>
@@ -583,14 +583,16 @@ export default function Shop() {
         <div className="glass-control-divider" />
 
         {/* Sort Selector Dropdown */}
-        <div style={{ position: 'relative' }}>
+        <div style={{ position: 'relative', display: 'inline-flex', alignItems: 'center', height: '100%' }}>
           <button 
             onClick={() => setIsSortOpen(!isSortOpen)} 
             className="glass-control-btn"
             aria-label="Open Sort Menu"
           >
             <span>SORT</span>
-            <span style={{ fontSize: '10px' }}>▼</span>
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ display: 'block', flexShrink: 0, marginTop: '1px' }}>
+              <polyline points="6 9 12 15 18 9" />
+            </svg>
           </button>
 
           {/* Sort Dropdown Menu */}
