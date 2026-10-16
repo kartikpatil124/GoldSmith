@@ -742,10 +742,7 @@ export default function Header() {
             <div className="mobile-drawer-content">
               {/* Drawer Header */}
               <div className="mobile-drawer-header">
-                <div className="mobile-drawer-brand">
-                  <span className="mobile-drawer-brand-title">GOLDSMITHS</span>
-                  <span className="mobile-drawer-brand-sub">JEWELS ATELIER</span>
-                </div>
+                <span className="mobile-drawer-header-title">Menu</span>
                 <button 
                   onClick={() => setIsMobileMenuOpen(false)}
                   className="mobile-drawer-close-btn"
@@ -783,7 +780,7 @@ export default function Header() {
               <nav className="mobile-drawer-nav">
                 <Link to="/" onClick={() => setIsMobileMenuOpen(false)} className={`mobile-nav-link ${location.pathname === '/' ? 'active' : ''}`}>
                   <span>Home</span>
-                  <span>→</span>
+                  <span className="mobile-nav-arrow">→</span>
                 </Link>
                 
                 <Link to="/shop" onClick={() => setIsMobileMenuOpen(false)} className={`mobile-nav-link ${location.pathname === '/shop' ? 'active' : ''}`}>
@@ -798,7 +795,7 @@ export default function Header() {
                     className="mobile-nav-accordion-trigger"
                   >
                     <span>Curated Collections</span>
-                    <span style={{ transform: isCollectionsExpanded ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s ease' }}>▼</span>
+                    <span style={{ transform: isCollectionsExpanded ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s ease', fontSize: '10px' }}>▼</span>
                   </button>
                   {isCollectionsExpanded && (
                     <div className="mobile-nav-sub-list">
@@ -819,12 +816,10 @@ export default function Header() {
 
                 <Link to="/bridal" onClick={() => setIsMobileMenuOpen(false)} className={`mobile-nav-link ${location.pathname === '/bridal' ? 'active' : ''}`}>
                   <span>Royal Bridal Trousseau</span>
-                  <span style={{ color: 'var(--color-gold-dark)', fontSize: '12px' }}>👑</span>
                 </Link>
 
                 <Link to="/custom-order" onClick={() => setIsMobileMenuOpen(false)} className={`mobile-nav-link ${location.pathname === '/custom-order' ? 'active' : ''}`}>
                   <span>Custom Jewellery Atelier</span>
-                  <span style={{ color: 'var(--color-gold-dark)', fontSize: '12px' }}>✨</span>
                 </Link>
 
                 <Link to="/wishlist" onClick={() => setIsMobileMenuOpen(false)} className={`mobile-nav-link ${location.pathname === '/wishlist' ? 'active' : ''}`}>
@@ -841,7 +836,9 @@ export default function Header() {
               rel="noopener noreferrer"
               className="mobile-drawer-whatsapp-btn"
             >
-              <span>💬</span>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+              </svg>
               <span>Chat on WhatsApp</span>
             </a>
           </div>
@@ -1217,7 +1214,7 @@ export default function Header() {
             position: absolute;
             top: 64px;
             left: 12px;
-            width: min(300px, calc(100vw - 24px));
+            width: min(265px, calc(100vw - 24px));
             max-height: calc(100vh - 78px);
             max-height: calc(100dvh - 78px);
             display: flex;
@@ -1237,15 +1234,15 @@ export default function Header() {
             border-radius: 20px;
             border: 1.5px solid rgba(255, 255, 255, 0.95);
             box-shadow: 
-              0 20px 48px rgba(0, 0, 0, 0.18),
-              0 6px 18px rgba(201, 168, 76, 0.16);
+              0 18px 44px rgba(0, 0, 0, 0.16),
+              0 4px 14px rgba(201, 168, 76, 0.14);
             display: flex;
             flex-direction: column;
             overflow-y: auto;
             overscroll-behavior: contain;
             -webkit-overflow-scrolling: touch;
             box-sizing: border-box;
-            padding: 16px 14px 14px;
+            padding: 12px 10px 14px;
           }
 
           .mobile-drawer-content::-webkit-scrollbar {
@@ -1260,47 +1257,38 @@ export default function Header() {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding-bottom: 12px;
-            border-bottom: 1px solid rgba(188, 156, 108, 0.2);
-            margin-bottom: 12px;
+            padding: 2px 4px 8px;
+            border-bottom: 1px solid rgba(188, 156, 108, 0.16);
+            margin-bottom: 6px;
           }
 
-          .mobile-drawer-brand {
-            display: flex;
-            flex-direction: column;
-          }
-
-          .mobile-drawer-brand-title {
-            font-family: var(--font-display);
-            font-size: 16px;
-            font-weight: 800;
-            color: #1A1A1A;
-            letter-spacing: 0.05em;
-            line-height: 1.1;
-          }
-
-          .mobile-drawer-brand-sub {
-            font-family: var(--font-accent);
-            font-size: 8.5px;
-            font-weight: 600;
+          .mobile-drawer-header-title {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
             color: var(--color-gold-dark);
-            letter-spacing: 0.22em;
-            margin-top: 2px;
           }
 
           .mobile-drawer-close-btn {
-            width: 32px;
-            height: 32px;
+            width: 24px;
+            height: 24px;
             border-radius: 50%;
             border: 1px solid rgba(0, 0, 0, 0.08);
             background: rgba(0, 0, 0, 0.04);
-            font-size: 13px;
+            font-size: 11px;
             font-weight: 600;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             color: #1A1A1A;
+            transition: all 0.15s ease;
+          }
+
+          .mobile-drawer-close-btn:active {
+            background: rgba(0, 0, 0, 0.1);
+            transform: scale(0.95);
           }
 
           .mobile-drawer-user-card {
@@ -1391,7 +1379,7 @@ export default function Header() {
           .mobile-drawer-nav {
             display: flex;
             flex-direction: column;
-            gap: 2px;
+            gap: 3px;
             flex: 1;
           }
 
@@ -1399,37 +1387,50 @@ export default function Header() {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 9px 12px;
+            padding: 8px 10px;
             border-radius: 10px;
-            font-size: 13.5px;
-            font-weight: 600;
+            font-size: 13px;
+            font-weight: 500;
             color: #1A1A1A;
             text-decoration: none;
-            transition: background 0.15s ease;
+            transition: all 0.15s ease;
+          }
+
+          .mobile-nav-link:active {
+            background: rgba(201, 168, 76, 0.1);
           }
 
           .mobile-nav-link.active {
-            background: rgba(201, 168, 76, 0.15);
+            background: rgba(201, 168, 76, 0.14);
             color: var(--color-gold-dark);
-            font-weight: 700;
+            font-weight: 600;
+          }
+
+          .mobile-nav-arrow {
+            font-size: 12px;
+            color: var(--color-gold-dark);
+            opacity: 0.8;
           }
 
           .mobile-nav-badge-pill {
-            font-size: 9.5px;
-            font-weight: 700;
-            color: #fff;
-            background: var(--color-gold-dark);
+            font-size: 8.5px;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            color: var(--color-gold-dark);
+            background: rgba(201, 168, 76, 0.14);
+            border: 1px solid rgba(201, 168, 76, 0.28);
             padding: 2px 7px;
             border-radius: 9999px;
           }
 
           .mobile-nav-count-tag {
-            font-size: 10px;
+            font-size: 9.5px;
             font-weight: 700;
             color: #fff;
             background: var(--color-ruby);
-            padding: 2px 7px;
+            padding: 2px 6px;
             border-radius: 9999px;
+            line-height: 1;
           }
 
           .mobile-nav-accordion-trigger {
@@ -1437,15 +1438,20 @@ export default function Header() {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 9px 12px;
+            padding: 8px 10px;
             border-radius: 10px;
-            font-size: 13.5px;
-            font-weight: 600;
+            font-size: 13px;
+            font-weight: 500;
             color: #1A1A1A;
             background: transparent;
             border: none;
             cursor: pointer;
             text-align: left;
+            transition: background 0.15s ease;
+          }
+
+          .mobile-nav-accordion-trigger:active {
+            background: rgba(201, 168, 76, 0.08);
           }
 
           .mobile-nav-sub-list {
@@ -1454,33 +1460,19 @@ export default function Header() {
             gap: 2px;
             padding: 4px 0 6px 12px;
             margin-left: 8px;
-            border-left: 2px solid rgba(201, 168, 76, 0.3);
+            border-left: 1.5px solid rgba(201, 168, 76, 0.25);
           }
 
           .mobile-nav-sub-link {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 7px 10px;
+            padding: 6px 10px;
             border-radius: 8px;
-            font-size: 12px;
-            font-weight: 500;
-            color: #444;
-            text-decoration: none;
-          }
-
-          .mobile-nav-link-secondary {
-            display: block;
-            padding: 7px 12px;
             font-size: 11.5px;
-            color: var(--color-gray-600);
-            text-decoration: none;
             font-weight: 500;
-          }
-
-          .mobile-nav-link-secondary.active {
-            color: var(--color-gold-dark);
-            font-weight: 700;
+            color: var(--color-gray-700);
+            text-decoration: none;
           }
 
           .mobile-drawer-whatsapp-btn {
@@ -1489,20 +1481,22 @@ export default function Header() {
             justify-content: center;
             gap: 8px;
             width: 100%;
-            padding: 12px 16px;
-            border-radius: 18px;
-            background: #25D366;
+            height: 42px;
+            padding: 0 16px;
+            border-radius: 9999px;
+            background: linear-gradient(135deg, #25D366 0%, #1EBE5D 100%);
             color: #FFFFFF;
-            font-weight: 700;
-            font-size: 13.5px;
+            font-weight: 600;
+            font-size: 12.5px;
+            letter-spacing: 0.01em;
             text-decoration: none;
             box-shadow: 
-              0 12px 30px rgba(0, 0, 0, 0.16),
-              0 4px 12px rgba(37, 211, 102, 0.35);
+              0 10px 24px rgba(37, 211, 102, 0.28),
+              0 2px 6px rgba(0, 0, 0, 0.08);
             box-sizing: border-box;
-            border: none;
+            border: 1px solid rgba(255, 255, 255, 0.2);
             flex-shrink: 0;
-            transition: transform 0.15s ease, filter 0.15s ease;
+            transition: all 0.15s ease;
           }
 
           .mobile-drawer-whatsapp-btn:active {
