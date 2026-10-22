@@ -40,7 +40,6 @@ export default function ProductCard({ product, gridMode = '2-col' }) {
   const wishlisted = isInWishlist(product._id || product.id);
   const [imgError, setImgError] = useState(false);
   const [imgLoaded, setImgLoaded] = useState(false);
-  const [secondaryImgError, setSecondaryImgError] = useState(false);
   const [isInquiryOpen, setIsInquiryOpen] = useState(false);
 
   const isDesktop = useIsDesktop();
@@ -52,8 +51,6 @@ export default function ProductCard({ product, gridMode = '2-col' }) {
 
   const rawImageUrl = getProductImage(product);
   const imageUrl = rawImageUrl && !imgError ? getMediaUrl(rawImageUrl) : null;
-  const rawSecondary = product.images?.[1] ? (product.images[1].url || product.images[1]) : null;
-  const secondaryImageUrl = rawSecondary && !secondaryImgError ? getMediaUrl(rawSecondary) : null;
 
   // GSAP entrance animation using IntersectionObserver (works perfectly inside internal scroll container)
   useEffect(() => {
@@ -235,16 +232,7 @@ export default function ProductCard({ product, gridMode = '2-col' }) {
             </span>
           )}
 
-          {/* Optional Secondary Inset Preview (Hidden in dense 3-col mode) */}
-          {secondaryImageUrl && !secondaryImgError && gridMode !== '3-col' && (
-            <div className="product-card-inset-preview-box">
-              <img 
-                src={secondaryImageUrl}
-                alt={`${product.name} preview`}
-                onError={() => setSecondaryImgError(true)}
-              />
-            </div>
-          )}
+
 
           {/* Desktop-only frosted reveal overlay */}
           {isDesktop && (
@@ -777,33 +765,6 @@ export default function ProductCard({ product, gridMode = '2-col' }) {
             border-radius: 10px;
             border: 1px solid rgba(188, 156, 108, 0.3);
             color: var(--color-gold-dark);
-          }
-
-          /* Desktop inset preview */
-          .pc-desktop .product-card-inset-preview-box {
-            display: block !important;
-            position: absolute;
-            bottom: 8px;
-            right: 8px;
-            width: 52px;
-            height: 52px;
-            border-radius: 10px;
-            border: 1.5px solid rgba(255, 255, 255, 0.95);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
-            overflow: hidden;
-            z-index: 5;
-            background: rgba(255,255,255,0.8);
-            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-          }
-
-          .pc-desktop .product-card-inset-preview-box img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-          }
-
-          .pc-desktop:hover .product-card-inset-preview-box {
-            transform: scale(1.08);
           }
         }
       `}</style>

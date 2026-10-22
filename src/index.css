@@ -2320,34 +2320,10 @@ div[style*="width: 120px"][style*="height: 120px"] {
     inset 0 -1.5px 2px rgba(0, 0, 0, 0.02) !important;
 }
 
-.glass-big-center-box .product-card:hover .product-card-image img,
-.glass-big-center-box .product-card:hover .product-card-inset-preview {
-  transform: none !important;
-}
-
-.glass-big-center-box .product-card-image {
-  position: relative !important;
-  width: 100% !important;
-  height: 210px !important;
-  border-radius: 18px !important;
-  overflow: hidden !important;
-  background: rgba(245, 242, 236, 0.6) !important;
-  margin-bottom: 16px !important;
-}
-
-/* Inset Overlapping Detail Preview Box */
-.product-card-inset-preview {
-  position: absolute;
-  bottom: 8px;
-  right: 8px;
-  width: 90px;
-  height: 62px;
-  border-radius: 12px;
-  border: 2px solid rgba(255, 255, 255, 0.95);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.14);
-  overflow: hidden;
-  z-index: 5;
-  background: #fff;
+/* Hide any secondary preview boxes permanently on all product cards */
+.product-card-inset-preview,
+.product-card-inset-preview-box {
+  display: none !important;
 }
 
 .product-card-title-spatial {

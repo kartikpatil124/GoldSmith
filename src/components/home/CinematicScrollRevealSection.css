@@ -6,5 +6,4 @@
   position: relative;
   width: 100%;
   background: #0A0806;
-  /* NO overflow: hidden to allow clean viewport pinning */
 }

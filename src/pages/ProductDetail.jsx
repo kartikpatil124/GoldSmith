@@ -1,6 +1,6 @@
 import { useParams, Link } from 'react-router-dom';
 import { useState, useEffect, useRef } from 'react';
-import shopBg from '../../images/shopbg.png';
+import Silk from '../components/ui/Silk';
 import { products as fallbackProducts, formatPrice } from '../data/products';
 import { useCart } from '../context/CartContext';
 import { useWishlist } from '../context/WishlistContext';
@@ -161,17 +161,20 @@ export default function ProductDetail() {
 
   if (loading) return (
     <div 
+      className="pdp-page-container"
       style={{
-        minHeight: '80vh',
-        backgroundImage: `url(${shopBg})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
+        minHeight: '100vh',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: '20px'
+        padding: '20px',
+        position: 'relative'
       }}
     >
+      <div className="pdp-silk-bg" aria-hidden="true">
+        <Silk speed={5} scale={1} color="#8c5fb3" noiseIntensity={1.5} rotation={0} />
+        <div className="shop-silk-overlay" />
+      </div>
       <div style={{
         background: 'rgba(255, 255, 255, 0.75)',
         backdropFilter: 'blur(30px)',
@@ -180,7 +183,9 @@ export default function ProductDetail() {
         border: '1.5px solid rgba(255, 255, 255, 0.85)',
         textAlign: 'center',
         maxWidth: '360px',
-        width: '100%'
+        width: '100%',
+        position: 'relative',
+        zIndex: 2
       }}>
         <div style={{ fontSize: '44px', marginBottom: '12px' }}>⏳</div>
         <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '20px', color: 'var(--color-charcoal)', margin: 0 }}>
@@ -192,17 +197,20 @@ export default function ProductDetail() {
 
   if (!product) return (
     <div 
+      className="pdp-page-container"
       style={{
-        minHeight: '80vh',
-        backgroundImage: `url(${shopBg})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
+        minHeight: '100vh',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: '20px'
+        padding: '20px',
+        position: 'relative'
       }}
     >
+      <div className="pdp-silk-bg" aria-hidden="true">
+        <Silk speed={5} scale={1} color="#8c5fb3" noiseIntensity={1.5} rotation={0} />
+        <div className="shop-silk-overlay" />
+      </div>
       <div style={{
         background: 'rgba(255, 255, 255, 0.75)',
         backdropFilter: 'blur(30px)',
@@ -211,7 +219,9 @@ export default function ProductDetail() {
         border: '1.5px solid rgba(255, 255, 255, 0.85)',
         textAlign: 'center',
         maxWidth: '360px',
-        width: '100%'
+        width: '100%',
+        position: 'relative',
+        zIndex: 2
       }}>
         <div style={{ fontSize: '48px', marginBottom: '12px' }}>💎</div>
         <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '22px', color: 'var(--color-charcoal)', marginBottom: '8px' }}>
@@ -230,12 +240,6 @@ export default function ProductDetail() {
   const wishlisted = product ? isInWishlist(product._id || product.id) : false;
   const productReviews = product?.reviews || [];
 
-  // Dedicated atmospheric background source using the existing product image
-  const primaryProductImg = product ? getProductImage(product) : null;
-  const bgImageUrl = (primaryProductImg ? getMediaUrl(primaryProductImg) : null) 
-    || (activeMedia && activeMedia !== 'video' ? getMediaUrl(activeMedia) : null) 
-    || shopBg;
-
   const tabs = [
     { id: 'description', label: 'Description & Care' },
     { id: 'details', label: 'Details & Specifications' },
@@ -245,21 +249,16 @@ export default function ProductDetail() {
 
   return (
     <div className="pdp-page-container">
-      
-      {/* Dedicated Atmospheric Background Layer (Mobile Only) */}
-      <div className="pdp-mobile-bg-layer" aria-hidden="true">
-        <img 
-          src={bgImageUrl} 
-          alt="" 
-          className="pdp-mobile-bg-image"
-          loading="eager"
-          onError={(e) => {
-            if (e.currentTarget.src !== shopBg) {
-              e.currentTarget.src = shopBg;
-            }
-          }}
+      {/* ── Dynamic Silk WebGL Shader Background (Identical to Shop Page) ── */}
+      <div className="pdp-silk-bg" aria-hidden="true">
+        <Silk
+          speed={5}
+          scale={1}
+          color="#8c5fb3"
+          noiseIntensity={1.5}
+          rotation={0}
         />
-        <div className="pdp-mobile-bg-overlay" />
+        <div className="shop-silk-overlay" />
       </div>
 
       {/* Main Liquid Glass Showcase Grid */}
@@ -617,20 +616,30 @@ export default function ProductDetail() {
         .pdp-page-container {
           min-height: 100vh;
           min-height: 100dvh;
-          background-image: url(${shopBg});
-          background-size: cover;
-          background-position: center;
-          background-repeat: no-repeat;
-          background-attachment: fixed;
+          background-color: #0A0806 !important;
+          background-image: none !important;
           padding-top: 100px;
           padding-bottom: 120px;
           margin: 0;
           position: relative;
         }
 
-        /* Dedicated mobile background layer is hidden on desktop */
-        .pdp-mobile-bg-layer {
-          display: none;
+        /* ── Dynamic Silk WebGL Background ── */
+        .pdp-silk-bg {
+          position: fixed !important;
+          inset: 0 !important;
+          width: 100vw !important;
+          height: 100vh !important;
+          height: 100dvh !important;
+          z-index: 0 !important;
+          pointer-events: none !important;
+          overflow: hidden !important;
+        }
+
+        .pdp-silk-bg canvas {
+          width: 100% !important;
+          height: 100% !important;
+          display: block !important;
         }
 
         .pdp-content-container {
@@ -942,68 +951,10 @@ export default function ProductDetail() {
         @media (max-width: 768px) {
           .pdp-page-container {
             background-image: none !important;
-            background-color: #0E0C0A !important;
+            background-color: #0A0806 !important;
             padding-top: 75px !important;
             padding-bottom: calc(160px + env(safe-area-inset-bottom, 0px)) !important;
             overflow-x: hidden;
-          }
-
-          /* Active Atmospheric Mobile Background Layer */
-          .pdp-mobile-bg-layer {
-            display: block !important;
-            position: fixed;
-            inset: 0;
-            width: 100vw;
-            height: 100vh;
-            height: 100dvh;
-            overflow: hidden;
-            pointer-events: none;
-            z-index: 0;
-          }
-
-          .pdp-mobile-bg-image {
-            position: absolute;
-            inset: -8%;
-            width: 116%;
-            height: 116%;
-            object-fit: cover;
-            object-position: center;
-            filter: blur(26px);
-            -webkit-filter: blur(26px);
-            transform: scale(1.10);
-            -webkit-transform: scale(1.10);
-            transform-origin: center center;
-            opacity: 0.70;
-            will-change: transform, filter, opacity;
-            backface-visibility: hidden;
-            -webkit-backface-visibility: hidden;
-            pointer-events: none;
-            user-select: none;
-          }
-
-          .pdp-mobile-bg-overlay {
-            position: absolute;
-            inset: 0;
-            background:
-              radial-gradient(
-                circle at 50% 35%,
-                rgba(255, 255, 255, 0.04) 0%,
-                rgba(40, 30, 22, 0.08) 55%,
-                rgba(20, 16, 13, 0.14) 100%
-              ),
-              linear-gradient(
-                180deg,
-                rgba(30, 23, 18, 0.10) 0%,
-                rgba(30, 23, 18, 0.12) 40%,
-                rgba(15, 12, 10, 0.22) 100%
-              );
-            pointer-events: none;
-          }
-
-          @media (prefers-reduced-motion: reduce) {
-            .pdp-mobile-bg-image {
-              transform: none !important;
-            }
           }
 
           .pdp-open-grid {

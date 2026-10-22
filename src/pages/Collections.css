@@ -1,0 +1,217 @@
+/* ============================================================
+   Collections Coming Soon — Haute Joaillerie Aesthetic
+   With Dynamic Silk WebGL Background Matching Shop Page
+   ============================================================ */
+
+.collections-page-wrapper {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #0A0806;
+  overflow: hidden;
+  box-sizing: border-box;
+  padding: 100px 24px 80px;
+}
+
+/* Centered Coming Soon Content Block */
+.collections-center-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  max-width: 680px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 48px 36px;
+  border-radius: 24px;
+  background: radial-gradient(
+    circle at 50% 0%,
+    rgba(255, 255, 255, 0.04) 0%,
+    rgba(10, 8, 6, 0.45) 75%,
+    rgba(10, 8, 6, 0.7) 100%
+  );
+  border: 1px solid rgba(201, 168, 76, 0.18);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 
+    0 24px 60px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 0 40px rgba(140, 95, 179, 0.12);
+  animation: collectionsFadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes collectionsFadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(24px) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Eyebrow Luxury Badge */
+.collections-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  border-radius: 999px;
+  background: rgba(201, 168, 76, 0.08);
+  border: 1px solid rgba(201, 168, 76, 0.28);
+  color: #E8D5A3;
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+}
+
+.collections-tag-sparkle {
+  color: #C9A84C;
+  font-size: 10px;
+  animation: collectionsSparkle 2.4s ease-in-out infinite alternate;
+}
+
+@keyframes collectionsSparkle {
+  0% { opacity: 0.5; transform: scale(0.85); }
+  100% { opacity: 1; transform: scale(1.15); filter: drop-shadow(0 0 6px #C9A84C); }
+}
+
+/* Primary "Coming Soon" Title */
+.collections-heading {
+  font-family: var(--font-display, 'Playfair Display', serif);
+  font-size: clamp(38px, 6.5vw, 68px);
+  font-weight: 500;
+  font-style: italic;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+  color: #FFFFFF;
+  margin: 0 0 18px;
+  text-shadow: 
+    0 2px 20px rgba(0, 0, 0, 0.8),
+    0 0 40px rgba(232, 213, 163, 0.18);
+  background: linear-gradient(135deg, #FFFFFF 20%, #F5E6B8 70%, #C9A84C 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Delicate Gold Ornamental Divider */
+.collections-gold-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  max-width: 220px;
+  margin: 4px 0 22px;
+}
+
+.gold-divider-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(201, 168, 76, 0.4), transparent);
+}
+
+.gold-divider-diamond {
+  font-size: 8px;
+  color: #C9A84C;
+  opacity: 0.8;
+}
+
+/* Subtext */
+.collections-subtext {
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: clamp(14px, 1.6vw, 16px);
+  font-weight: 300;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.72);
+  margin: 0 0 32px;
+  max-width: 460px;
+  letter-spacing: 0.02em;
+}
+
+/* Action Button */
+.collections-cta-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.collections-explore-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 13px 28px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, rgba(201, 168, 76, 0.18), rgba(201, 168, 76, 0.06));
+  border: 1px solid rgba(201, 168, 76, 0.4);
+  color: #F5E6B8;
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+.collections-explore-btn:hover {
+  background: linear-gradient(135deg, rgba(201, 168, 76, 0.32), rgba(201, 168, 76, 0.14));
+  border-color: rgba(201, 168, 76, 0.7);
+  color: #FFFFFF;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(201, 168, 76, 0.25);
+}
+
+.collections-btn-arrow {
+  transition: transform 0.3s ease;
+}
+
+.collections-explore-btn:hover .collections-btn-arrow {
+  transform: translateX(4px);
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .collections-page-wrapper {
+    padding: 90px 16px 100px;
+  }
+
+  .collections-center-content {
+    padding: 36px 20px;
+    border-radius: 20px;
+  }
+
+  .collections-tag {
+    font-size: 10px;
+    padding: 5px 12px;
+    letter-spacing: 0.16em;
+    margin-bottom: 18px;
+  }
+
+  .collections-heading {
+    font-size: clamp(32px, 9vw, 44px);
+    margin-bottom: 14px;
+  }
+
+  .collections-subtext {
+    font-size: 13px;
+    margin-bottom: 26px;
+  }
+
+  .collections-explore-btn {
+    padding: 11px 22px;
+    font-size: 12px;
+  }
+}
