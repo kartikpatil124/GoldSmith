@@ -26,14 +26,19 @@ const LOCAL_GALLERY_IMAGES = [
 
 export default function MobileFlexCarouselSection() {
   const navigate = useNavigate();
-  const [productsList, setProductsList] = useState(() => fallbackProducts.slice(0, 12));
+  const [productsList, setProductsList] = useState(() => {
+    // Prioritize products marked as 'new' or latest additions in fallback catalog
+    const newItems = fallbackProducts.filter(p => p.badge === 'new' || p.isNew);
+    const otherItems = fallbackProducts.filter(p => p.badge !== 'new' && !p.isNew);
+    return [...newItems, ...otherItems].slice(0, 12);
+  });
   const [activeIndex, setActiveIndex] = useState(0);
 
-  // Fetch live products from backend with graceful fallback
+  // Fetch newest arrival products from backend (sorted by newest creation date)
   useEffect(() => {
-    const fetchCatalog = async () => {
+    const fetchNewArrivals = async () => {
       try {
-        const res = await api.get('/products?limit=12');
+        const res = await api.get('/products?sort=-createdAt&limit=12');
         const list = res?.success && res.data?.products ? res.data.products : res?.products;
         if (list && list.length >= 4) {
           setProductsList(list.slice(0, 12));
@@ -42,7 +47,7 @@ export default function MobileFlexCarouselSection() {
         // Fallback already pre-seeded
       }
     };
-    fetchCatalog();
+    fetchNewArrivals();
   }, []);
 
   // Format product items strictly adhering to FlexCarousel specifications
@@ -55,13 +60,10 @@ export default function MobileFlexCarouselSection() {
         ? remoteImg
         : LOCAL_GALLERY_IMAGES[idx % LOCAL_GALLERY_IMAGES.length];
 
-      const priceText = p.price ? formatPrice(p.price) : 'Price on Request';
-      const categoryText = p.category || 'Atelier Collection';
-
       return {
         src: finalSrc,
-        alt: p.name || `Jewellery Piece ${idx + 1}`,
-        title: p.name || 'High Jewellery Masterpiece',
+        alt: p.name || `New Arrival Piece ${idx + 1}`,
+        title: p.name || 'Bespoke New Arrival',
         slug: p.slug || p._id || p.id,
         id: p._id || p.id || idx
       };
@@ -77,19 +79,19 @@ export default function MobileFlexCarouselSection() {
   };
 
   return (
-    <section className="mfc-section" aria-label="Liquid Lens Jewellery Gallery">
+    <section className="mfc-section" aria-label="New Arrivals Jewellery Gallery">
       {/* Ambient background lighting */}
       <div className="mfc-ambient-glow" aria-hidden="true" />
 
-      {/* Luxury Section Header */}
+      {/* Luxury Section Header — Dedicated to New Arrivals */}
       <div className="mfc-header">
         <span className="mfc-eyebrow">
           <span className="mfc-eyebrow-dot" />
-          LIQUID REFRACTION
+          NEW ARRIVALS
         </span>
-        <h2 className="mfc-title">Prism Gallery</h2>
+        <h2 className="mfc-title">New Arrivals</h2>
         <p className="mfc-subtitle">
-          Glide through the fluid optical lens to unveil bespoke handcrafted treasures
+          Discover our latest handcrafted creations, newly added to the atelier collection
         </p>
       </div>
 
@@ -126,9 +128,9 @@ export default function MobileFlexCarouselSection() {
             type="button"
             className="mfc-explore-btn"
             onClick={() => handleSelectProduct(activeIndex, activeItem)}
-            aria-label={`View details for ${activeItem.title}`}
+            aria-label={`View details for ${activeItem.title} - New Arrival`}
           >
-            <span>Explore Masterpiece</span>
+            <span>Explore New Arrival</span>
             <svg
               className="mfc-btn-arrow"
               viewBox="0 0 24 24"
