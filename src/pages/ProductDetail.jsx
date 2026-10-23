@@ -429,35 +429,6 @@ export default function ProductDetail() {
 
             {/* Unified Action Controls */}
             <div className="pdp-actions-container">
-              {/* Stepper + Add to Bag */}
-              <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-                <div className="pdp-stepper-pill">
-                  <button
-                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    className="pdp-stepper-btn"
-                  >
-                    −
-                  </button>
-                  <span style={{ minWidth: '20px', textAlign: 'center', fontSize: '13px', fontWeight: 700 }}>{quantity}</span>
-                  <button
-                    onClick={() => setQuantity(quantity + 1)}
-                    className="pdp-stepper-btn"
-                  >
-                    +
-                  </button>
-                </div>
-
-                <button
-                  onClick={handleAddToCart}
-                  className="pdp-add-bag-btn"
-                  style={{
-                    background: addedToBag ? '#10B981' : 'linear-gradient(135deg, var(--color-charcoal) 0%, #2C2621 100%)',
-                    color: addedToBag ? '#FFF' : 'var(--color-gold)',
-                  }}
-                >
-                  {addedToBag ? '✓ Added to Inquiry Bag' : '🛍️ Add to Inquiry Bag'}
-                </button>
-              </div>
 
               {/* Consultation & WhatsApp Primary Actions */}
               <div className="pdp-inquiry-btns-row">
@@ -563,7 +534,7 @@ export default function ProductDetail() {
         {/* 4. Related Masterpieces Grid */}
         {relatedProducts.length > 0 && (
           <div className="pdp-related-section">
-            <div style={{ textAlign: 'center', marginBottom: '20px' }}>
+            <div style={{ textAlign: 'center', marginBottom: '14px', padding: '0 16px' }}>
               <div style={{ fontFamily: 'var(--font-accent)', fontSize: '11px', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--color-gold-dark)', marginBottom: '4px' }}>
                 Complementary Pairings
               </div>
@@ -661,7 +632,7 @@ export default function ProductDetail() {
           background: rgba(255, 255, 255, 0.55);
           backdrop-filter: blur(30px) saturate(190%);
           -webkit-backdrop-filter: blur(30px) saturate(190%);
-          border: 1.5px solid rgba(255, 255, 255, 0.85);
+          border: none;
           box-shadow: 0 25px 60px rgba(0,0,0,0.06), 0 8px 24px rgba(201,168,76,0.12);
           aspect-ratio: 1;
           display: flex;
@@ -670,6 +641,7 @@ export default function ProductDetail() {
           cursor: zoom-in;
           transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
           z-index: 10;
+          
         }
 
         .pdp-media-badge {
@@ -714,25 +686,49 @@ export default function ProductDetail() {
         }
 
         .pdp-thumbnails-strip {
-          display: grid;
-          grid-template-columns: repeat(5, 1fr);
-          gap: 12px;
-          margin-top: 16px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 14px;
+          margin-top: 18px;
+          padding: 14px 18px;
+          background: rgba(255, 255, 255, 0.65);
+          backdrop-filter: blur(35px) saturate(190%);
+          -webkit-backdrop-filter: blur(35px) saturate(190%);
+          border-radius: 24px;
+          border: 1.5px solid rgba(255, 255, 255, 0.85);
+          box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08), 0 6px 20px rgba(201, 168, 76, 0.08);
+          width: 100%;
+          box-sizing: border-box;
+          overflow-x: auto;
+          scrollbar-width: none;
+        }
+
+        .pdp-thumbnails-strip::-webkit-scrollbar {
+          display: none;
         }
 
         .pdp-thumb-item {
+          width: 70px;
+          height: 70px;
           aspect-ratio: 1;
           border-radius: 16px;
           background: rgba(255, 255, 255, 0.75);
-          border: 1.5px solid rgba(255, 255, 255, 0.85);
+          border: none;
           cursor: pointer;
           overflow: hidden;
           position: relative;
+          flex-shrink: 0;
+          transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .pdp-thumb-item:hover {
+          transform: translateY(-2px);
         }
 
         .pdp-thumb-item.active {
-          border: 2px solid var(--color-gold);
-          box-shadow: 0 6px 18px rgba(201,168,76,0.25);
+          box-shadow: 0 0 0 2.5px var(--color-gold), 0 8px 22px rgba(201, 168, 76, 0.35);
+          transform: scale(1.05);
         }
 
         .pdp-thumb-video {
@@ -937,6 +933,17 @@ export default function ProductDetail() {
           color: #FFF;
         }
 
+        .pdp-related-section {
+          margin-top: 48px;
+          background: rgba(255, 255, 255, 0.65);
+          backdrop-filter: blur(35px) saturate(190%);
+          -webkit-backdrop-filter: blur(35px) saturate(190%);
+          border-radius: 32px;
+          padding: 36px 32px;
+          border: 1.5px solid rgba(255, 255, 255, 0.85);
+          box-shadow: 0 30px 80px rgba(0,0,0,0.08), 0 10px 30px rgba(201,168,76,0.12);
+        }
+
         .pdp-related-grid {
           display: grid;
           grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -964,6 +971,22 @@ export default function ProductDetail() {
 
           .pdp-main-media-frame {
             border-radius: 24px;
+            border: none;
+          }
+
+          .pdp-thumbnails-strip {
+            gap: 12px;
+            padding: 12px 14px;
+            border-radius: 20px;
+            margin-top: 14px;
+            justify-content: center;
+          }
+
+          .pdp-thumb-item {
+            width: 64px;
+            height: 64px;
+            border-radius: 14px;
+            border: none;
           }
 
           .pdp-details-card {
@@ -1000,9 +1023,93 @@ export default function ProductDetail() {
             margin-top: 24px;
           }
 
+          .pdp-related-section {
+            border-radius: 26px;
+            padding: 20px 0 12px 0 !important;
+            margin-top: 20px;
+            overflow: hidden;
+          }
+
           .pdp-related-grid {
-            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-            gap: 10px !important;
+            display: flex !important;
+            flex-direction: row !important;
+            flex-wrap: nowrap !important;
+            align-items: flex-start !important;
+            overflow-x: auto !important;
+            overflow-y: hidden !important;
+            scroll-snap-type: x mandatory;
+            scroll-padding-left: 18px;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            gap: 12px !important;
+            padding: 2px 18px 6px 18px !important;
+            margin: 0 !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
+          }
+
+          .pdp-related-grid::-webkit-scrollbar {
+            display: none;
+          }
+
+          /* Much larger 2.15 card proportion so jewelry images are big, clear, and impactful */
+          .pdp-related-grid > * {
+            flex: 0 0 calc((100% - 32px) / 2.15) !important;
+            width: calc((100% - 32px) / 2.15) !important;
+            min-width: calc((100% - 32px) / 2.15) !important;
+            max-width: calc((100% - 32px) / 2.15) !important;
+            scroll-snap-align: start;
+            box-sizing: border-box;
+            transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            height: auto !important;
+          }
+
+          .pdp-related-grid > *:active {
+            transform: scale(0.97);
+          }
+
+          .pdp-related-grid .product-card-glass {
+            height: auto !important;
+          }
+
+          .pdp-related-grid .product-card-link {
+            flex: none !important;
+            height: auto !important;
+          }
+
+          /* 1:1 Square Image aspect ratio so the jewelry product fills the tile and looks large & prominent */
+          .pdp-related-grid .product-card-img-box {
+            aspect-ratio: 1 / 1 !important;
+            border-radius: 16px !important;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+            background: #f8f6f2;
+            margin-bottom: 6px !important;
+          }
+
+          .pdp-related-grid .product-card-body {
+            padding: 2px 2px 0 2px !important;
+          }
+
+          .pdp-related-grid .product-card-title {
+            font-size: 12px;
+            font-weight: 500;
+            color: #1A1A1A;
+            line-height: 1.3;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-bottom: 2px;
+          }
+
+          .pdp-related-grid .product-card-current-price {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--color-gold-dark, #A38832);
+          }
+
+          .pdp-related-grid::after {
+            content: '';
+            flex: 0 0 8px;
           }
 
           /* Liquid Glass Floating Product Action Bar on Mobile — positioned with perfect optical gap above Bottom Navigation */

@@ -27,9 +27,14 @@ export const createInquiry = async (req, res, next) => {
       attachmentUrls,
     } = req.body;
 
-    if (!customerName || !email || !phone || !message || !productName) {
+    customerName = customerName || req.user?.fullName || req.user?.name || 'Valued Client';
+    email = email || req.user?.email || 'concierge-guest@goldsmithsjewels.com';
+    phone = phone || req.user?.phone || '919106251842';
+    message = message || `Consultation request registered for ${productName || 'fine jewellery piece'}.`;
+
+    if (!productName) {
       res.status(400);
-      return next(new Error('Please fill all required fields: customerName, email, phone, message, productName'));
+      return next(new Error('Please provide the productName for this inquiry.'));
     }
 
     const validInquiryTypes = [

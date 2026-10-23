@@ -15,6 +15,7 @@ import Bridal from './pages/Bridal';
 import ProductDetail from './pages/ProductDetail';
 import Cart from './pages/Cart';
 import Wishlist from './pages/Wishlist';
+import Enquiry from './pages/Enquiry';
 import Checkout from './pages/Checkout';
 import About from './pages/About';
 import Contact from './pages/Contact';
@@ -83,6 +84,7 @@ function AppContent() {
   const isContactPage = location.pathname === '/contact';
   const isWishlistPage = location.pathname === '/wishlist';
   const isCartPage = location.pathname === '/cart';
+  const isEnquiryPage = location.pathname === '/enquiry' || location.pathname === '/inquiries' || location.pathname === '/inquiry';
   const isAccountPage = location.pathname === '/account';
   const isProductPage = location.pathname.startsWith('/product/');
 
@@ -98,14 +100,17 @@ function AppContent() {
     >
       <ScrollToTop />
       <Header />
-      <main style={{ minHeight: '60vh', paddingTop: (isHomePage || isShopPage || isCollectionsPage || isBridalPage || isCustomPage || isAboutPage || isContactPage || isWishlistPage || isCartPage || isAccountPage || isProductPage) ? 0 : '75px', paddingBottom: (isHomePage || isShopPage || isCollectionsPage || isBridalPage || isCustomPage || isAboutPage || isContactPage || isWishlistPage || isCartPage || isAccountPage || isProductPage) ? 0 : '100px' }}>
+      <main style={{ minHeight: '60vh', paddingTop: (isHomePage || isShopPage || isCollectionsPage || isBridalPage || isCustomPage || isAboutPage || isContactPage || isWishlistPage || isCartPage || isEnquiryPage || isAccountPage || isProductPage) ? 0 : '75px', paddingBottom: (isHomePage || isShopPage || isCollectionsPage || isBridalPage || isCustomPage || isAboutPage || isContactPage || isWishlistPage || isCartPage || isEnquiryPage || isAccountPage || isProductPage) ? 0 : '100px' }}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/shop" element={<Shop />} />
           <Route path="/collections" element={<Collections />} />
           <Route path="/bridal" element={<Bridal />} />
           <Route path="/product/:slug" element={<ProductDetail />} />
-          <Route path="/cart" element={<Cart />} />
+          <Route path="/enquiry" element={<Enquiry />} />
+          <Route path="/inquiries" element={<Enquiry />} />
+          <Route path="/inquiry" element={<Enquiry />} />
+          <Route path="/cart" element={<Enquiry />} />
           <Route path="/wishlist" element={<Wishlist />} />
           <Route path="/checkout" element={<Shop />} /> {/* Redirect checkout to shop */}
           <Route path="/about" element={<About />} />
