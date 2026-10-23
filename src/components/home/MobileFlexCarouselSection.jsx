@@ -106,7 +106,7 @@ export default function MobileFlexCarouselSection() {
           roundness={1}
           intro="rise"
           cardHeight={0.44}
-          centerRatio={0.41}
+          centerRatio={0.39}
           gap={10}
           squeeze={0.15}
           radius={14}
