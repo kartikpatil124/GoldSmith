@@ -1077,12 +1077,24 @@ export default function ProductDetail() {
             height: auto !important;
           }
 
-          /* 1:1 Square Image aspect ratio so the jewelry product fills the tile and looks large & prominent */
+          /* 1:1 Square Image aspect ratio with ultra-clear liquid glass effect */
           .pdp-related-grid .product-card-img-box {
             aspect-ratio: 1 / 1 !important;
             border-radius: 16px !important;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
-            background: #f8f6f2;
+            background: linear-gradient(
+              145deg,
+              rgba(255, 255, 255, 0.14) 0%,
+              rgba(255, 255, 255, 0.02) 48%,
+              rgba(255, 255, 255, 0.06) 100%
+            ) !important;
+            backdrop-filter: blur(8px) saturate(180%) brightness(1.03) !important;
+            -webkit-backdrop-filter: blur(8px) saturate(180%) brightness(1.03) !important;
+            border: 1px solid rgba(255, 255, 255, 0.32) !important;
+            border-top: 1.8px solid rgba(255, 255, 255, 0.82) !important;
+            box-shadow:
+              0 8px 24px -4px rgba(0, 0, 0, 0.3),
+              inset 0 1.5px 2px rgba(255, 255, 255, 0.75),
+              inset 0 -1px 1px rgba(0, 0, 0, 0.12) !important;
             margin-bottom: 6px !important;
           }
 

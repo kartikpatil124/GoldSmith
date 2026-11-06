@@ -288,11 +288,11 @@ export default function Shop() {
           
           {/* Active Category Header Pill Indicator */}
           {filters.category && (
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px', padding: '12px 20px', background: 'rgba(255,255,255,0.7)', backdropFilter: 'blur(20px)', borderRadius: '16px', border: '1px solid rgba(188, 156, 108, 0.3)' }}>
-              <span style={{ fontSize: '12px', fontWeight: 700, color: 'var(--color-charcoal)' }}>
-                FILTERED BY CATEGORY: <strong style={{ color: 'var(--color-gold-dark)' }}>{filters.category.toUpperCase()}</strong> ({processedProducts.length} DESIGNS)
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px', padding: '12px 20px', background: 'linear-gradient(135deg, rgba(255,255,255,0.16) 0%, rgba(255,255,255,0.04) 100%)', backdropFilter: 'blur(14px) saturate(180%)', WebkitBackdropFilter: 'blur(14px) saturate(180%)', borderRadius: '16px', border: '1px solid rgba(255, 255, 255, 0.4)', borderTop: '1.5px solid rgba(255, 255, 255, 0.75)', boxShadow: '0 6px 20px rgba(0,0,0,0.25)' }}>
+              <span style={{ fontSize: '12px', fontWeight: 700, color: '#FFFFFF', textShadow: '0 1px 2px rgba(0,0,0,0.6)' }}>
+                FILTERED BY CATEGORY: <strong style={{ color: '#F6E6C2' }}>{filters.category.toUpperCase()}</strong> ({processedProducts.length} DESIGNS)
               </span>
-              <button onClick={() => setFilters(prev => ({ ...prev, category: '' }))} style={{ background: 'none', border: 'none', color: 'var(--color-ruby)', fontSize: '11px', fontWeight: 700, cursor: 'pointer' }}>
+              <button onClick={() => setFilters(prev => ({ ...prev, category: '' }))} style={{ background: 'none', border: 'none', color: '#ff6b81', fontSize: '11px', fontWeight: 700, cursor: 'pointer' }}>
                 Clear Category ✕
               </button>
             </div>
@@ -786,19 +786,20 @@ export default function Shop() {
           to { transform: translateX(0); }
         }
 
-        /* 3-Option Grid Toolbar */
+        /* 3-Option Liquid Glass Grid Toolbar */
         .shop-grid-toolbar {
           display: flex;
           align-items: center;
           justify-content: space-between;
           padding: 8px 14px;
           margin-bottom: 18px;
-          background: rgba(255, 255, 255, 0.72);
-          backdrop-filter: blur(24px);
-          -webkit-backdrop-filter: blur(24px);
+          background: linear-gradient(135deg, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0.04) 100%);
+          backdrop-filter: blur(14px) saturate(180%);
+          -webkit-backdrop-filter: blur(14px) saturate(180%);
           border-radius: 9999px;
-          border: 1.5px solid rgba(255, 255, 255, 0.85);
-          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04), 0 2px 6px rgba(201, 168, 76, 0.08);
+          border: 1.2px solid rgba(255, 255, 255, 0.4);
+          border-top: 1.8px solid rgba(255, 255, 255, 0.75);
+          box-shadow: 0 6px 22px rgba(0, 0, 0, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.7);
         }
 
         .shop-grid-switcher {
@@ -816,22 +817,22 @@ export default function Shop() {
           justify-content: center;
           background: transparent;
           border: none;
-          color: rgba(26, 26, 26, 0.45);
+          color: rgba(255, 255, 255, 0.65);
           cursor: pointer;
           transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
           -webkit-tap-highlight-color: transparent;
         }
 
         .shop-grid-btn:hover {
-          color: var(--color-charcoal);
-          background: rgba(0, 0, 0, 0.04);
+          color: #FFFFFF;
+          background: rgba(255, 255, 255, 0.12);
         }
 
         .shop-grid-btn.active {
-          background: rgba(201, 168, 76, 0.18);
-          color: var(--color-charcoal);
-          border: 1px solid rgba(201, 168, 76, 0.35);
-          box-shadow: 0 2px 8px rgba(201, 168, 76, 0.2);
+          background: rgba(201, 168, 76, 0.35);
+          color: #F6E6C2;
+          border: 1px solid rgba(201, 168, 76, 0.65);
+          box-shadow: 0 2px 10px rgba(201, 168, 76, 0.35);
         }
 
         .shop-grid-btn:active {
@@ -847,7 +848,8 @@ export default function Shop() {
         .shop-count-label {
           font-size: 11px;
           font-weight: 700;
-          color: var(--color-gold-dark);
+          color: #F6E6C2;
+          text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
           letter-spacing: 0.06em;
           text-transform: uppercase;
         }
@@ -859,12 +861,12 @@ export default function Shop() {
           display: flex;
           align-items: center;
           justify-content: center;
-          background: rgba(255, 255, 255, 0.85);
-          border: 1px solid rgba(188, 156, 108, 0.3);
-          color: #1A1A1A;
+          background: rgba(255, 255, 255, 0.18);
+          border: 1px solid rgba(255, 255, 255, 0.45);
+          color: #FFFFFF;
           cursor: pointer;
           position: relative;
-          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+          box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
           transition: all 0.2s ease;
           -webkit-tap-highlight-color: transparent;
         }

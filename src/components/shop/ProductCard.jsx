@@ -347,27 +347,65 @@ export default function ProductCard({ product, gridMode = '2-col' }) {
           width: 100% !important;
         }
 
-        /* Portrait 3:4 aspect ratio matching reference */
+        /* Portrait 3:4 aspect ratio with ultra-clear liquid glass effect */
         .product-card-img-box {
           position: relative;
           width: 100%;
           aspect-ratio: 3 / 4;
-          border-radius: 4px;
+          border-radius: 14px;
           overflow: hidden;
-          background: #f2f0ec;
-          margin-bottom: 6px;
+          background: linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.14) 0%,
+            rgba(255, 255, 255, 0.02) 48%,
+            rgba(255, 255, 255, 0.06) 100%
+          );
+          backdrop-filter: blur(8px) saturate(180%) brightness(1.03);
+          -webkit-backdrop-filter: blur(8px) saturate(180%) brightness(1.03);
+          border: 1px solid rgba(255, 255, 255, 0.32);
+          border-top: 1.8px solid rgba(255, 255, 255, 0.82);
+          box-shadow:
+            0 8px 24px -4px rgba(0, 0, 0, 0.3),
+            inset 0 1.5px 2px rgba(255, 255, 255, 0.75),
+            inset 0 -1px 1px rgba(0, 0, 0, 0.12);
+          margin-bottom: 7px;
           min-width: 0;
+          transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease;
+          isolation: isolate;
+        }
+
+        /* Diagonal liquid specular reflection across top edge */
+        .product-card-img-box::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(
+            130deg,
+            rgba(255, 255, 255, 0.35) 0%,
+            rgba(255, 255, 255, 0.1) 26%,
+            rgba(255, 255, 255, 0.0) 50%,
+            rgba(255, 255, 255, 0.08) 100%
+          );
+          z-index: 1;
+          pointer-events: none;
+          border-radius: inherit;
+        }
+
+        .product-card-glass:active .product-card-img-box {
+          transform: scale(0.975);
+          box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
         }
 
         .product-card-fallback-emoji {
           position: absolute;
           inset: 0;
-          background: linear-gradient(135deg, #f5f2ec 0%, #ebe6dc 100%);
+          background: transparent !important;
           display: flex;
           align-items: center;
           justify-content: center;
-          font-size: 32px;
+          font-size: 38px;
           z-index: 0;
+          filter: drop-shadow(0 6px 18px rgba(59, 130, 246, 0.55)) drop-shadow(0 2px 6px rgba(255, 255, 255, 0.7));
         }
 
         .product-card-main-img {
@@ -376,27 +414,33 @@ export default function ProductCard({ product, gridMode = '2-col' }) {
           width: 100%;
           height: 100%;
           object-fit: cover;
+          border-radius: inherit;
           z-index: 2;
           transition: opacity 0.3s ease-out;
         }
 
-        /* Minimal badge */
+        /* Minimal liquid glass badge */
         .product-card-badge {
           position: absolute;
-          top: 6px;
-          left: 6px;
+          top: 8px;
+          left: 8px;
           z-index: 10;
-          padding: 2px 6px;
-          border-radius: 4px;
-          background: rgba(255, 255, 255, 0.95);
+          padding: 3px 8px;
+          border-radius: 6px;
+          background: rgba(255, 255, 255, 0.22);
+          backdrop-filter: blur(12px) saturate(180%);
+          -webkit-backdrop-filter: blur(12px) saturate(180%);
+          border: 1px solid rgba(255, 255, 255, 0.6);
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.8);
           font-size: 8.5px;
           font-weight: 700;
-          letter-spacing: 0.04em;
+          letter-spacing: 0.06em;
           text-transform: uppercase;
-          color: #111;
+          color: #FFFFFF;
+          text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
         }
 
-        /* Minimalist Heart Icon (Outline stroke matching reference) */
+        /* Minimalist Heart Icon with Frosted Liquid Disc */
         .product-card-heart-action {
           position: absolute;
           top: 8px;
@@ -405,24 +449,28 @@ export default function ProductCard({ product, gridMode = '2-col' }) {
           width: 32px;
           height: 32px;
           border-radius: 50%;
-          background: transparent;
-          border: none;
-          color: #1a1a1a;
+          background: rgba(255, 255, 255, 0.18);
+          backdrop-filter: blur(12px) saturate(180%);
+          -webkit-backdrop-filter: blur(12px) saturate(180%);
+          border: 1px solid rgba(255, 255, 255, 0.45);
+          color: #FFFFFF;
           display: flex;
           align-items: center;
           justify-content: center;
           cursor: pointer;
-          box-shadow: none;
-          transition: transform 0.2s ease;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.7);
+          transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), background 0.2s ease, box-shadow 0.2s ease;
           -webkit-tap-highlight-color: transparent;
         }
 
         .product-card-heart-action:active {
-          transform: scale(1.25);
+          transform: scale(1.18);
+          background: rgba(255, 255, 255, 0.35);
         }
 
         .product-card-heart-action.active {
           color: var(--color-ruby, #e11d48);
+          background: rgba(255, 255, 255, 0.28);
         }
 
         .product-card-body {
@@ -440,12 +488,13 @@ export default function ProductCard({ product, gridMode = '2-col' }) {
           display: none;
         }
 
-        /* Clean sans-serif title like reference image */
+        /* Luminous crystal-clear title */
         .product-card-title {
           font-family: inherit;
           font-size: 13px;
-          font-weight: 400;
-          color: #1f2937;
+          font-weight: 500;
+          color: #FFFFFF !important;
+          text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85);
           line-height: 1.3;
           margin: 0 0 2px;
           display: block;
@@ -474,7 +523,7 @@ export default function ProductCard({ product, gridMode = '2-col' }) {
 
         .product-card-orig-price {
           font-size: 11.5px;
-          color: #9ca3af;
+          color: rgba(255, 255, 255, 0.5) !important;
           text-decoration: line-through;
           white-space: nowrap;
           order: 1;
@@ -484,12 +533,19 @@ export default function ProductCard({ product, gridMode = '2-col' }) {
           font-family: inherit;
           font-size: 13px;
           font-weight: 600;
-          color: #111827;
+          color: #F6E6C2 !important;
+          text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85);
           white-space: nowrap;
           order: 2;
         }
 
         /* 3-COLUMN DENSE OVERRIDES */
+        .product-card-3-col .product-card-img-box,
+        .product-card-3col .product-card-img-box {
+          border-radius: 10px !important;
+          margin-bottom: 5px !important;
+        }
+
         .product-card-3-col .product-card-title,
         .product-card-3col .product-card-title {
           font-size: 10.5px !important;
@@ -510,8 +566,8 @@ export default function ProductCard({ product, gridMode = '2-col' }) {
         .product-card-1-col .product-card-img-box,
         .product-card-1col .product-card-img-box {
           aspect-ratio: 3 / 4 !important;
-          border-radius: 8px !important;
-          margin-bottom: 8px !important;
+          border-radius: 18px !important;
+          margin-bottom: 10px !important;
         }
 
         .product-card-1-col .product-card-title,
