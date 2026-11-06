@@ -273,17 +273,6 @@ export default function Shop() {
             title={sheetState === 'half' ? "Click or scroll to expand catalog" : "Click or pull down to reveal editorial"}
           >
             <div className="glass-sheet-handle-pill" />
-            {sheetState === 'half' ? (
-              <div className="glass-sheet-expand-indicator">
-                <span className="glass-sheet-expand-text">SCROLL OR TAP TO EXPAND</span>
-                <span className="glass-sheet-expand-chevron">▲</span>
-              </div>
-            ) : (
-              <div className="glass-sheet-expand-indicator glass-sheet-collapse-indicator">
-                <span className="glass-sheet-expand-text">PULL OR TAP TO REVEAL</span>
-                <span className="glass-sheet-expand-chevron">▼</span>
-              </div>
-            )}
           </div>
           
           {/* Active Category Header Pill Indicator */}

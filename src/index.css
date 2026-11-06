@@ -2060,7 +2060,7 @@ div[style*="width: 120px"][style*="height: 120px"] {
   align-items: center;
   justify-content: center;
   width: 100%;
-  padding: 0 0 16px;
+  padding: 0 0 12px;
   cursor: pointer;
   user-select: none;
   -webkit-user-select: none;
@@ -2083,52 +2083,6 @@ div[style*="width: 120px"][style*="height: 120px"] {
   width: 58px;
   background: var(--color-gold);
   box-shadow: 0 2px 10px rgba(201, 168, 76, 0.45);
-}
-
-.glass-sheet-expand-indicator {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  margin-top: 8px;
-  padding: 5px 16px;
-  border-radius: 9999px;
-  background: rgba(255, 255, 255, 0.16) !important;
-  border: 1px solid rgba(255, 255, 255, 0.45) !important;
-  backdrop-filter: blur(12px) saturate(180%) !important;
-  -webkit-backdrop-filter: blur(12px) saturate(180%) !important;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.65) !important;
-  animation: bounceHint 2s infinite ease-in-out;
-  transition: transform 0.25s ease, background 0.25s ease;
-}
-
-.glass-sheet-collapse-indicator {
-  animation: bounceHintDown 2s infinite ease-in-out !important;
-}
-
-.glass-sheet-expand-text {
-  font-family: var(--font-body);
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: 0.16em;
-  color: #F6E6C2 !important;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85);
-  text-transform: uppercase;
-}
-
-.glass-sheet-expand-chevron {
-  font-size: 9px;
-  color: #F6E6C2 !important;
-  font-weight: 900;
-}
-
-@keyframes bounceHint {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-4px); }
-}
-
-@keyframes bounceHintDown {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(4px); }
 }
 
 .glass-big-center-box {
