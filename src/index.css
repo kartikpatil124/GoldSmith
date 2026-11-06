@@ -2856,7 +2856,7 @@ div[style*="width: 120px"][style*="height: 120px"] {
   /* Mobile Big Center Glass Box Adjustments */
   .glass-big-center-box-container {
     top: 68px !important;
-    padding: 0 8px !important;
+    padding: 0 4px !important;
     bottom: 0 !important;
   }
 
@@ -2869,7 +2869,7 @@ div[style*="width: 120px"][style*="height: 120px"] {
   }
 
   .glass-big-center-box {
-    padding: 16px 10px calc(140px + env(safe-area-inset-bottom, 0px)) !important;
+    padding: 14px 6px calc(140px + env(safe-area-inset-bottom, 0px)) !important;
     border-radius: 28px 28px 0 0 !important;
     -webkit-overflow-scrolling: touch !important;
   }

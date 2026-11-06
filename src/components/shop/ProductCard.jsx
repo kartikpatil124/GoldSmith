@@ -347,12 +347,12 @@ export default function ProductCard({ product, gridMode = '2-col' }) {
           width: 100% !important;
         }
 
-        /* Portrait 3:4 aspect ratio with ultra-clear liquid glass effect */
+        /* Portrait aspect ratio with ultra-clear liquid glass effect */
         .product-card-img-box {
           position: relative;
           width: 100%;
-          aspect-ratio: 3 / 4;
-          border-radius: 14px;
+          aspect-ratio: 1 / 1.34;
+          border-radius: 16px;
           overflow: hidden;
           background: linear-gradient(
             145deg,
@@ -368,7 +368,7 @@ export default function ProductCard({ product, gridMode = '2-col' }) {
             0 8px 24px -4px rgba(0, 0, 0, 0.3),
             inset 0 1.5px 2px rgba(255, 255, 255, 0.75),
             inset 0 -1px 1px rgba(0, 0, 0, 0.12);
-          margin-bottom: 7px;
+          margin-bottom: 8px;
           min-width: 0;
           transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease;
           isolation: isolate;
@@ -491,12 +491,12 @@ export default function ProductCard({ product, gridMode = '2-col' }) {
         /* Luminous crystal-clear title */
         .product-card-title {
           font-family: inherit;
-          font-size: 13px;
+          font-size: 13.5px;
           font-weight: 500;
           color: #FFFFFF !important;
           text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85);
-          line-height: 1.3;
-          margin: 0 0 2px;
+          line-height: 1.32;
+          margin: 0 0 3px;
           display: block;
           white-space: nowrap;
           overflow: hidden;
@@ -522,7 +522,7 @@ export default function ProductCard({ product, gridMode = '2-col' }) {
         }
 
         .product-card-orig-price {
-          font-size: 11.5px;
+          font-size: 12px;
           color: rgba(255, 255, 255, 0.5) !important;
           text-decoration: line-through;
           white-space: nowrap;
@@ -531,7 +531,7 @@ export default function ProductCard({ product, gridMode = '2-col' }) {
 
         .product-card-current-price {
           font-family: inherit;
-          font-size: 13px;
+          font-size: 13.5px;
           font-weight: 600;
           color: #F6E6C2 !important;
           text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85);

@@ -917,7 +917,7 @@ export default function Shop() {
           .shop-product-grid.shop-grid-2col,
           .shop-product-grid:not([class*="shop-grid-"]) {
             grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-            gap: 16px 8px !important;
+            gap: 18px 8px !important;
           }
 
           .shop-product-grid.shop-grid-3-col,
@@ -935,7 +935,7 @@ export default function Shop() {
 
           .shop-grid-toolbar {
             padding: 6px 10px;
-            margin-bottom: 12px;
+            margin-bottom: 14px;
           }
 
           .shop-grid-btn {
